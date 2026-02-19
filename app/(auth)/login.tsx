@@ -92,11 +92,7 @@ export default function LoginScreen() {
           <Text style={styles.loginText}>Secure Login</Text>
         </TouchableOpacity>
 
-        {/* Face ID */}
-        {/* <TouchableOpacity style={styles.faceButton}>
-          <Ionicons name="happy-outline" size={22} color="#cdd6e3" />
-          <Text style={styles.faceText}>Log in with Face ID</Text>
-        </TouchableOpacity> */}
+        {/* Social Login */}
         <View style={styles.googleButton}>
           <GoogleSignInButton />
         </View>
