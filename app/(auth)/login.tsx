@@ -1,3 +1,4 @@
+import GoogleSignInButton from "@/components/social-auth-buttons/google-sign-in-button";
 import { supabase } from "@/integrations/supabase/supabase";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -91,11 +92,10 @@ export default function LoginScreen() {
           <Text style={styles.loginText}>Secure Login</Text>
         </TouchableOpacity>
 
-        {/* Face ID */}
-        {/* <TouchableOpacity style={styles.faceButton}>
-          <Ionicons name="happy-outline" size={22} color="#cdd6e3" />
-          <Text style={styles.faceText}>Log in with Face ID</Text>
-        </TouchableOpacity> */}
+        {/* Social Login */}
+        <View style={styles.googleButton}>
+          <GoogleSignInButton />
+        </View>
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -199,7 +199,11 @@ const styles = StyleSheet.create({
     color: "#cdd6e3",
     marginLeft: 8,
   },
-
+  googleButton: {
+    marginTop: 16,
+    borderRadius: 14,
+    overflow: "hidden",
+  },
   footer: {
     marginTop: "auto",
     alignItems: "center",
