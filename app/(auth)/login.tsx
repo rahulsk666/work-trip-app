@@ -14,16 +14,16 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  // const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   async function signInWithEmail() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({
       email: email,
-      password: password,
+      password: "password",
     });
     if (error) Alert.alert(error.message);
     setLoading(false);
@@ -56,7 +56,7 @@ export default function LoginScreen() {
         </View>
 
         {/* Password */}
-        <Text style={[styles.label, { marginTop: 20 }]}>Password</Text>
+        {/* <Text style={[styles.label, { marginTop: 20 }]}>Password</Text>
         <View style={styles.inputWrapper}>
           <Ionicons name="lock-closed-outline" size={20} color="#7b8ca3" />
           <TextInput
@@ -76,12 +76,12 @@ export default function LoginScreen() {
               color="#7b8ca3"
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Forgot */}
-        <TouchableOpacity style={styles.forgotWrapper}>
+        {/* <TouchableOpacity style={styles.forgotWrapper}>
           <Text style={styles.forgot}>Forgot Password?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Login */}
         <TouchableOpacity
