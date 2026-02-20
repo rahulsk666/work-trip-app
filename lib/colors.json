@@ -16,5 +16,7 @@
 
   "textPrimary": "#E6EDF3",
   "textSecondary": "#9FB3C8",
-  "textMuted": "#5C7285"
+  "textMuted": "#5C7285",
+
+  "purple": "#A855F7"
 }

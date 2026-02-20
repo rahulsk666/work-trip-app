@@ -1,8 +1,11 @@
 import { APP_COLORS } from "@/lib/consts";
+import DutyInfo from "@/module/dashboard/components/DutyInfo";
+import QuickTools from "@/module/dashboard/components/QuickTools";
+import TodaysActivity from "@/module/dashboard/components/TodaysActivity";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import React, { useState } from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
@@ -54,6 +57,21 @@ export default function DashboardScreen() {
             Synced
           </Text>
         </View>
+      </View>
+
+      <DutyInfo />
+      <TodaysActivity />
+      <QuickTools />
+
+      <View className="flex-row gap-3 mt-5">
+        <TouchableOpacity className="bg-primary flex-1 p-5 items-center justify-center rounded-2xl">
+          <Ionicons name="send" size={24} color={APP_COLORS.textPrimary} />
+          <Text className="text-white font-semibold mt-2">Start Trip</Text>
+        </TouchableOpacity>
+        <TouchableOpacity className="flex-1 p-5 items-center justify-center rounded-2xl border border-borderSubtle bg-cardElevated">
+          <Ionicons name="stop-circle" size={28} color={APP_COLORS.danger} />
+          <Text className="text-white font-semibold mt-2">Stop Work</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
