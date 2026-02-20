@@ -1,17 +1,33 @@
+import GoogleSignInButton from "@/components/social-auth-buttons/google-sign-in-button";
+import { supabase } from "@/integrations/supabase/supabase";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  SafeAreaView,
+  Alert,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
-  const [passwordVisible, setPasswordVisible] = useState(false);
+  // const [passwordVisible, setPasswordVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function signInWithEmail() {
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: "password",
+    });
+    if (error) Alert.alert(error.message);
+    setLoading(false);
+  }
 
   return (
     <LinearGradient colors={["#0b1722", "#0e2235"]} style={styles.container}>
@@ -33,17 +49,21 @@ export default function LoginScreen() {
           <TextInput
             placeholder="Enter your ID"
             placeholderTextColor="#7b8ca3"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
             style={styles.input}
           />
         </View>
 
         {/* Password */}
-        <Text style={[styles.label, { marginTop: 20 }]}>Password</Text>
+        {/* <Text style={[styles.label, { marginTop: 20 }]}>Password</Text>
         <View style={styles.inputWrapper}>
           <Ionicons name="lock-closed-outline" size={20} color="#7b8ca3" />
           <TextInput
             placeholder="Enter password"
             placeholderTextColor="#7b8ca3"
+            onChangeText={(text) => setPassword(text)}
+            value={password}
             secureTextEntry={!passwordVisible}
             style={styles.input}
           />
@@ -56,23 +76,26 @@ export default function LoginScreen() {
               color="#7b8ca3"
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Forgot */}
-        <TouchableOpacity style={styles.forgotWrapper}>
+        {/* <TouchableOpacity style={styles.forgotWrapper}>
           <Text style={styles.forgot}>Forgot Password?</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Login */}
-        <TouchableOpacity style={styles.loginButton}>
+        <TouchableOpacity
+          style={styles.loginButton}
+          disabled={loading}
+          onPress={() => signInWithEmail()}
+        >
           <Text style={styles.loginText}>Secure Login</Text>
         </TouchableOpacity>
 
-        {/* Face ID */}
-        {/* <TouchableOpacity style={styles.faceButton}>
-          <Ionicons name="happy-outline" size={22} color="#cdd6e3" />
-          <Text style={styles.faceText}>Log in with Face ID</Text>
-        </TouchableOpacity> */}
+        {/* Social Login */}
+        <View style={styles.googleButton}>
+          <GoogleSignInButton />
+        </View>
 
         {/* Footer */}
         <View style={styles.footer}>
@@ -176,7 +199,11 @@ const styles = StyleSheet.create({
     color: "#cdd6e3",
     marginLeft: 8,
   },
-
+  googleButton: {
+    marginTop: 16,
+    borderRadius: 14,
+    overflow: "hidden",
+  },
   footer: {
     marginTop: "auto",
     alignItems: "center",
