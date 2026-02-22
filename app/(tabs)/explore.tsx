@@ -3,7 +3,7 @@ import { Platform, StyleSheet, View } from "react-native";
 
 import { ExternalLink } from "@/components/external-link";
 import ParallaxScrollView from "@/components/parallax-scroll-view";
-import SignOutButton from "@/components/sign-out-button";
+import SignOutButton from "@/module/auth/sign-out-button";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Collapsible } from "@/components/ui/collapsible";

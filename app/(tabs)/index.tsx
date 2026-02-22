@@ -4,6 +4,7 @@ import QuickTools from "@/module/dashboard/components/QuickTools";
 import TodaysActivity from "@/module/dashboard/components/TodaysActivity";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { router } from "expo-router";
 import React, { useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -32,16 +33,20 @@ export default function DashboardScreen() {
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
       {/* Header */}
-      <View className="flex-row justify-between items-center">
+      <View className="flex-row justify-between items-center my-2">
         {/* Profile */}
         <View className="flex-row items-center gap-3 flex-1">
-          <View className="relative">
+          <TouchableOpacity
+            // activeOpacity={1}
+            onPress={() => router.navigate("/(tabs)/profile")}
+            className="relative"
+          >
             <Image
               source={{ uri: user.image }}
               style={{ width: 50, height: 50, borderRadius: 50 }}
             />
             <View className="w-[12px] h-[12px] bg-success rounded-full absolute bottom-[2px] right-[0px] border-2 border-background" />
-          </View>
+          </TouchableOpacity>
           <View className="flex-1">
             <Text className="text-textSecondary text-sm">{formattedDate}</Text>
             <Text className="text-textPrimary font-bold text-xl">

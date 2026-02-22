@@ -1,4 +1,4 @@
-import GoogleSignInButton from "@/components/social-auth-buttons/google-sign-in-button";
+import GoogleSignInButton from "@/module/auth/google-sign-in-button";
 import { supabase } from "@/integrations/supabase/supabase";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
