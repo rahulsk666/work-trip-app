@@ -5,7 +5,10 @@ import {
 } from "@react-navigation/native";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
+import "react-native-url-polyfill/auto";
+import { Toaster } from "sonner-native";
 
 import "./global.css";
 
@@ -25,22 +28,40 @@ function RootNavigator() {
   const { isLoggedIn } = useAuthContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Protected guard={isLoggedIn}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack.Protected>
-        <Stack.Protected guard={!isLoggedIn}>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        </Stack.Protected>
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
+      <GestureHandlerRootView>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Protected guard={isLoggedIn}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack.Protected>
+          <Stack.Protected guard={!isLoggedIn}>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          </Stack.Protected>
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal", title: "Modal" }}
+          />
+        </Stack>
+        <Toaster
+          toastOptions={{
+            style: {
+              backgroundColor: "#162635", // cardElevated - slightly elevated from background
+              borderWidth: 1,
+              borderColor: "#1F3446", // borderSubtle
+            },
+            titleStyle: {
+              color: "#E6EDF3", // textPrimary
+              fontWeight: "600",
+            },
+            descriptionStyle: {
+              color: "#9FB3C8", // textSecondary
+            },
+          }}
         />
-      </Stack>
+      </GestureHandlerRootView>
     </QueryClientProvider>
   );
 }

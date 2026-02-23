@@ -1,3 +1,4 @@
+import { useUserProfile } from "@/hooks/use-user";
 import { APP_COLORS } from "@/lib/consts";
 import DutyInfo from "@/module/dashboard/components/DutyInfo";
 import QuickTools from "@/module/dashboard/components/QuickTools";
@@ -11,16 +12,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
   const [isOnDuty, setIsOnDuty] = useState(false);
+  const { data: user } = useUserProfile();
 
-  const user = {
-    image: "https://i.pravatar.cc/300",
-    name: "Alex",
-    date: "Oct 24, Tuesday",
-    hours: "6h 12m",
-    miles: "45.2 mi",
-    duration: "03:15:20",
-    location: "I-5 Southbound, Mile 42",
-  };
+  // const user = {
+  //   image: "https://i.pravatar.cc/300",
+  //   name: "Alex",
+  //   date: "Oct 24, Tuesday",
+  //   hours: "6h 12m",
+  //   miles: "45.2 mi",
+  //   duration: "03:15:20",
+  //   location: "I-5 Southbound, Mile 42",
+  // };
 
   const today = new Date();
 
@@ -37,12 +39,12 @@ export default function DashboardScreen() {
         {/* Profile */}
         <View className="flex-row items-center gap-3 flex-1">
           <TouchableOpacity
-            // activeOpacity={1}
+            activeOpacity={1}
             onPress={() => router.navigate("/(tabs)/profile")}
             className="relative"
           >
             <Image
-              source={{ uri: user.image }}
+              source={{ uri: user?.avatar_url || "https://i.pravatar.cc/300" }}
               style={{ width: 50, height: 50, borderRadius: 50 }}
             />
             <View className="w-[12px] h-[12px] bg-success rounded-full absolute bottom-[2px] right-[0px] border-2 border-background" />
@@ -50,7 +52,7 @@ export default function DashboardScreen() {
           <View className="flex-1">
             <Text className="text-textSecondary text-sm">{formattedDate}</Text>
             <Text className="text-textPrimary font-bold text-xl">
-              Welcome back, {user.name}
+              Welcome back, {user?.name}
             </Text>
           </View>
         </View>
