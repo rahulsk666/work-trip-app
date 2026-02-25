@@ -17,18 +17,20 @@ const LanguageButton = ({
   active,
 }: LanguageButtonProps) => {
   return (
-    <View className="flex-row justify-center items-center gap-6 rounded-lg">
+    <View className="flex flex-row justify-center items-center gap-6 rounded-lg">
       <TouchableOpacity
         onPress={() => handleLanguage(language)}
         activeOpacity={1}
-        className="flex-row justify-center items-center gap-6 py-1"
+        className="flex flex-row justify-center items-center gap-6 py-1"
       >
         <Text className="text-textPrimary font-semibold text-lg">
           {language}
         </Text>
         <CountryFlag isoCode={country} size={15} />
       </TouchableOpacity>
-      {active && <Ionicons name="checkmark" size={15} color={"#fff"} />}
+      <View style={{ width: 16 }}>
+        {active && <Ionicons name="checkmark" size={15} color={"#fff"} />}
+      </View>
     </View>
   );
 };
