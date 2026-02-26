@@ -1,24 +1,19 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { UserProfile } from "@/types/user.types";
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 
 interface AvatarProps {
-  user?: UserProfile | null;
+  uri?: string | null;
   showEditButton?: boolean;
   onEditPress?: () => void;
 }
 
-const Avatar = ({ user, showEditButton = false, onEditPress }: AvatarProps) => {
+const Avatar = ({ uri, showEditButton = false, onEditPress }: AvatarProps) => {
   return (
     <View className="gap-3 items-center">
       <View className="relative">
         <Image
-          source={
-            user?.avatar_url
-              ? { uri: user.avatar_url }
-              : require("@/assets/default-avatar.png")
-          }
+          source={uri ? { uri: uri } : require("@/assets/default-avatar.png")}
           alt="Avatar"
           style={{ width: 150, height: 150, borderRadius: 75 }}
         />
