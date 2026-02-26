@@ -1,19 +1,23 @@
 import React from "react";
 import { Text, TextInput, View } from "react-native";
 
-interface ProfileInputButtonProps {
+interface InputProps {
   label: string;
   value: any;
   editable?: boolean;
-  onChange: (text: string) => void;
+  onChange?: (text: string) => void;
+  onBlur?: () => void;
+  error?: string;
 }
 
-const ProfileInputButton = ({
+const Input = ({
   label,
   value,
   onChange,
   editable = true,
-}: ProfileInputButtonProps) => {
+  onBlur,
+  error,
+}: InputProps) => {
   return (
     <View className="flex pt-1 border border-borderSubtle bg-slate-800 rounded-lg gap-0 ${}">
       <Text className="text-textMuted text-base px-3 mt-2">{label}</Text>
@@ -22,9 +26,11 @@ const ProfileInputButton = ({
         value={value}
         editable={editable}
         onChangeText={onChange}
+        onBlur={onBlur}
       />
+      {error && <Text className="text-sm text-danger px-3 mb-2">{error}</Text>}
     </View>
   );
 };
 
-export default ProfileInputButton;
+export default Input;

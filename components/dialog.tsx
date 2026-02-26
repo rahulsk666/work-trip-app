@@ -1,49 +1,38 @@
 import React from "react";
-import { Modal, StyleSheet, TouchableOpacity } from "react-native";
+import { Modal, TouchableOpacity, View } from "react-native";
 
 interface DialogProps {
-  modalVisible: boolean;
-  onRequestClose: () => void;
+  open: boolean;
+  onClose: () => void;
+  animationType?: "slide" | "none" | "fade";
   children: React.ReactNode;
 }
 
-const Dialog = ({ modalVisible, onRequestClose, children }: DialogProps) => {
+const Dialog = ({
+  open,
+  onClose,
+  animationType = "slide",
+  children,
+}: DialogProps) => {
   return (
     <Modal
-      animationType="slide"
+      animationType={animationType}
       transparent={true}
-      visible={modalVisible}
-      onRequestClose={onRequestClose}
+      visible={open}
+      onRequestClose={onClose}
     >
       <TouchableOpacity
-        style={styles.backdrop}
+        className="flex-1 bg-black/70 justify-center items-center"
         activeOpacity={1}
-        onPress={onRequestClose}
+        onPress={onClose}
       >
         {/* modal box - stop touch propagation */}
-        <TouchableOpacity activeOpacity={1} style={styles.container}>
+        <View className="bg-background p-6 w-[90%] rounded-xl border border-borderSubtle">
           {children}
-        </TouchableOpacity>
+        </View>
       </TouchableOpacity>
     </Modal>
   );
 };
-
-const styles = StyleSheet.create({
-  backdrop: {
-    flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
-    justifyContent: "center", // ← centers vertically
-    alignItems: "center", // ← centers horizontally
-  },
-  container: {
-    backgroundColor: "#162635",
-    borderRadius: 12,
-    padding: 24,
-    width: "90%",
-    borderWidth: 1,
-    borderColor: "#1F3446",
-  },
-});
 
 export default Dialog;

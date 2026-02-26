@@ -1,28 +1,35 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { UserProfile } from "@/types/user.types";
+import { APP_COLORS } from "@/lib/consts";
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Image, TouchableOpacity, View } from "react-native";
 
 interface AvatarProps {
-  user?: UserProfile | null;
+  uri?: string | null;
   showEditButton?: boolean;
-  onEditPress?: () => void;
+  uploading?: boolean;
+  onPress?: () => void;
 }
 
-const Avatar = ({ user, showEditButton = false, onEditPress }: AvatarProps) => {
+const Avatar = ({
+  uri,
+  showEditButton = false,
+  uploading = false,
+  onPress,
+}: AvatarProps) => {
   return (
     <View className="gap-3 items-center">
       <View className="relative">
         <Image
-          source={
-            user?.avatar_url
-              ? { uri: user.avatar_url }
-              : require("@/assets/default-avatar.png")
-          }
+          source={uri ? { uri: uri } : require("@/assets/default-avatar.png")}
           alt="Avatar"
           style={{ width: 150, height: 150, borderRadius: 75 }}
         />
-        {showEditButton && (
+        {uploading && (
+          <View className="absolute w-[150px] h-[150px] rounded-full bg-black/50 items-center justify-center">
+            <ActivityIndicator color={APP_COLORS.primary} size="large" />
+          </View>
+        )}
+        {showEditButton && !uploading && (
           <TouchableOpacity
             style={{
               position: "absolute",
@@ -31,7 +38,7 @@ const Avatar = ({ user, showEditButton = false, onEditPress }: AvatarProps) => {
               borderRadius: "50%",
             }}
             activeOpacity={0.8}
-            onPress={onEditPress}
+            onPress={onPress}
             className="absolute bottom-[2px] right-[0px] rounded-full items-center justify-center"
           >
             <IconSymbol
