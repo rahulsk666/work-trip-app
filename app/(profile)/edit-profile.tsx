@@ -1,4 +1,5 @@
 import Avatar from "@/components/Avatar";
+import { useImageUpload } from "@/hooks/useImageUpload";
 import ProfileForm from "@/module/profile/components/ProfileForm";
 import { useEditUserMutation, useUserQuery } from "@/module/profile/hooks";
 import { User, UserEdit } from "@/module/profile/schemas/user.schema";
@@ -11,12 +12,31 @@ import { toast } from "sonner-native";
 const EditProfile = () => {
   const { data: user } = useUserQuery();
   const updateMutation = useEditUserMutation();
-  // const [editUser, setEditUser] = useState<User | null>(null);
+  const { preview, uploading, pickAndUpload } = useImageUpload({
+    bucket: "avatars",
+    path: user?.id,
+    onUpload: (url) => {
+      updateMutation.mutate(
+        { avatar_url: url },
+        {
+          onSuccess: () => {
+            toast.success("Profile Picture Updated");
+          },
+        },
+      );
+    },
+    onError: () => {},
+  });
 
   return (
     <SafeAreaView className="flex-1 bg-background">
       <View className="my-10">
-        <Avatar uri={user?.avatar_url} showEditButton={true} />
+        <Avatar
+          uri={preview ?? user?.avatar_url}
+          showEditButton={true}
+          uploading={uploading}
+          onPress={pickAndUpload}
+        />
       </View>
       <ProfileForm
         user={user as User}
