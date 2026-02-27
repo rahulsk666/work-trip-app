@@ -2,16 +2,19 @@ import Avatar from "@/components/Avatar";
 import Dialog from "@/components/Dialog";
 import ProfileButton from "@/components/MenuButton";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { APP_COLORS } from "@/lib/consts";
 import SignOutButton from "@/module/auth/sign-out-button";
 import LanguagePicker from "@/module/profile/components/LanguagePicker";
 import { useUserQuery } from "@/module/profile/hooks";
 import { router } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProfileScreen = () => {
   const { data: user } = useUserQuery();
+  const { t } = useTranslation();
 
   const [languageModalOpen, setLanguageModalOpen] = useState(false);
 
@@ -33,7 +36,7 @@ const ProfileScreen = () => {
           <IconSymbol
             name="pencil.tip"
             size={24}
-            color="#fff"
+            color={APP_COLORS.white}
             style={{
               backgroundColor: "#162635",
               borderRadius: 20,
@@ -59,13 +62,13 @@ const ProfileScreen = () => {
       </View>
       <View className="flex-1 mx-6 mt-10 mb-6 gap-6">
         <ProfileButton
-          text="Notifications"
-          mutedText="View all notifications"
+          text={t("profile.notifications")}
+          mutedText={t("profile.notifications_subtitle")}
           onPress={() => console.log("'Notification")}
         />
         <ProfileButton
-          text="Language"
-          mutedText="English"
+          text={t("profile.language")}
+          mutedText={t("profile.language_current")}
           onPress={() => setLanguageModalOpen(true)}
         />
       </View>

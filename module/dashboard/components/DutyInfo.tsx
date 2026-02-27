@@ -38,7 +38,7 @@ const DutyInfo = () => {
 
         {/* Details */}
         <View className="p-5 flex gap-2">
-          <Text className="text-textSecondary">Session Diration</Text>
+          <Text className="text-textSecondary">Session Duration</Text>
           <Text className="text-textPrimary font-bold text-5xl">03:15:20</Text>
           <View className="flex-row gap-2 items-center">
             <Fontisto

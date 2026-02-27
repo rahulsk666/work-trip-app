@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import React, { useEffect } from "react";
 import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { useUserForm, useUserQuery } from "../hooks";
 import { UserEdit } from "../schemas/user.schema";
@@ -13,6 +14,7 @@ interface ProfileFormProps {
 
 const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
   const { data: user } = useUserQuery();
+  const { t } = useTranslation();
   const { handleSubmit, control, reset } = useUserForm(user as UserEdit);
 
   useEffect(() => {
@@ -30,11 +32,19 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
           name="name"
           control={control}
           render={({ field, fieldState }) => (
-            <Input {...field} label="Name" error={fieldState.error?.message} />
+            <Input
+              {...field}
+              label={t("edit_profile.name")}
+              error={fieldState.error?.message}
+            />
           )}
         />
 
-        <Input value={user?.email} disabled={true} label="Email" />
+        <Input
+          value={user?.email}
+          disabled={true}
+          label={t("edit_profile.email")}
+        />
 
         <Controller
           name="phone"
@@ -42,14 +52,14 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
           render={({ field, fieldState }) => (
             <Input
               {...field}
-              label="Phone Number"
+              label={t("edit_profile.phone")}
               error={fieldState.error?.message}
             />
           )}
         />
       </View>
       <Button
-        text="Save"
+        text={t("edit_profile.save")}
         onPress={handleSubmit((data) => onSubmit(data))}
         disabled={isSubmitting}
       />

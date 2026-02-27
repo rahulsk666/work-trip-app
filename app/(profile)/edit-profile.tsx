@@ -4,12 +4,14 @@ import ProfileForm from "@/module/profile/components/ProfileForm";
 import { useEditUserMutation, useUserQuery } from "@/module/profile/hooks";
 import { router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 
 const EditProfile = () => {
   const { data: user } = useUserQuery();
+  const { t } = useTranslation();
   const updateMutation = useEditUserMutation();
   const { preview, uploading, pickAndUpload } = useImageUpload({
     bucket: "avatars",
@@ -44,14 +46,14 @@ const EditProfile = () => {
       <ProfileForm
         onSubmit={(data) => {
           if (!user?.auth_user_id) {
-            toast.error("No Active Session");
+            toast.error(t("errors.no_active_session"));
             return;
           }
           updateMutation.mutate(
             { id: user.auth_user_id, data: data },
             {
               onSuccess: () => {
-                toast.success("Profile Updated Successfully");
+                toast.success(t("edit_profile.profile_updated"));
                 router.navigate("/(tabs)/profile");
               },
             },

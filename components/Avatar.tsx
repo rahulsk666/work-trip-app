@@ -44,7 +44,7 @@ const Avatar = ({
             <IconSymbol
               name="pencil.tip"
               size={28}
-              color="#fff"
+              color={APP_COLORS.white}
               style={{
                 backgroundColor: "#162635",
                 borderRadius: 20,
