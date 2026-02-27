@@ -1,6 +1,6 @@
 export const LANGUAGES = [
   { label: "English", country: "us", code: "en" },
-  { label: "German", country: "de", code: "de" },
+  { label: "Deutsch", country: "de", code: "de" },
 ] as const;
 
 export type LanguageCode = (typeof LANGUAGES)[number]["code"];
