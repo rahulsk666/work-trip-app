@@ -1,8 +1,8 @@
-import { useUserProfile } from "@/hooks/use-user";
 import { APP_COLORS } from "@/lib/consts";
 import DutyInfo from "@/module/dashboard/components/DutyInfo";
 import QuickTools from "@/module/dashboard/components/QuickTools";
 import TodaysActivity from "@/module/dashboard/components/TodaysActivity";
+import { useUserQuery } from "@/module/profile/hooks";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
 import { router } from "expo-router";
@@ -12,20 +12,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
   const [isOnDuty, setIsOnDuty] = useState(false);
-  const { data: user } = useUserProfile();
-
-  // const user = {
-  //   image: "https://i.pravatar.cc/300",
-  //   name: "Alex",
-  //   date: "Oct 24, Tuesday",
-  //   hours: "6h 12m",
-  //   miles: "45.2 mi",
-  //   duration: "03:15:20",
-  //   location: "I-5 Southbound, Mile 42",
-  // };
-
+  const { data: user } = useUserQuery();
   const today = new Date();
-
   const formattedDate = today.toLocaleDateString(undefined, {
     month: "short",
     day: "2-digit",

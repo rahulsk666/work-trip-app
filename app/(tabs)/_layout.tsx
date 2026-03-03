@@ -28,12 +28,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
-        options={{
-          href: null, // hide from tab bar
-        }}
-      />
-      <Tabs.Screen
         name="history"
         options={{
           title: "History",

@@ -1,0 +1,26 @@
+{
+    "profile": {
+        "notifications": "Notifications",
+        "notifications_subtitle": "View all notifications",
+        "language": "Language",
+        "language_current": "English",
+        "edit_profile": "Edit Profile",
+        "sign_out": "Sign Out"
+    },
+    "edit_profile": {
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone Number",
+        "save": "Save",
+        "avatar_updated": "Profile Picture Updated",
+        "profile_updated": "Profile Updated Successfully"
+    },
+    "language_picker": {
+        "english": "English",
+        "german": "German",
+        "japanese": "Japanese"
+    },
+    "errors": {
+        "no_active_session": "No Active Session"
+    }
+}

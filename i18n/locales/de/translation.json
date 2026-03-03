@@ -1,0 +1,26 @@
+{
+    "profile": {
+        "notifications": "Benachrichtigungen",
+        "notifications_subtitle": "Alle Benachrichtigungen anzeigen",
+        "language": "Sprache",
+        "language_current": "Deutsch",
+        "edit_profile": "Profil bearbeiten",
+        "sign_out": "Abmelden"
+    },
+    "edit_profile": {
+        "name": "Name",
+        "email": "E-Mail",
+        "phone": "Telefonnummer",
+        "save": "Speichern",
+        "avatar_updated": "Profilbild aktualisiert",
+        "profile_updated": "Profil erfolgreich aktualisiert"
+    },
+    "language_picker": {
+        "english": "Englisch",
+        "german": "Deutsch",
+        "japanese": "Japanisch"
+    },
+    "errors": {
+        "no_active_session": "Keine aktive Sitzung"
+    }
+}

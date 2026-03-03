@@ -2,13 +2,13 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-interface ProfileButtonProps {
+interface MenuButtonProps {
   text: string;
   mutedText: string;
   onPress: () => void;
 }
 
-const ProfileButton = ({ text, mutedText, onPress }: ProfileButtonProps) => {
+const MenuButton = ({ text, mutedText, onPress }: MenuButtonProps) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -26,4 +26,4 @@ const ProfileButton = ({ text, mutedText, onPress }: ProfileButtonProps) => {
   );
 };
 
-export default ProfileButton;
+export default MenuButton;
