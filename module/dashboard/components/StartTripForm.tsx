@@ -1,26 +1,34 @@
-import Dialog from "@/components/dialog";
-import { SelectVehicle } from "@/components/select-vehicles";
+import Input from "@/components/Input";
+import TripImageUpload from "@/module/trip/components/TripImageUpload";
+import VehicleStatusCard from "@/module/trip/components/VehicleStatusCard";
 import React, { useState } from "react";
 import { Text, View } from "react-native";
 
-const StartTripForm = ({
-  openStartTrip,
-  onStartTripClose,
-}: {
-  openStartTrip: boolean;
-  onStartTripClose: () => void;
-}) => {
-  const [vechicle, setVechicle] = useState<string | undefined>(undefined);
+const StartTripForm = () => {
+  const [odometer, setOdometer] = useState<string>("");
   return (
-    <Dialog open={openStartTrip} onClose={onStartTripClose}>
-      <View>
-        <Text className="text-white">Start trip</Text>
+    <View className="m-2 mx-4 p-2 rounded-lg">
+      <VehicleStatusCard />
+
+      <View className="gap-2">
+        <Text className="text-textMuted text-base mt-2">
+          Odometer Reading *
+        </Text>
+        <Input
+          // label="Odometer Reading"
+          value={odometer}
+          onChange={(value) => setOdometer(value)}
+          type="numeric"
+        />
       </View>
-      <SelectVehicle
-        value={vechicle}
-        onChange={(vechicleId) => setVechicle(vechicleId)}
-      />
-    </Dialog>
+      <View>
+        <Text className="text-textMuted text-base mt-2">Dashboard Photo *</Text>
+        <View className="justify-center flex-row items-center gap-2 mt-2">
+          <TripImageUpload path="" />
+          <TripImageUpload path="" />
+        </View>
+      </View>
+    </View>
   );
 };
 

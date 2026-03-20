@@ -1,4 +1,5 @@
 import { APP_COLORS } from "@/lib/consts";
+import { formatDate } from "@/lib/fomatDate";
 import DashboardActions from "@/module/dashboard/components/DashboardActions";
 import DutyInfo from "@/module/dashboard/components/DutyInfo";
 import QuickTools from "@/module/dashboard/components/QuickTools";
@@ -6,22 +7,15 @@ import StartTripForm from "@/module/dashboard/components/StartTripForm";
 import TodaysActivity from "@/module/dashboard/components/TodaysActivity";
 import { useUserQuery } from "@/module/profile/hooks";
 import { Ionicons } from "@expo/vector-icons";
-import { Image } from "expo-image";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
   const [isOnDuty, setIsOnDuty] = useState(false);
   const [startTripOpen, setStartTripOpen] = useState(false);
   const { data: user } = useUserQuery();
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString(undefined, {
-    month: "short",
-    day: "2-digit",
-    weekday: "long",
-  });
 
   return (
     <SafeAreaView className="flex-1 bg-background p-5">
@@ -41,7 +35,9 @@ export default function DashboardScreen() {
             <View className="w-[12px] h-[12px] bg-success rounded-full absolute bottom-[2px] right-[0px] border-2 border-background" />
           </TouchableOpacity>
           <View className="flex-1">
-            <Text className="text-textSecondary text-sm">{formattedDate}</Text>
+            <Text className="text-textSecondary text-sm">
+              {formatDate(new Date())}
+            </Text>
             <Text className="text-textPrimary font-bold text-xl">
               Welcome back, {user?.name}
             </Text>
@@ -61,11 +57,11 @@ export default function DashboardScreen() {
       <TodaysActivity />
       <QuickTools />
 
-      <DashboardActions onStartTrip={() => setStartTripOpen(true)} />
-      <StartTripForm
+      <DashboardActions />
+      {/* <StartTripForm
         openStartTrip={startTripOpen}
         onStartTripClose={() => setStartTripOpen(false)}
-      />
+      /> */}
     </SafeAreaView>
   );
 }

@@ -1,0 +1,39 @@
+import * as z from "zod";
+
+export const tripSchema = z.object({
+  id: z.uuid(),
+  user_id: z.uuid().nullable().optional(),
+  vehicle_id: z.string(),
+  trip_date: z.string(),
+  start_time: z.string(),
+  end_time: z.string().nullable().optional(),
+  start_km: z.string(),
+  end_km: z.string().nullable().optional(),
+  start_location: z.string(),
+  end_location: z.string().nullable().optional(),
+  created_at: z.string().optional(), // timestamptz
+  updated_at: z.string().nullable().optional(),
+  image_folder: z.string().nullable().optional(),
+});
+
+export type Trip = z.infer<typeof tripSchema>;
+
+export const tripCreateSchema = z.object({
+  vehicle_id: z.string(),
+  trip_date: z.string(),
+  start_time: z.string(),
+  start_km: z.string(),
+  start_location: z.string(),
+  image_folder: z.string().optional(),
+});
+
+export type TripCreate = z.infer<typeof tripCreateSchema>;
+
+export const tripEditSchema = z.object({
+  end_time: z.string().nullable().optional(),
+  end_km: z.string().nullable().optional(),
+  end_location: z.string().nullable().optional(),
+  is_active: z.boolean().optional(),
+});
+
+export type TripEdit = z.infer<typeof tripEditSchema>;

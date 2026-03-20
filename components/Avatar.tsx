@@ -8,6 +8,8 @@ interface AvatarProps {
   showEditButton?: boolean;
   uploading?: boolean;
   onPress?: () => void;
+  width?: number;
+  height?: number;
 }
 
 const Avatar = ({
@@ -15,6 +17,8 @@ const Avatar = ({
   showEditButton = false,
   uploading = false,
   onPress,
+  width = 55,
+  height = 55,
 }: AvatarProps) => {
   return (
     <View className="gap-3 items-center">
@@ -22,7 +26,7 @@ const Avatar = ({
         <Image
           source={uri ? { uri: uri } : require("@/assets/default-avatar.png")}
           alt="Avatar"
-          style={{ width: 150, height: 150, borderRadius: 75 }}
+          style={{ width: width, height: height, borderRadius: 75 }}
         />
         {uploading && (
           <View className="absolute w-[150px] h-[150px] rounded-full bg-black/50 items-center justify-center">

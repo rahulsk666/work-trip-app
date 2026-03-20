@@ -1,5 +1,5 @@
 import Avatar from "@/components/Avatar";
-import Dialog from "@/components/dialog";
+import Dialog from "@/components/Dialog";
 import ProfileButton from "@/components/MenuButton";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { APP_COLORS } from "@/lib/consts";
@@ -21,7 +21,7 @@ const ProfileScreen = () => {
   return (
     <SafeAreaView className="flex-1 bg-background">
       <View className="mt-10 relative">
-        <Avatar uri={user?.avatar_url} />
+        <Avatar uri={user?.avatar_url} width={150} height={150} />
         <TouchableOpacity
           style={{
             position: "absolute",
