@@ -1,10 +1,9 @@
-import GoogleSignInButton from "@/module/auth/google-sign-in-button";
 import { supabase } from "@/integrations/supabase/supabase";
+import GoogleSignInButton from "@/module/auth/google-sign-in-button";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -12,6 +11,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { toast } from "sonner-native";
 
 export default function LoginScreen() {
   // const [passwordVisible, setPasswordVisible] = useState(false);
@@ -25,7 +25,7 @@ export default function LoginScreen() {
       email: email,
       password: "password",
     });
-    if (error) Alert.alert(error.message);
+    if (error) toast.error(error.message);
     setLoading(false);
   }
 

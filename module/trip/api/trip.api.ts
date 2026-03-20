@@ -40,9 +40,9 @@ export const tripApi = {
   },
   async edit(id: string, data: TripEdit): Promise<Trip> {
     const { data: tripData, error } = await supabase
-      .from("users")
+      .from("trips")
       .update(data)
-      .eq("auth_user_id", id)
+      .eq("id", id)
       .select()
       .single();
 

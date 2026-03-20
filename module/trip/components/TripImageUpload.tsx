@@ -1,29 +1,29 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { useImageUpload } from "@/hooks/useImageUpload";
 import { APP_COLORS } from "@/lib/consts";
 import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 
 interface TripImageUploadProps {
-  path: string;
+  pickImage?: () => void;
+  uploading?: boolean;
+  preview?: string | null;
 }
 
-const TripImageUpload = ({ path }: TripImageUploadProps) => {
-  const { preview, uploading, pickAndUpload } = useImageUpload({
-    bucket: "trip_dashboard",
-    path: path,
-    onUpload: (url) => {},
-    onError: () => {},
-  });
+const TripImageUpload = ({
+  pickImage,
+  uploading,
+  preview,
+}: TripImageUploadProps) => {
   return (
     <TouchableOpacity
-      onPress={pickAndUpload}
-      className="bg-cardElevated border-textMuted rounded-lg p-3 justify-center items-center flex-1"
+      onPress={pickImage}
+      className="bg-cardElevated border-textMuted rounded-xl p-3 justify-center items-center flex-1"
       style={{
         height: 150,
-        borderStyle: "dotted",
-        borderColor: APP_COLORS.textMuted,
+        borderStyle: preview ? "solid" : "dashed",
+        borderColor: preview ? APP_COLORS.primary : APP_COLORS.textMuted,
         borderWidth: 2,
+        boxShadow: preview ? `0 0 6px ${APP_COLORS.primary}` : "none",
       }}
       activeOpacity={1}
     >
@@ -31,6 +31,7 @@ const TripImageUpload = ({ path }: TripImageUploadProps) => {
         <Image
           source={{ uri: preview }}
           style={{ width: "100%", height: "100%" }}
+          className="rounded-lg"
           resizeMode="cover"
         />
       )}

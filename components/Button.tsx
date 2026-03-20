@@ -16,6 +16,7 @@ interface ButtonProps {
   activeOpacity?: number;
   variant?: ButtonVariant;
   onPress: () => void;
+  style?: object;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -34,6 +35,7 @@ const Button = ({
   variant = "primary",
   disabled,
   onPress,
+  style,
 }: ButtonProps) => {
   return (
     <TouchableOpacity
@@ -46,6 +48,7 @@ const Button = ({
         disabled && "opacity-50",
         classname,
       )}
+      style={style}
     >
       <Text className="text-white text-lg font-medium">{text}</Text>
     </TouchableOpacity>

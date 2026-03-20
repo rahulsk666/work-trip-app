@@ -43,6 +43,7 @@ const SelectVehiclesModal = ({
             <FlatList
               data={vehicles ?? []}
               keyExtractor={(item) => item.id}
+              style={{ maxHeight: 180 }}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   onPress={() => {
@@ -69,7 +70,8 @@ const SelectVehiclesModal = ({
                             : require("@/assets/default-vehicle.png")
                         }
                         alt="Vehicle Image"
-                        style={{ width: 50, height: 50, borderRadius: 75 }}
+                        style={{ width: 40, height: 40 }}
+                        className="rounded-lg"
                       />
                       <View className="w-[30px] h-[30px]">
                         {item.id === selectedVehicle?.id && (

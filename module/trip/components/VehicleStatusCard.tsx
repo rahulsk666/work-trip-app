@@ -6,10 +6,19 @@ import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import React, { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
-const VehicleStatusCard = () => {
+interface VehicleStatusCardProps {
+  vehicle?: Vehicle;
+  onChange: (vehicleId: string, vehicle: Vehicle) => void;
+  error?: string;
+}
+
+const VehicleStatusCard = ({
+  vehicle,
+  onChange,
+  error,
+}: VehicleStatusCardProps) => {
   const [visible, setVisible] = useState(false);
-  const { data: vechicles } = useAvailableVehicles();
-  const [vehicle, setVehicle] = useState<Vehicle | undefined>(undefined);
+  const { data: vehicles } = useAvailableVehicles();
   return (
     <View className="bg-cardElevated m-2 mx-4 p-2 rounded-lg">
       <View className="flex-row justify-between items-center">
@@ -66,12 +75,16 @@ const VehicleStatusCard = () => {
           <Text className="text-textMuted text-sm font-bold">8:45 am</Text>
         </View>
       </View>
+      {error && <Text className="text-sm text-danger px-3 mb-2">{error}</Text>}
+
       <SelectVehiclesModal
         visible={visible}
         setVisible={setVisible}
-        vehicles={vechicles}
+        vehicles={vehicles ?? []}
         onChange={(vehicleId, vehicle) => {
-          setVehicle(vehicle);
+          if (vehicle) {
+            onChange(vehicleId, vehicle);
+          }
         }}
       />
     </View>

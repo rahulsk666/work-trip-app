@@ -22,7 +22,7 @@ export const useTripByIdQuery = (id: string) =>
   useQuery({
     queryKey: tripKeys.getById(id),
     queryFn: () => tripApi.getById(id),
-    enabled: !id,
+    enabled: !!id,
   });
 
 // user mutations
@@ -35,13 +35,13 @@ export const useCreateTripMutation = () => {
 
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: tripKeys.all });
-      toast.success("Trip started successfully 🚗");
+      // toast.success("Trip started successfully");
     },
 
     onError: () => toast.error("Failed to start trip. Please try again"),
   });
 };
-export const useEditUserMutation = () => {
+export const useEditTripMutation = () => {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: TripEdit }) =>
@@ -49,7 +49,7 @@ export const useEditUserMutation = () => {
 
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: tripKeys.all });
-      toast.success("Trip started successfully 🚗");
+      // toast.success("Trip started successfully");
     },
 
     onError: () => toast.error("Failed to start trip. Please try again"),
