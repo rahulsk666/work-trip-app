@@ -21,6 +21,7 @@ export const tripSchema = z.object({
 export type Trip = z.infer<typeof tripSchema>;
 
 export const tripCreateSchema = z.object({
+  user_id: z.uuid().nullable(),
   vehicle_id: z.string().nonempty("Vehicle not assigned"),
   trip_date: z.string(),
   start_time: z.string(),

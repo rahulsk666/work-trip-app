@@ -1,7 +1,7 @@
 import { APP_COLORS } from "@/lib/consts";
 import { formatDate } from "@/lib/fomatDate";
 import { useUserQuery } from "@/module/profile/hooks";
-import { router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Avatar from "./Avatar";
@@ -13,6 +13,9 @@ interface ProfileHeaderProps {
   logoName?: string;
   OnlineStatus?: boolean;
   showDate?: boolean;
+  ShowSettings?: boolean;
+  ShowSynced?: boolean;
+  ParentDivClassName?: string;
 }
 
 const ProfileHeader = ({
@@ -20,10 +23,15 @@ const ProfileHeader = ({
   showOnline = false,
   showDate = false,
   OnlineStatus,
+  ShowSettings = false,
+  ShowSynced = false,
+  ParentDivClassName,
 }: ProfileHeaderProps) => {
   const { data: user } = useUserQuery();
   return (
-    <View className="flex-row justify-between items-center m-2">
+    <View
+      className={`flex-row justify-between items-center m-2 $ ${ParentDivClassName}`}
+    >
       {/* Profile */}
       <View className="flex-row items-center gap-3 flex-1 p-2">
         <Avatar uri={user?.avatar_url} />
@@ -57,14 +65,26 @@ const ProfileHeader = ({
         </View>
       </View>
 
+      {/* Settings */}
+      {ShowSettings && (
+        <TouchableOpacity
+          className="bg-cardElevated p-2 rounded-full items-center justify-center"
+          activeOpacity={0}
+          onPress={() => router.navigate("/(tabs)/profile")}
+        >
+          <IconSymbol name="gearshape" color={"white"} />
+        </TouchableOpacity>
+      )}
+
       {/* Status */}
-      <TouchableOpacity
-        className="bg-cardElevated p-2 rounded-full items-center justify-center"
-        activeOpacity={0}
-        onPress={() => router.navigate("/(tabs)/profile")}
-      >
-        <IconSymbol name="gearshape" color={"white"} />
-      </TouchableOpacity>
+      {ShowSynced && (
+        <View className="bg-success/10 border border-success/30 rounded-full px-3 py-1 flex-row gap-2 items-center w-fit">
+          <Ionicons name="cloud-done" size={16} color={APP_COLORS.success} />
+          <Text className="text-success uppercase font-bold text-sm">
+            Synced
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

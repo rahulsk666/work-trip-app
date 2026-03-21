@@ -10,17 +10,19 @@ interface VehicleStatusCardProps {
   vehicle?: Vehicle;
   onChange: (vehicleId: string, vehicle: Vehicle) => void;
   error?: string;
+  locationShared: boolean;
 }
 
 const VehicleStatusCard = ({
   vehicle,
   onChange,
   error,
+  locationShared,
 }: VehicleStatusCardProps) => {
   const [visible, setVisible] = useState(false);
   const { data: vehicles } = useAvailableVehicles();
   return (
-    <View className="bg-cardElevated m-2 mx-4 p-2 rounded-lg">
+    <View className="bg-cardElevated p-2 rounded-lg">
       <View className="flex-row justify-between items-center">
         <View className="flex-col gap-2">
           <View className="flex-row justify-start gap-1 items-center">
@@ -64,15 +66,23 @@ const VehicleStatusCard = ({
           <IconSymbol
             name="location.fill"
             size={15}
-            color={APP_COLORS.successDark}
+            color={locationShared ? APP_COLORS.successDark : APP_COLORS.danger}
           />
-          <Text className="text-successDark text-sm font-bold">
-            Location shared (3m)
+          <Text
+            className={`${locationShared ? "text-successDark" : "text-danger"} text-sm font-bold`}
+          >
+            Location shared
           </Text>
         </View>
         <View className="flex-row justify-start items-center bg-red-100 p-2 gap-2 rounded-lg">
           <IconSymbol name="clock" size={15} color={APP_COLORS.textMuted} />
-          <Text className="text-textMuted text-sm font-bold">8:45 am</Text>
+          <Text className="text-textMuted text-sm font-bold">
+            {new Date().toLocaleTimeString("en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </Text>
         </View>
       </View>
       {error && <Text className="text-sm text-danger px-3 mb-2">{error}</Text>}
