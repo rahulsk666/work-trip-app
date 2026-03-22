@@ -11,7 +11,6 @@ const Trip = () => {
         showOnline
         OnlineStatus
         ShowSettings
-        showBackButton
       />
       <StartTripForm />
     </SafeAreaView>

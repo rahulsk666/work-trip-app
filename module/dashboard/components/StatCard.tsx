@@ -8,28 +8,41 @@ export default function StatCard({
   label,
   value,
   color = APP_COLORS.primary,
+  disableShadow = false,
 }: {
   icon: any;
   label: string;
   value: string;
   color?: string;
+  disableShadow?: boolean;
 }) {
   return (
-    <View className="bg-card rounded-2xl p-4 w-[48%] border border-borderSubtle">
+    <View
+      className={`${disableShadow ? "bg-background" : "bg-card"} rounded-2xl p-4 border border-borderSubtle`}
+      style={{ width: "48%" }}
+    >
       <View className="flex-row items-center gap-2">
         <View
-          className={`w-[30px] h-[30px] flex items-center justify-center rounded-md`}
+          className={`flex items-center justify-center rounded-md`}
           style={{
             backgroundColor: withOpacity(color, 0.1),
+            width: 30,
+            height: 30,
           }}
         >
           <Ionicons name={icon} size={20} color={color} />
         </View>
-        <Text className="text-textSecondary text-sm uppercase font-semibold">
+        <Text
+          className={`${disableShadow ? "text-textMuted" : "text-textSecondary"} text-sm uppercase font-semibold`}
+        >
           {label}
         </Text>
       </View>
-      <Text className="text-textPrimary text-3xl font-bold mt-3">{value}</Text>
+      <Text
+        className={`${disableShadow ? "text-textMuted" : "text-textPrimary"} text-3xl font-bold mt-3`}
+      >
+        {value}
+      </Text>
     </View>
   );
 }

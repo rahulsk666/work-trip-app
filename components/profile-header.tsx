@@ -2,6 +2,7 @@ import { APP_COLORS } from "@/lib/consts";
 import { formatDate } from "@/lib/fomatDate";
 import { useUserQuery } from "@/module/profile/hooks";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Avatar from "./Avatar";
@@ -15,6 +16,7 @@ interface ProfileHeaderProps {
   showDate?: boolean;
   ShowSettings?: boolean;
   ShowSynced?: boolean;
+  synced?: boolean;
   ParentDivClassName?: string;
 }
 
@@ -25,6 +27,7 @@ const ProfileHeader = ({
   OnlineStatus,
   ShowSettings = false,
   ShowSynced = false,
+  synced = false,
   ParentDivClassName,
 }: ProfileHeaderProps) => {
   const { data: user } = useUserQuery();
@@ -78,9 +81,17 @@ const ProfileHeader = ({
 
       {/* Status */}
       {ShowSynced && (
-        <View className="bg-success/10 border border-success/30 rounded-full px-3 py-1 flex-row gap-2 items-center w-fit">
-          <Ionicons name="cloud-done" size={16} color={APP_COLORS.success} />
-          <Text className="text-success uppercase font-bold text-sm">
+        <View
+          className={`border ${synced ? "bg-success/10  border-success/30" : "bg-danger/10  border-danger/30"} rounded-full px-3 py-1 flex-row gap-2 items-center w-fit`}
+        >
+          <Ionicons
+            name="cloud-done"
+            size={16}
+            color={synced ? APP_COLORS.success : APP_COLORS.danger}
+          />
+          <Text
+            className={`${synced ? "text-success" : "text-danger"} uppercase font-bold text-sm`}
+          >
             Synced
           </Text>
         </View>

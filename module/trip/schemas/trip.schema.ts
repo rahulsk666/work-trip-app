@@ -13,6 +13,7 @@ export const tripSchema = z.object({
   end_image: z.string().nullable().optional(),
   start_location: z.string(),
   end_location: z.string().nullable().optional(),
+  current_location: z.string().nullable().optional(),
   created_at: z.string().optional(), // timestamptz
   updated_at: z.string().nullable().optional(),
   image_folder: z.string().nullable().optional(),
@@ -21,7 +22,6 @@ export const tripSchema = z.object({
 export type Trip = z.infer<typeof tripSchema>;
 
 export const tripCreateSchema = z.object({
-  user_id: z.uuid().nullable(),
   vehicle_id: z.string().nonempty("Vehicle not assigned"),
   trip_date: z.string(),
   start_time: z.string(),
@@ -38,7 +38,24 @@ export const tripEditSchema = z.object({
   end_time: z.string().nullable().optional(),
   end_km: z.coerce.number().nullable().optional(),
   end_location: z.string().nullable().optional(),
+  current_location: z.string().nullable().optional(),
   is_active: z.boolean().optional(),
 });
 
 export type TripEdit = z.infer<typeof tripEditSchema>;
+
+export const vehiclePhotoSchema = z.object({
+  trip_id: z.string(),
+  photo_type: z.enum(["FRONT", "BACK", "LEFT", "RIGHT", "KM_METER"]),
+  photo_url: z.string(),
+});
+
+export type VehiclePhoto = z.infer<typeof vehiclePhotoSchema>;
+
+export const UpdateLocationSchema = z.object({
+  tripId: z.string().nullable(),
+  latitude: z.number(),
+  longitude: z.number(),
+});
+
+export type UpdateLocation = z.infer<typeof UpdateLocationSchema>;

@@ -7,13 +7,17 @@ import VehicleStatusCard from "@/module/trip/components/VehicleStatusCard";
 import {
   useCreateTripMutation,
   useEditTripMutation,
+  useInsertVehiclePhotosMutation,
+  useTodayTripQuery,
   useTripCreateForm,
 } from "@/module/trip/hooks";
+import { VehiclePhoto } from "@/module/trip/schemas/trip.schema";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import * as Location from "expo-location";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { toast } from "sonner-native";
 
@@ -28,10 +32,17 @@ const StartTripForm = () => {
   const { data: user } = useUserQuery();
   const { mutateAsync: createTrip, isPending } = useCreateTripMutation();
   const { mutateAsync: editTrip } = useEditTripMutation();
+  const { mutateAsync: insertVehiclePhotos } = useInsertVehiclePhotosMutation();
+  const { data: todayTrip } = useTodayTripQuery();
+
   const [vehicle, setVehicle] = useState<Vehicle | undefined>(undefined);
-  const dashboardImage1 = useImageUpload({
+  const dashboardImage = useImageUpload({
     bucket: "trip_dashboard",
   });
+  const frontImage = useImageUpload({ bucket: "trip_dashboard" });
+  const backImage = useImageUpload({ bucket: "trip_dashboard" });
+  const leftImage = useImageUpload({ bucket: "trip_dashboard" });
+  const rightImage = useImageUpload({ bucket: "trip_dashboard" });
 
   useEffect(() => {
     requestLocation();
@@ -58,14 +69,12 @@ const StartTripForm = () => {
 
       // if (accurate) {
       const { latitude, longitude } = accurate.coords;
-      console.log(latitude, longitude);
 
       //provide lat and long to get the the actual address
       let response = await Location.reverseGeocodeAsync({
         latitude,
         longitude,
       });
-      console.log(response);
       //loop on the responce to get the actual result
       for (let item of response) {
         let address = `${item.name} ${item.city} ${item.postalCode}`;
@@ -87,6 +96,11 @@ const StartTripForm = () => {
 
   const onSubmit = async (data: any) => {
     try {
+      if (todayTrip) {
+        toast.error("A trip has already been started for today");
+        return;
+      }
+
       if (!vehicle) {
         toast.error("Vehicle required");
         return;
@@ -95,8 +109,28 @@ const StartTripForm = () => {
         toast.error("Location permission is required to start a trip");
         return;
       }
-      if (!dashboardImage1.asset) {
+      if (!dashboardImage.asset) {
         toast.error("Dashboard Image required");
+        return;
+      }
+
+      if (!frontImage.asset) {
+        toast.error("Front Image required");
+        return;
+      }
+
+      if (!backImage.asset) {
+        toast.error("Back Image required");
+        return;
+      }
+
+      if (!leftImage.asset) {
+        toast.error("Left Image required");
+        return;
+      }
+
+      if (!rightImage.asset) {
+        toast.error("Right Image required");
         return;
       }
 
@@ -104,14 +138,30 @@ const StartTripForm = () => {
         ...data,
         user_id: user?.id,
         vehicle_id: vehicle.id,
-        trip_date: new Date().toISOString(),
+        trip_date: new Date().toISOString().split("T")[0],
         start_time: new Date().toISOString(),
         start_location: `POINT(${location.coords.longitude} ${location.coords.latitude})`,
       });
 
-      let startUrl;
-      if (dashboardImage1.asset) {
-        startUrl = await dashboardImage1.upload(`${trip.id}/start-image`);
+      const [startUrl, frontUrl, backUrl, leftUrl, rightUrl] =
+        await Promise.all([
+          dashboardImage.upload(`${trip.id}/start-image`),
+          frontImage.asset ? frontImage.upload(`${trip.id}/front`) : null,
+          backImage.asset ? backImage.upload(`${trip.id}/back`) : null,
+          leftImage.asset ? leftImage.upload(`${trip.id}/left`) : null,
+          rightImage.asset ? rightImage.upload(`${trip.id}/right`) : null,
+        ]);
+
+      // 3️⃣ Insert vehicle photos into vehicle_photos table
+      const vehiclePhotos = [
+        { trip_id: trip.id, photo_type: "FRONT", photo_url: frontUrl },
+        { trip_id: trip.id, photo_type: "BACK", photo_url: backUrl },
+        { trip_id: trip.id, photo_type: "LEFT", photo_url: leftUrl },
+        { trip_id: trip.id, photo_type: "RIGHT", photo_url: rightUrl },
+      ].filter((p) => p.photo_url);
+
+      if (vehiclePhotos.length > 0) {
+        await insertVehiclePhotos(vehiclePhotos as VehiclePhoto[]);
       }
 
       // // 3️⃣ Save URLs
@@ -122,140 +172,187 @@ const StartTripForm = () => {
         },
       });
       toast.success("Trip started successfully");
+      router.navigate("/(tabs)");
     } catch (err) {
       console.log(err);
-      toast.error("Failed to start trip");
     }
   };
 
   return (
-    <View className="m-2 mx-4 p-2 rounded-lg">
-      <Controller
-        name="vehicle_id"
-        control={control}
-        render={({ field, fieldState }) => (
-          <VehicleStatusCard
-            vehicle={vehicle}
-            onChange={(vId, v) => {
-              field.onChange(vId);
-              setVehicle(v);
-            }}
-            locationShared={location !== null}
-            error={fieldState.error?.message}
-          />
-        )}
-      />
-
-      <View className="gap-2">
-        <Text className="text-textSecondary text-base mt-2">
-          Odometer Reading *
-        </Text>
-
+    <ScrollView
+      className="flex-1"
+      contentContainerStyle={{ paddingBottom: 40 }}
+      showsVerticalScrollIndicator={false}
+    >
+      <View className="m-2 mx-4 p-2 rounded-lg">
         <Controller
-          name="start_km"
+          name="vehicle_id"
           control={control}
           render={({ field, fieldState }) => (
-            <Input
-              value={field.value?.toString() ?? ""}
-              onChange={(val) => field.onChange(val ? Number(val) : undefined)}
-              type="numeric"
+            <VehicleStatusCard
+              vehicle={vehicle}
+              onChange={(vId, v) => {
+                field.onChange(vId);
+                setVehicle(v);
+              }}
+              locationShared={location !== null}
               error={fieldState.error?.message}
             />
           )}
         />
-      </View>
-      <View>
-        <Text className="text-textSecondary text-base mt-2">
-          Dashboard Photo *
-        </Text>
-        <View className="justify-center flex-row items-center gap-2 mt-2">
-          <TripImageUpload
-            pickImage={dashboardImage1.pickImage}
-            uploading={dashboardImage1.uploading}
-            preview={dashboardImage1.preview}
+
+        <View className="gap-2">
+          <Text className="text-textSecondary text-base mt-2">
+            Odometer Reading *
+          </Text>
+
+          <Controller
+            name="start_km"
+            control={control}
+            render={({ field, fieldState }) => (
+              <Input
+                value={field.value?.toString() ?? ""}
+                onChange={(val) =>
+                  field.onChange(val ? Number(val) : undefined)
+                }
+                type="numeric"
+                error={fieldState.error?.message}
+              />
+            )}
           />
         </View>
-        <Text className="text-textMuted mt-2">
-          Photo must clearly show the odometer reading
-        </Text>
-      </View>
-      <View>
-        <View className="flex-row justify-between">
-          <Text className="text-textSecondary text-base mt-5">
-            Starting Location
+        <View>
+          <Text className="text-textSecondary text-base mt-2">
+            Dashboard Photo *
           </Text>
-          <TouchableOpacity onPress={requestLocation}>
-            <Text className="text-primary font-bold">Refresh</Text>
-          </TouchableOpacity>
+          <View className="justify-center flex-row items-center gap-2 mt-2">
+            <TripImageUpload
+              pickImage={dashboardImage.pickImage}
+              uploading={dashboardImage.uploading}
+              preview={dashboardImage.preview}
+            />
+          </View>
+          <Text className="text-textMuted mt-2">
+            Photo must clearly show the odometer reading
+          </Text>
         </View>
-        <View
-          style={{
-            borderRadius: 16,
-            overflow: "hidden",
-            height: 180,
-            width: "100%",
-            marginTop: 8,
-          }}
-          className="h-52 w-full mt-2"
-        >
-          {location ? (
-            <View className="flex-1">
-              <MapView
-                style={{ width: "100%", height: "100%" }}
-                initialRegion={{
-                  latitude: location.coords.latitude,
-                  longitude: location.coords.longitude,
-                  latitudeDelta: 0.005,
-                  longitudeDelta: 0.005,
-                }}
-                showsUserLocation
-                showsMyLocationButton
-              >
-                <Marker
-                  coordinate={{
+        <View>
+          <Text className="text-textSecondary text-base mt-2">
+            Vehicle Photos *
+          </Text>
+          <View className="justify-center flex-col items-center gap-2 mt-2">
+            <View className="justify-center flex-row items-center gap-2 mt-2">
+              <TripImageUpload
+                pickImage={frontImage.pickImage}
+                uploading={frontImage.uploading}
+                preview={frontImage.preview}
+              />
+              <TripImageUpload
+                pickImage={backImage.pickImage}
+                uploading={backImage.uploading}
+                preview={backImage.preview}
+              />
+            </View>
+            <View className="justify-center flex-row items-center gap-2 mt-2">
+              <TripImageUpload
+                pickImage={leftImage.pickImage}
+                uploading={leftImage.uploading}
+                preview={leftImage.preview}
+              />
+              <TripImageUpload
+                pickImage={rightImage.pickImage}
+                uploading={rightImage.uploading}
+                preview={rightImage.preview}
+              />
+            </View>
+          </View>
+          <Text className="text-textMuted mt-2">
+            Photo must clearly show the odometer reading
+          </Text>
+        </View>
+        <View>
+          <View className="flex-row justify-between">
+            <Text className="text-textSecondary text-base mt-5">
+              Starting Location
+            </Text>
+            <TouchableOpacity onPress={requestLocation}>
+              <Text className="text-primary font-bold">Refresh</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              borderRadius: 16,
+              overflow: "hidden",
+              height: 180,
+              width: "100%",
+              marginTop: 8,
+            }}
+            className="h-52 w-full mt-2"
+          >
+            {location ? (
+              <View className="flex-1">
+                <MapView
+                  style={{ width: "100%", height: "100%" }}
+                  initialRegion={{
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
+                    latitudeDelta: 0.005,
+                    longitudeDelta: 0.005,
                   }}
-                  title="Start Location"
-                />
-              </MapView>
-              <View
-                style={{
-                  position: "absolute",
-                  bottom: 25,
-                  left: 0,
-                  right: 0,
-                  padding: 6,
-                }}
-              >
-                <Text className="text-sm text-textMuted font-bold">
-                  {displayCurrentAddress}
-                </Text>
-                <Text className="text-xs text-textMuted font-bold">
-                  {`Lat: ${location.coords.latitude.toFixed(4)}, Lng: ${location.coords.longitude.toFixed(4)}`}
-                </Text>
+                  showsUserLocation
+                  showsMyLocationButton
+                >
+                  <Marker
+                    coordinate={{
+                      latitude: location.coords.latitude,
+                      longitude: location.coords.longitude,
+                    }}
+                    title="Start Location"
+                  />
+                </MapView>
+                <View
+                  style={{
+                    position: "absolute",
+                    bottom: 25,
+                    left: 0,
+                    right: 0,
+                    padding: 6,
+                  }}
+                >
+                  <Text className="text-sm text-textMuted font-bold">
+                    {displayCurrentAddress}
+                  </Text>
+                  <Text className="text-xs text-textMuted font-bold">
+                    {`Lat: ${location.coords.latitude.toFixed(4)}, Lng: ${location.coords.longitude.toFixed(4)}`}
+                  </Text>
+                </View>
               </View>
-            </View>
-          ) : (
-            <Image
-              source={require("@/assets/map-fallback.png")}
-              alt="map-image"
-              className="rounded-xl"
-              style={{ width: "100%", height: 150 }}
-            />
-          )}
+            ) : (
+              <Image
+                source={require("@/assets/map-fallback.png")}
+                alt="map-image"
+                className="rounded-xl"
+                style={{ width: "100%", height: 150 }}
+              />
+            )}
+          </View>
+        </View>
+        <View className="items-center mt-6">
+          <Button
+            text={"Start Trip"}
+            classname="w-full m-2"
+            onPress={handleSubmit(
+              (data) => onSubmit(data),
+              (errors) => {
+                toast.error("Please fill in all required fields");
+              },
+            )}
+            disabled={isPending}
+            style={{ width: "100%" }}
+          />
         </View>
       </View>
-      <View className="items-center mt-6">
-        <Button
-          text={"Start Trip"}
-          classname="w-full m-2"
-          onPress={handleSubmit((data) => onSubmit(data))}
-          disabled={isPending}
-          style={{ width: "100%" }}
-        />
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 

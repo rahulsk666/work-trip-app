@@ -9,6 +9,8 @@ import {
   tripCreateSchema,
   TripEdit,
   tripEditSchema,
+  UpdateLocation,
+  VehiclePhoto,
 } from "../schemas/trip.schema";
 
 // use trip queries
@@ -25,7 +27,19 @@ export const useTripByIdQuery = (id: string) =>
     enabled: !!id,
   });
 
-// user mutations
+export const useTodayTripQuery = () =>
+  useQuery({
+    queryKey: tripKeys.today(),
+    queryFn: () => tripApi.getToday(),
+  });
+
+export const useLatestTripQuery = () =>
+  useQuery({
+    queryKey: tripKeys.latest(),
+    queryFn: () => tripApi.getLatest(),
+  });
+
+// trip mutations
 
 export const useCreateTripMutation = () => {
   const qc = useQueryClient();
@@ -38,7 +52,13 @@ export const useCreateTripMutation = () => {
       // toast.success("Trip started successfully");
     },
 
-    onError: () => toast.error("Failed to start trip. Please try again"),
+    onError: (err) => {
+      if (err?.code === "23505") {
+        toast.error("A trip has already been started for today");
+        return;
+      }
+      toast.error("Failed to start trip. Please try again");
+    },
   });
 };
 export const useEditTripMutation = () => {
@@ -53,6 +73,23 @@ export const useEditTripMutation = () => {
     },
 
     onError: () => toast.error("Failed to start trip. Please try again"),
+  });
+};
+
+// Update vehicle image
+export const useInsertVehiclePhotosMutation = () => {
+  return useMutation({
+    mutationFn: (photos: VehiclePhoto[]) => tripApi.insertVehiclePhotos(photos),
+    onError: () => toast.error("Failed to save vehicle photos"),
+  });
+};
+
+export const useUpdateLocationMutation = () => {
+  return useMutation({
+    mutationFn: (params: UpdateLocation) => tripApi.updateLocation(params),
+    onError: (err) => {
+      console.error("Failed to update location", err);
+    },
   });
 };
 

@@ -1,6 +1,13 @@
 import { supabase } from "@/integrations/supabase/supabase";
 import { z } from "zod";
-import { Trip, TripCreate, TripEdit, tripSchema } from "../schemas/trip.schema";
+import {
+  Trip,
+  TripCreate,
+  TripEdit,
+  tripSchema,
+  UpdateLocation,
+  VehiclePhoto,
+} from "../schemas/trip.schema";
 
 export const tripApi = {
   async getAll(): Promise<Trip[]> {
@@ -48,5 +55,53 @@ export const tripApi = {
 
     if (error) throw error;
     return tripSchema.parse(tripData);
+  },
+
+  async insertVehiclePhotos(photos: VehiclePhoto[]): Promise<void> {
+    const { error } = await supabase.from("vehicle_photos").insert(photos);
+
+    if (error) throw error;
+  },
+
+  async getToday(): Promise<Trip | null> {
+    const today = new Date().toISOString().split("T")[0];
+
+    const { data, error } = await supabase
+      .from("trips")
+      .select("*")
+      .eq("trip_date", today)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data ? tripSchema.parse(data) : null;
+  },
+
+  async getLatest(): Promise<Trip | null> {
+    const { data, error } = await supabase
+      .from("trips")
+      .select("*")
+      .order("trip_date", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data ? tripSchema.parse(data) : null;
+  },
+
+  async updateLocation({
+    tripId,
+    latitude,
+    longitude,
+  }: UpdateLocation): Promise<void> {
+    if (!tripId) return;
+
+    const { error } = await supabase
+      .from("trips")
+      .update({
+        current_location: `POINT(${longitude} ${latitude})`,
+      })
+      .eq("id", tripId);
+
+    if (error) throw error;
   },
 };
