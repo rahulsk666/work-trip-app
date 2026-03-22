@@ -46,3 +46,6 @@ app-example
 # IDEs
 .idea
 *.env
+
+#apk
+*.apk

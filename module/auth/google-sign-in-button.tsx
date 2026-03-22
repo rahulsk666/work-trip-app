@@ -2,13 +2,15 @@ import { supabase } from "@/integrations/supabase/supabase";
 import { useEffect } from "react";
 import { Image, TouchableOpacity } from "react-native";
 
-import { expo } from "@/app.json";
 import { Text } from "@react-navigation/elements";
+import Constants from "expo-constants";
 import * as WebBrowser from "expo-web-browser";
 
 WebBrowser.maybeCompleteAuthSession();
 
 export default function GoogleSignInButton() {
+  const scheme = Constants.expoConfig?.scheme ?? "work-trip-app";
+
   function extractParamsFromUrl(url: string) {
     const parsedUrl = new URL(url);
     const hash = parsedUrl.hash.substring(1); // Remove the leading '#'
@@ -29,7 +31,7 @@ export default function GoogleSignInButton() {
     const res = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${expo.scheme}://`,
+        redirectTo: `${scheme}://`,
         queryParams: { prompt: "consent" },
         skipBrowserRedirect: true,
       },
@@ -44,7 +46,7 @@ export default function GoogleSignInButton() {
 
     const result = await WebBrowser.openAuthSessionAsync(
       googleOAuthUrl,
-      `${expo.scheme}://`,
+      `${scheme}://`,
       { showInRecents: true },
     ).catch((err) => {
       console.error("onSignInButtonPress - openAuthSessionAsync - error", {

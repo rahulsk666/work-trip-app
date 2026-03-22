@@ -1,0 +1,76 @@
+export default {
+  expo: {
+    name: "work-trip-app",
+    slug: "work-trip-app",
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/images/icon.png",
+    scheme: "work-trip-app",
+    userInterfaceStyle: "automatic",
+    newArchEnabled: true,
+    ios: {
+      supportsTablet: true,
+      bundleIdentifier: "com.anandureghu.worktripapp",
+    },
+    android: {
+      adaptiveIcon: {
+        backgroundColor: "#E6F4FE",
+        foregroundImage: "./assets/images/android-icon-foreground.png",
+        backgroundImage: "./assets/images/android-icon-background.png",
+        monochromeImage: "./assets/images/android-icon-monochrome.png",
+      },
+      edgeToEdgeEnabled: true,
+      predictiveBackGestureEnabled: false,
+      package: "com.anandureghu.worktripapp",
+      permissions: ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
+      config: {
+        googleMaps: {
+          apiKey: process.env.EXPO_GOOGLE_MAPS_API_KEY,
+        },
+      },
+    },
+    web: {
+      output: "static",
+      favicon: "./assets/images/favicon.png",
+      bundler: "metro",
+    },
+    plugins: [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          image: "./assets/images/splash-icon.png",
+          imageWidth: 200,
+          resizeMode: "contain",
+          backgroundColor: "#ffffff",
+          dark: { backgroundColor: "#000000" },
+        },
+      ],
+      "expo-secure-store",
+      "expo-localization",
+      [
+        "expo-location",
+        {
+          locationWhenInUsePermission:
+            "Allow ${PRODUCT_NAME} to use your location to track trip start and end points.",
+        },
+      ],
+    ],
+    experiments: {
+      typedRoutes: true,
+      reactCompiler: true,
+    },
+    extra: {
+      router: {},
+      eas: {
+        projectId: "085e552a-06fa-4d40-9ba4-f95378f5f5ba",
+      },
+    },
+    updates: {
+      url: "https://u.expo.dev/7b549ece-a96e-4fdb-9cc8-0218808af265",
+    },
+    runtimeVersion: {
+      policy: "appVersion",
+    },
+  },
+};

@@ -2,6 +2,7 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { useUserQuery } from "@/module/profile/hooks";
+import TripCurrentLocation from "@/module/trip/components/TripCurrentLocation";
 import TripImageUpload from "@/module/trip/components/TripImageUpload";
 import VehicleStatusCard from "@/module/trip/components/VehicleStatusCard";
 import {
@@ -15,10 +16,9 @@ import { VehiclePhoto } from "@/module/trip/schemas/trip.schema";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import * as Location from "expo-location";
 import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import { ScrollView, Text, View } from "react-native";
 import { toast } from "sonner-native";
 
 const StartTripForm = () => {
@@ -43,10 +43,6 @@ const StartTripForm = () => {
   const backImage = useImageUpload({ bucket: "trip_dashboard" });
   const leftImage = useImageUpload({ bucket: "trip_dashboard" });
   const rightImage = useImageUpload({ bucket: "trip_dashboard" });
-
-  useEffect(() => {
-    requestLocation();
-  }, []);
 
   async function requestLocation() {
     try {
@@ -270,73 +266,11 @@ const StartTripForm = () => {
             Photo must clearly show the odometer reading
           </Text>
         </View>
-        <View>
-          <View className="flex-row justify-between">
-            <Text className="text-textSecondary text-base mt-5">
-              Starting Location
-            </Text>
-            <TouchableOpacity onPress={requestLocation}>
-              <Text className="text-primary font-bold">Refresh</Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              borderRadius: 16,
-              overflow: "hidden",
-              height: 180,
-              width: "100%",
-              marginTop: 8,
-            }}
-            className="h-52 w-full mt-2"
-          >
-            {location ? (
-              <View className="flex-1">
-                <MapView
-                  style={{ width: "100%", height: "100%" }}
-                  initialRegion={{
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
-                    latitudeDelta: 0.005,
-                    longitudeDelta: 0.005,
-                  }}
-                  showsUserLocation
-                  showsMyLocationButton
-                >
-                  <Marker
-                    coordinate={{
-                      latitude: location.coords.latitude,
-                      longitude: location.coords.longitude,
-                    }}
-                    title="Start Location"
-                  />
-                </MapView>
-                <View
-                  style={{
-                    position: "absolute",
-                    bottom: 25,
-                    left: 0,
-                    right: 0,
-                    padding: 6,
-                  }}
-                >
-                  <Text className="text-sm text-textMuted font-bold">
-                    {displayCurrentAddress}
-                  </Text>
-                  <Text className="text-xs text-textMuted font-bold">
-                    {`Lat: ${location.coords.latitude.toFixed(4)}, Lng: ${location.coords.longitude.toFixed(4)}`}
-                  </Text>
-                </View>
-              </View>
-            ) : (
-              <Image
-                source={require("@/assets/map-fallback.png")}
-                alt="map-image"
-                className="rounded-xl"
-                style={{ width: "100%", height: 150 }}
-              />
-            )}
-          </View>
-        </View>
+        <TripCurrentLocation
+          location={location}
+          displayCurrentAddress={displayCurrentAddress}
+          requestLocation={requestLocation}
+        />
         <View className="items-center mt-6">
           <Button
             text={"Start Trip"}
