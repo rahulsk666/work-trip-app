@@ -16,7 +16,7 @@ import { VehiclePhoto } from "@/module/trip/schemas/trip.schema";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import * as Location from "expo-location";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Controller } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 import { toast } from "sonner-native";
@@ -44,7 +44,7 @@ const StartTripForm = () => {
   const leftImage = useImageUpload({ bucket: "trip_dashboard" });
   const rightImage = useImageUpload({ bucket: "trip_dashboard" });
 
-  async function requestLocation() {
+  const requestLocation = useCallback(async () => {
     try {
       const enabled = await Location.hasServicesEnabledAsync();
       if (!enabled) {
@@ -63,23 +63,18 @@ const StartTripForm = () => {
       });
       setLocation(accurate);
 
-      // if (accurate) {
       const { latitude, longitude } = accurate.coords;
-
-      //provide lat and long to get the the actual address
-      let response = await Location.reverseGeocodeAsync({
+      const response = await Location.reverseGeocodeAsync({
         latitude,
         longitude,
       });
-      //loop on the responce to get the actual result
       for (let item of response) {
-        let address = `${item.name} ${item.city} ${item.postalCode}`;
-        setDisplayCurrentAddress(address);
+        setDisplayCurrentAddress(
+          `${item.name} ${item.city} ${item.postalCode}`,
+        );
       }
-      // }
     } catch (err: any) {
-      if (location) return; // silently ignore if we already have a location
-
+      if (location) return;
       if (err?.message?.includes("Current location is unavailable")) {
         toast.error("GPS unavailable. Please tap Refresh to try again.");
       } else {
@@ -88,7 +83,7 @@ const StartTripForm = () => {
         );
       }
     }
-  }
+  }, []);
 
   const onSubmit = async (data: any) => {
     try {
@@ -213,6 +208,7 @@ const StartTripForm = () => {
                 }
                 type="numeric"
                 error={fieldState.error?.message}
+                suffix="KM"
               />
             )}
           />
@@ -223,6 +219,7 @@ const StartTripForm = () => {
           </Text>
           <View className="justify-center flex-row items-center gap-2 mt-2">
             <TripImageUpload
+              name="Dashboard Image"
               pickImage={dashboardImage.pickImage}
               uploading={dashboardImage.uploading}
               preview={dashboardImage.preview}
@@ -239,11 +236,13 @@ const StartTripForm = () => {
           <View className="justify-center flex-col items-center gap-2 mt-2">
             <View className="justify-center flex-row items-center gap-2 mt-2">
               <TripImageUpload
+                name="Front Image"
                 pickImage={frontImage.pickImage}
                 uploading={frontImage.uploading}
                 preview={frontImage.preview}
               />
               <TripImageUpload
+                name="Back Image"
                 pickImage={backImage.pickImage}
                 uploading={backImage.uploading}
                 preview={backImage.preview}
@@ -251,11 +250,13 @@ const StartTripForm = () => {
             </View>
             <View className="justify-center flex-row items-center gap-2 mt-2">
               <TripImageUpload
+                name="Left Image"
                 pickImage={leftImage.pickImage}
                 uploading={leftImage.uploading}
                 preview={leftImage.preview}
               />
               <TripImageUpload
+                name="Right Image"
                 pickImage={rightImage.pickImage}
                 uploading={rightImage.uploading}
                 preview={rightImage.preview}

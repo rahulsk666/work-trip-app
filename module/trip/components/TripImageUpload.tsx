@@ -1,15 +1,17 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { APP_COLORS } from "@/lib/consts";
 import React from "react";
-import { Image, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 interface TripImageUploadProps {
+  name?: string;
   pickImage?: () => void;
   uploading?: boolean;
   preview?: string | null;
 }
 
 const TripImageUpload = ({
+  name,
   pickImage,
   uploading,
   preview,
@@ -38,12 +40,15 @@ const TripImageUpload = ({
 
       {/* 📸 Default */}
       {!uploading && !preview && (
-        <View className="items-center">
+        <View className="flex-col items-center gap-2">
           <IconSymbol
             name="camera.fill"
             size={28}
             color={APP_COLORS.textMuted}
           />
+          {name && (
+            <Text className="text-textMuted text-lg font-bold">{name}</Text>
+          )}
         </View>
       )}
     </TouchableOpacity>
