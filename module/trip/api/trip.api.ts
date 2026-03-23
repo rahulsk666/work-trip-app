@@ -10,11 +10,12 @@ import {
 } from "../schemas/trip.schema";
 
 export const tripApi = {
-  async getAll(): Promise<Trip[]> {
+  async getAll(userId: string): Promise<Trip[]> {
     const { data, error } = await supabase
       .from("trips")
       .select("*")
-      .eq("is_active", true);
+      .eq("user_id", userId)
+      .eq("trip_date", { ascending: false });
 
     if (error) {
       throw new Error(error.message);
@@ -22,10 +23,11 @@ export const tripApi = {
 
     return z.array(tripSchema).parse(data ?? []);
   },
-  async getById(id: string): Promise<Trip> {
+  async getById(id: string, userId: string): Promise<Trip> {
     const { data, error } = await supabase
       .from("trips")
       .select("*")
+      .eq("user_id", userId)
       .eq("id", id);
 
     if (error) {
@@ -63,12 +65,13 @@ export const tripApi = {
     if (error) throw error;
   },
 
-  async getToday(): Promise<Trip | null> {
+  async getToday(userId: string): Promise<Trip | null> {
     const today = new Date().toISOString().split("T")[0];
 
     const { data, error } = await supabase
       .from("trips")
       .select("*")
+      .eq("user_id", userId)
       .eq("trip_date", today)
       .maybeSingle();
 
@@ -76,10 +79,11 @@ export const tripApi = {
     return data ? tripSchema.parse(data) : null;
   },
 
-  async getLatest(): Promise<Trip | null> {
+  async getLatest(userId: string): Promise<Trip | null> {
     const { data, error } = await supabase
       .from("trips")
       .select("*")
+      .eq("user_id", userId)
       .order("trip_date", { ascending: false })
       .limit(1)
       .maybeSingle();

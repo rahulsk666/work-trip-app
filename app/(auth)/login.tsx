@@ -12,7 +12,6 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { toast } from "sonner-native";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -24,7 +23,7 @@ export default function LoginScreen() {
       email: email,
       password: "password",
     });
-    if (error) toast.error(error.message);
+    if (error) console.error(error.message);
     setLoading(false);
   }
 

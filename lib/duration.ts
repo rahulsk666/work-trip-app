@@ -1,7 +1,7 @@
 export type Duration = {
-  hours: number;
-  minutes: number;
-  seconds: number;
+  h: string;
+  m: string;
+  s: string;
   formatted: string;
   short: string;
 };
@@ -46,5 +46,11 @@ export function calculateDuration(
   if (hours > 0) short += `${hours}h `;
   short += `${minutes}m`;
 
-  return { hours, minutes, seconds, formatted: `${hh}:${mm}:${ss}`, short };
+  return {
+    h: `${hh}`,
+    m: `${mm}`,
+    s: `${ss}`,
+    formatted: `${hh}:${mm}:${ss}`,
+    short,
+  };
 }

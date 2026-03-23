@@ -82,15 +82,15 @@ const ProfileHeader = ({
       {/* Status */}
       {ShowSynced && (
         <View
-          className={`border ${synced ? "bg-success/10  border-success/30" : "bg-danger/10  border-danger/30"} rounded-full px-3 py-1 flex-row gap-2 items-center w-fit`}
+          className={`border ${synced ? "bg-success/10  border-success/30" : "bg-textMuted/10  border-textMuted/30"} rounded-full px-3 py-1 flex-row gap-2 items-center w-fit`}
         >
           <Ionicons
-            name="cloud-done"
+            name={synced ? "cloud-done" : "cloud-offline"}
             size={16}
-            color={synced ? APP_COLORS.success : APP_COLORS.danger}
+            color={synced ? APP_COLORS.success : APP_COLORS.textMuted}
           />
           <Text
-            className={`${synced ? "text-success" : "text-danger"} uppercase font-bold text-sm`}
+            className={`${synced ? "text-success" : "text-textMuted"} uppercase font-bold text-sm`}
           >
             Synced
           </Text>

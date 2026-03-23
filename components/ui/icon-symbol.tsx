@@ -35,6 +35,7 @@ const MAPPING = {
   "location.fill": "satellite",
   clock: "access-time",
   "camera.fill": "camera-alt",
+  "location.viewfinder": "gps-fixed",
 } as IconMapping;
 
 /**

@@ -58,7 +58,7 @@ const EditProfile = () => {
             {
               onSuccess: () => {
                 toast.success(t("edit_profile.profile_updated"));
-                router.navigate("/(tabs)/profile");
+                router.replace("/(tabs)/profile");
               },
             },
           );
