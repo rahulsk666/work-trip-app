@@ -1,3 +1,4 @@
+import { useUserQuery } from "@/module/profile/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
@@ -9,44 +10,55 @@ import {
   tripCreateSchema,
   TripEdit,
   tripEditSchema,
+  TripEnd,
+  tripEndSchema,
   UpdateLocation,
   VehiclePhoto,
 } from "../schemas/trip.schema";
 
 // use trip queries
-export const useTripQuery = () =>
-  useQuery({
+export const useTripQuery = () => {
+  const { data: user } = useUserQuery();
+  return useQuery({
     queryKey: tripKeys.getAll(),
-    queryFn: () => tripApi.getAll(),
+    queryFn: () => tripApi.getAll(user!.id),
+    enabled: !!user?.id,
   });
+};
 
-export const useTripByIdQuery = (id: string) =>
-  useQuery({
+export const useTripByIdQuery = (id: string) => {
+  const { data: user } = useUserQuery();
+  return useQuery({
     queryKey: tripKeys.getById(id),
-    queryFn: () => tripApi.getById(id),
-    enabled: !!id,
+    queryFn: () => tripApi.getById(id, user!.id),
+    enabled: !!id && !!user?.id,
   });
+};
 
-export const useTodayTripQuery = () =>
-  useQuery({
+export const useTodayTripQuery = () => {
+  const { data: user } = useUserQuery();
+  return useQuery({
     queryKey: tripKeys.today(),
-    queryFn: () => tripApi.getToday(),
+    queryFn: () => tripApi.getToday(user!.id),
+    enabled: !!user?.id,
   });
+};
 
-export const useLatestTripQuery = () =>
-  useQuery({
+export const useLatestTripQuery = () => {
+  const { data: user } = useUserQuery();
+  return useQuery({
     queryKey: tripKeys.latest(),
-    queryFn: () => tripApi.getLatest(),
+    queryFn: () => tripApi.getLatest(user!.id),
+    enabled: !!user?.id,
   });
+};
 
 // trip mutations
 
 export const useCreateTripMutation = () => {
   const qc = useQueryClient();
-
   return useMutation({
     mutationFn: (data: TripCreate) => tripApi.create(data),
-
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: tripKeys.all });
       // toast.success("Trip started successfully");
@@ -114,4 +126,15 @@ export const useTripEditForm = (defaultValues?: TripEdit) =>
   useForm({
     resolver: zodResolver(tripEditSchema),
     defaultValues: defaultValues as TripEdit,
+  });
+
+export const useTripEndForm = (defaultValues?: TripEnd) =>
+  useForm({
+    resolver: zodResolver(tripEndSchema),
+    defaultValues: {
+      end_km: "",
+      end_image: null,
+      end_time: null,
+      end_location: null,
+    },
   });

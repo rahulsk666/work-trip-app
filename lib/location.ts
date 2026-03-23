@@ -1,10 +1,25 @@
 import * as Location from "expo-location";
 
+let permissionGranted = false;
+
 export async function getAddressFromCoords(
   latitude: number,
   longitude: number,
 ): Promise<string | null> {
   try {
+    // ✅ Request permission ONCE
+    if (!permissionGranted) {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+
+      if (status !== "granted") {
+        console.warn("Location permission denied");
+        return null;
+      }
+
+      permissionGranted = true;
+    }
+
+    // ✅ Reverse geocode
     const response = await Location.reverseGeocodeAsync({
       latitude,
       longitude,
@@ -12,10 +27,15 @@ export async function getAddressFromCoords(
 
     if (response.length > 0) {
       const item = response[0];
-      return `${item.name} ${item.city} ${item.region} ${item.postalCode}`;
+
+      return [item.name, item.city, item.region, item.postalCode]
+        .filter(Boolean)
+        .join(", ");
     }
+
     return null;
-  } catch {
+  } catch (error) {
+    console.error("Reverse geocode failed:", error);
     return null;
   }
 }
@@ -28,6 +48,9 @@ export function parseWKBPoint(
     // Structure: 1 byte order + 4 type + 4 SRID + 8 longitude + 8 latitude
     // Skip first 10 chars (byte order + type) + 8 chars (SRID flag)
 
+    if (!wkb) {
+      return null;
+    }
     const isLittleEndian = wkb.substring(0, 2) === "01";
 
     // Skip: 1 byte order (2) + 4 type (8) + 4 SRID (8) = 18 chars

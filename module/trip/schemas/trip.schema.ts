@@ -44,9 +44,28 @@ export const tripEditSchema = z.object({
 
 export type TripEdit = z.infer<typeof tripEditSchema>;
 
+export const tripEndSchema = z.object({
+  end_image: z.string().nullable(),
+  end_time: z.string().nullable(),
+  end_km: z.coerce.number().min(1, "Odometer reading is required"),
+  end_location: z.string().nullable(),
+});
+
+export type TripEnd = z.infer<typeof tripEndSchema>;
+
 export const vehiclePhotoSchema = z.object({
   trip_id: z.string(),
-  photo_type: z.enum(["FRONT", "BACK", "LEFT", "RIGHT", "KM_METER"]),
+  photo_type: z.enum([
+    "START_FRONT",
+    "START_BACK",
+    "START_LEFT",
+    "START_RIGHT",
+    "END_FRONT",
+    "END_BACK",
+    "END_LEFT",
+    "END_RIGHT",
+    "KM_METER",
+  ]),
   photo_url: z.string(),
 });
 

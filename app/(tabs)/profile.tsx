@@ -30,7 +30,7 @@ const ProfileScreen = () => {
             borderRadius: "50%",
           }}
           activeOpacity={0.8}
-          onPress={() => router.navigate("/(profile)/edit-profile")}
+          onPress={() => router.navigate("/(profile)/editProfile")}
           className="rounded-full items-center justify-center"
         >
           <IconSymbol

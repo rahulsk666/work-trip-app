@@ -5,7 +5,7 @@ export function useDuration(
   startTime: string,
   endTime?: string | null,
   tripDate?: string | null,
-): Duration {
+): Duration | null {
   // If trip date is in the past and no end time, cap at midnight
   const effectiveEndTime = useMemo(() => {
     if (endTime) return endTime;
@@ -23,16 +23,19 @@ export function useDuration(
     return null;
   }, [endTime, tripDate]);
 
-  const [duration, setDuration] = useState<Duration>(
-    calculateDuration(startTime, effectiveEndTime, tripDate),
+  const [duration, setDuration] = useState<Duration | null>(
+    startTime ? calculateDuration(startTime, effectiveEndTime, tripDate) : null,
   );
 
   useEffect(() => {
-    setDuration(calculateDuration(startTime, effectiveEndTime, tripDate));
-
-    if (effectiveEndTime) {
+    if (!startTime) {
+      setDuration(null);
       return;
     }
+
+    setDuration(calculateDuration(startTime, effectiveEndTime, tripDate));
+
+    if (effectiveEndTime) return;
 
     const interval = setInterval(() => {
       setDuration(calculateDuration(startTime, undefined, tripDate));

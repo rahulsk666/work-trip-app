@@ -2,10 +2,12 @@ import { AuthContext } from "@/hooks/use-auth-context";
 import { supabase } from "@/integrations/supabase/supabase";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { Session } from "@supabase/supabase-js";
+import { useQueryClient } from "@tanstack/react-query";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { toast } from "sonner-native";
 
 export default function AuthProvider({ children }: PropsWithChildren) {
+  const queryClient = useQueryClient();
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<any>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -67,6 +69,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         .eq("auth_user_id", session.user.id)
         .single();
 
+      queryClient.clear();
       setProfile(profileData);
       setSession(session); // ✅ set session only here
       setIsLoading(false); // ✅ set false only after everything
@@ -79,6 +82,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         checkWhitelistAndAuthLinking(session); // handles setSession and setIsLoading
       } else {
         // logged out
+        queryClient.clear();
         setSession(null);
         setProfile(null);
         setIsLoading(false); // ✅ stop loading for logged out

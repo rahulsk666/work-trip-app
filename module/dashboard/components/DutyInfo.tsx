@@ -1,44 +1,22 @@
 import { useDuration } from "@/hooks/useDuration";
+import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
-import { getAddressFromCoords, parseWKBPoint } from "@/lib/location";
 import { withOpacity } from "@/lib/utils";
-import { useTodayTripQuery } from "@/module/trip/hooks";
+import { useLatestTripQuery } from "@/module/trip/hooks";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ImageBackground, Text, View } from "react-native";
 
 const DutyInfo = () => {
-  const { data: trip } = useTodayTripQuery();
-
-  const [address, setAddress] = useState<string | null>(null);
+  const { data: trip } = useLatestTripQuery();
+  const { address } = useTripAddress(trip?.current_location);
   const duration = useDuration(
     trip?.start_time ?? "",
     trip?.end_time,
     trip?.trip_date,
   );
-
-  useEffect(() => {
-    if (!trip?.current_location) return;
-
-    let latitude: number;
-    let longitude: number;
-
-    // Try POINT(lng lat) format first
-    const match = trip.current_location.match(/POINT\(([^ ]+) ([^ ]+)\)/);
-    if (match) {
-      longitude = parseFloat(match[1]);
-      latitude = parseFloat(match[2]);
-    } else {
-      // Try WKB binary format
-      const coords = parseWKBPoint(trip.current_location);
-      if (!coords) return;
-      ({ latitude, longitude } = coords);
-    }
-
-    getAddressFromCoords(latitude, longitude).then(setAddress);
-  }, [trip?.current_location]);
 
   if (!trip) {
     return (
@@ -110,7 +88,7 @@ const DutyInfo = () => {
             className="text-textPrimary font-bold text-5xl"
             style={{ fontSize: 48 }}
           >
-            {duration.formatted}
+            {duration?.formatted}
           </Text>
           <View className="flex-row gap-2 items-center">
             <Fontisto

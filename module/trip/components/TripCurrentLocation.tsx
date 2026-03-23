@@ -4,12 +4,14 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 interface TripCurrentLocationProps {
+  label?: string;
   location: Location.LocationObject | null;
   displayCurrentAddress: string | null;
   requestLocation: () => void;
 }
 
 const TripCurrentLocation = ({
+  label,
   location,
   requestLocation,
   displayCurrentAddress,
@@ -20,11 +22,11 @@ const TripCurrentLocation = ({
 
   return (
     <View>
-      <View className="flex-row justify-between">
+      <View className="flex-row justify-between" style={{ marginTop: 20 }}>
         <Text className="text-textSecondary text-base mt-5">
-          Starting Location
+          {label ?? "Location"}
         </Text>
-        <TouchableOpacity onPress={requestLocation}>
+        <TouchableOpacity onPress={() => requestLocation()}>
           <Text className="text-primary font-bold">Refresh</Text>
         </TouchableOpacity>
       </View>

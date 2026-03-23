@@ -1,13 +1,13 @@
 import TitleLabel from "@/components/title-label";
 import { APP_COLORS } from "@/lib/consts";
 import { calculateDuration } from "@/lib/duration";
-import { useTodayTripQuery } from "@/module/trip/hooks";
+import { useLatestTripQuery } from "@/module/trip/hooks";
 import React from "react";
 import { View } from "react-native";
 import StatCard from "./StatCard";
 
 const TodaysActivity = () => {
-  const { data: trip } = useTodayTripQuery();
+  const { data: trip } = useLatestTripQuery();
 
   const duration = trip
     ? calculateDuration(trip.start_time, trip.end_time, trip.trip_date)
