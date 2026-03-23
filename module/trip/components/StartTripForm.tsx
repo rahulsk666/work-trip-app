@@ -95,7 +95,7 @@ const StartTripForm = () => {
 
   return (
     <>
-      {isLoading && <Loading showBackground={false} label="Stoping trip..." />}
+      {isLoading && <Loading showBackground={false} label="Starting trip..." />}
       <TripFormUI
         mode="start"
         control={control}
