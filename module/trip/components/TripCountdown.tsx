@@ -1,8 +1,8 @@
-import StatusDot from "@/components/StatusDot";
+import StatusBadge from "@/components/StatusBadge";
 import { APP_COLORS } from "@/lib/consts";
 import { Duration } from "@/lib/duration";
 import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import CountdownBox from "./CountdownBox";
 
 interface TripCountDownProps {
@@ -27,28 +27,15 @@ const TripCountDown = ({
   }, [duration]);
 
   return (
-    <View className="flex-col justify-center items-center p-2 m-2 mt-3">
+    <View className="flex-col justify-center items-center p-2 m-2 mt-1">
       {showStatusBadge && (
-        <View
-          className="flex-row gap-2 rounded-xl justify-center items-center px-4 py-2"
-          style={{
-            borderWidth: 1,
-            borderColor: APP_COLORS.yellow,
-            backgroundColor: APP_COLORS.background,
-
-            // Glow / shadow effect
-            shadowColor: APP_COLORS.yellow,
-            shadowOffset: { width: 0, height: 0 },
-            shadowOpacity: 0.4,
-            shadowRadius: 6,
-            elevation: 6,
-          }}
-        >
-          <StatusDot active color={APP_COLORS.yellow} />
-          <Text className="font-semibold" style={{ color: APP_COLORS.yellow }}>
-            Ready to Start
-          </Text>
-        </View>
+        <StatusBadge
+          color={APP_COLORS.yellow}
+          textColor={APP_COLORS.yellow}
+          borderColor={APP_COLORS.yellow}
+          shadowColor={APP_COLORS.yellow}
+          label="Ready to Start"
+        />
       )}
       <View className="flex-row gap-3" style={{ marginTop: 20 }}>
         <CountdownBox label="HOURS" value={hours ?? "00"} />

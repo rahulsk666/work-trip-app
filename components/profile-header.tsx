@@ -1,11 +1,11 @@
 import { APP_COLORS } from "@/lib/consts";
 import { formatDate } from "@/lib/fomatDate";
 import { useUserQuery } from "@/module/profile/hooks";
-import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import Avatar from "./Avatar";
+import StatusBadge from "./StatusBadge";
 import { IconSymbol } from "./ui/icon-symbol";
 
 interface ProfileHeaderProps {
@@ -81,20 +81,19 @@ const ProfileHeader = ({
 
       {/* Status */}
       {ShowSynced && (
-        <View
-          className={`border ${synced ? "bg-success/10  border-success/30" : "bg-textMuted/10  border-textMuted/30"} rounded-full px-3 py-1 flex-row gap-2 items-center w-fit`}
-        >
-          <Ionicons
-            name={synced ? "cloud-done" : "cloud-offline"}
-            size={16}
-            color={synced ? APP_COLORS.success : APP_COLORS.textMuted}
-          />
-          <Text
-            className={`${synced ? "text-success" : "text-textMuted"} uppercase font-bold text-sm`}
-          >
-            Synced
-          </Text>
-        </View>
+        <StatusBadge
+          label="synced"
+          logoType="icon"
+          iconName={synced ? "cloud-done" : "cloud-offline"}
+          color={synced ? APP_COLORS.success : APP_COLORS.textMuted}
+          borderColor={synced ? APP_COLORS.success : APP_COLORS.textMuted}
+          textColor={synced ? APP_COLORS.success : APP_COLORS.textMuted}
+          classname={
+            synced
+              ? "bg-success/10  border-success/30"
+              : "bg-textMuted/10  border-textMuted/30"
+          }
+        />
       )}
     </View>
   );

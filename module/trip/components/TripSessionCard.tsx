@@ -3,6 +3,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useDuration } from "@/hooks/useDuration";
 import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
+import { decimalToDMS } from "@/lib/location";
 import { router } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -52,7 +53,7 @@ const TripSessionCard = () => {
           Started at 08:45 AM
         </Text>
       </View>
-      <View style={{ height: "40%" }}>
+      <View style={{ height: 120 }}>
         <Image
           source={require("@/assets/map-fallback.png")}
           style={{
@@ -81,7 +82,7 @@ const TripSessionCard = () => {
           className="flex-row justify-center items-center"
           style={{
             position: "absolute",
-            top: 70,
+            top: 42,
             left: 30,
             gap: 10,
           }}
@@ -105,8 +106,8 @@ const TripSessionCard = () => {
               Current Location
             </Text>
             <Text className="text-textPrimary">
-              {coords
-                ? `${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`
+              {coords && coords.latitude && coords.longitude
+                ? `${decimalToDMS(coords.latitude.toFixed(5), "lat")}, ${decimalToDMS(coords.longitude.toFixed(5), "lng")}`
                 : "Fetching coordinates..."}
             </Text>
           </View>
@@ -116,14 +117,23 @@ const TripSessionCard = () => {
         className="p-2 justify-center items-center rounded-xl bg-danger/60"
         style={{
           borderWidth: 1,
-          borderColor: APP_COLORS.danger,
+          borderColor: trip?.end_time
+            ? APP_COLORS.textMuted
+            : APP_COLORS.danger,
           marginTop: 20,
+          backgroundColor: trip?.end_time
+            ? APP_COLORS.darkCharcoal
+            : APP_COLORS.dangerShadow,
         }}
         activeOpacity={0.9}
         disabled={!!trip?.end_time}
         onPress={() => router.replace("/(trip)/stop")}
       >
-        <Text className="text-xl font-bold text-danger">Stop Session</Text>
+        <Text
+          className={`text-xl font-bold ${trip?.end_time ? "text-textMuted" : "text-danger"}`}
+        >
+          Stop Session
+        </Text>
       </TouchableOpacity>
     </View>
   );
