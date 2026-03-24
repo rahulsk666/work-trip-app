@@ -21,7 +21,9 @@ const DashboardActions = () => {
               size={24}
               color={APP_COLORS.textPrimary}
             />
-            <Text className="text-white font-semibold mt-2">Trip Details</Text>
+            <Text className="text-textPrimary text-xl font-semibold mt-2">
+              Trip Details
+            </Text>
           </TouchableOpacity>
           {!trip?.end_time && (
             <TouchableOpacity
@@ -35,7 +37,9 @@ const DashboardActions = () => {
                 size={28}
                 color={APP_COLORS.danger}
               />
-              <Text className="text-white font-semibold mt-2">Stop Work</Text>
+              <Text className="text-textPrimary text-xl font-semibold mt-2">
+                Stop Work
+              </Text>
             </TouchableOpacity>
           )}
         </View>
@@ -47,11 +51,13 @@ const DashboardActions = () => {
           >
             <Ionicons
               className="p-2"
-              name="send"
+              name="play"
               size={24}
               color={APP_COLORS.textPrimary}
             />
-            <Text className="text-white font-semibold mt-2">Start Trip</Text>
+            <Text className="text-textPrimary text-xl font-semibold mt-2">
+              Start Trip
+            </Text>
           </TouchableOpacity>
         </>
       )}

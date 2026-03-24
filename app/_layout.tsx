@@ -13,12 +13,12 @@ import { Toaster } from "sonner-native";
 
 import "./global.css";
 
+import Loading from "@/components/Loading";
 import { SplashScreenController } from "@/components/splash-screen-controller";
 import { useAuthContext } from "@/hooks/use-auth-context";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import AuthProvider from "@/providers/auth-provider";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import Loading from "@/components/Loading";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const unstable_settings = {
@@ -47,6 +47,8 @@ function RootNavigator() {
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="(trip)" options={{ headerShown: false }} />
+          <Stack.Screen name="(work)" options={{ headerShown: false }} />
+          <Stack.Screen name="(receipt)" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={!isLoggedIn}>
           <Stack.Screen name="(auth)" options={{ headerShown: false }} />

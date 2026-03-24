@@ -11,13 +11,14 @@ import { IconSymbol } from "./ui/icon-symbol";
 interface ProfileHeaderProps {
   pageName?: string;
   showOnline?: boolean;
-  logoName?: string;
+  // logoName?: string;
   OnlineStatus?: boolean;
   showDate?: boolean;
   ShowSettings?: boolean;
   ShowSynced?: boolean;
   synced?: boolean;
   ParentDivClassName?: string;
+  showAvatar?: boolean;
 }
 
 const ProfileHeader = ({
@@ -29,6 +30,7 @@ const ProfileHeader = ({
   ShowSynced = false,
   synced = false,
   ParentDivClassName,
+  showAvatar = true,
 }: ProfileHeaderProps) => {
   const { data: user } = useUserQuery();
   return (
@@ -37,7 +39,7 @@ const ProfileHeader = ({
     >
       {/* Profile */}
       <View className="flex-row items-center gap-3 flex-1 p-2">
-        <Avatar uri={user?.avatar_url} />
+        {showAvatar && <Avatar uri={user?.avatar_url} />}
         <View className="flex-1">
           <Text className="text-textPrimary font-bold text-xl">
             {pageName || user?.name}
@@ -60,7 +62,7 @@ const ProfileHeader = ({
               </>
             )}
             {showDate && (
-              <Text className="text-textSecondary text-sm font-bold">
+              <Text className="text-textSecondary text-xs font-semibold">
                 {formatDate(new Date())}
               </Text>
             )}
@@ -73,7 +75,7 @@ const ProfileHeader = ({
         <TouchableOpacity
           className="bg-cardElevated p-2 rounded-full items-center justify-center"
           activeOpacity={0}
-          onPress={() => router.navigate("/(tabs)/profile")}
+          onPress={() => router.navigate("/(tabs)/settings")}
         >
           <IconSymbol name="gearshape" color={"white"} />
         </TouchableOpacity>
@@ -82,7 +84,7 @@ const ProfileHeader = ({
       {/* Status */}
       {ShowSynced && (
         <StatusBadge
-          label="synced"
+          label={synced ? "synced" : "offline"}
           logoType="icon"
           iconName={synced ? "cloud-done" : "cloud-offline"}
           color={synced ? APP_COLORS.success : APP_COLORS.textMuted}
