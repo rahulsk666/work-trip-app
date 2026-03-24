@@ -8,10 +8,10 @@ import { decimalToDMS } from "@/lib/location";
 import { router } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { useLatestTripQuery } from "../hooks";
-import TripCountDown from "./TripCountdown";
+import TripCountDown from "../../trip/components/TripCountdown";
+import { useLatestTripQuery } from "../../trip/hooks";
 
-const TripSessionCard = () => {
+const WorkSessionCard = () => {
   const { data: trip } = useLatestTripQuery();
   const duration = useDuration(
     trip?.start_time ?? "",
@@ -161,4 +161,4 @@ const TripSessionCard = () => {
   );
 };
 
-export default TripSessionCard;
+export default WorkSessionCard;

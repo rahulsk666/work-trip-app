@@ -1,9 +1,9 @@
 import { Stack } from "expo-router";
 
-export default function ProfileLayout() {
+export default function WorkLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="track" />
+      <Stack.Screen name="work" />
     </Stack>
   );
 }

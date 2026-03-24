@@ -7,7 +7,14 @@ export default function ReceiptLayout() {
       screenOptions={{
         headerShown: true,
         headerTitle: "Receipt",
-        headerStyle: { backgroundColor: APP_COLORS.cardElevated },
+        headerTitleAlign: "center",
+        headerStyle: {
+          backgroundColor: APP_COLORS.cardElevated,
+        },
+        headerTintColor: APP_COLORS.textPrimary,
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
       }}
     >
       <Stack.Screen name="receipt" />

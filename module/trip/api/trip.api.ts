@@ -36,6 +36,34 @@ export const tripApi = {
 
     return tripSchema.parse(data);
   },
+  async getToday(userId: string): Promise<Trip | null> {
+    const today = new Date().toISOString().split("T")[0];
+
+    const { data, error } = await supabase
+      .from("trips")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("trip_date", today)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data ? tripSchema.parse(data) : null;
+  },
+  async getLatest(userId: string): Promise<Trip | null> {
+    const today = new Date().toISOString().split("T")[0];
+
+    const { data, error } = await supabase
+      .from("trips")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("trip_date", today)
+      .order("trip_date", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data ? tripSchema.parse(data) : null;
+  },
   async create(data: TripCreate): Promise<Trip> {
     const { data: tripData, error } = await supabase
       .from("trips")
@@ -58,43 +86,11 @@ export const tripApi = {
     if (error) throw error;
     return tripSchema.parse(tripData);
   },
-
   async insertVehiclePhotos(photos: VehiclePhoto[]): Promise<void> {
     const { error } = await supabase.from("vehicle_photos").insert(photos);
 
     if (error) throw error;
   },
-
-  async getToday(userId: string): Promise<Trip | null> {
-    const today = new Date().toISOString().split("T")[0];
-
-    const { data, error } = await supabase
-      .from("trips")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("trip_date", today)
-      .maybeSingle();
-
-    if (error) throw error;
-    return data ? tripSchema.parse(data) : null;
-  },
-
-  async getLatest(userId: string): Promise<Trip | null> {
-    const today = new Date().toISOString().split("T")[0];
-
-    const { data, error } = await supabase
-      .from("trips")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("trip_date", today)
-      .order("trip_date", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-
-    if (error) throw error;
-    return data ? tripSchema.parse(data) : null;
-  },
-
   async updateLocation({
     tripId,
     latitude,

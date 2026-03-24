@@ -13,7 +13,7 @@ const DashboardActions = () => {
         <View className="flex-1 flex-row gap-3">
           <TouchableOpacity
             className="bg-primary flex-1 p-5 m-1 items-center justify-center rounded-2xl"
-            onPress={() => router.navigate("/(track)/track")}
+            onPress={() => router.navigate("/(work)/work")}
           >
             <Ionicons
               className="p-2"
