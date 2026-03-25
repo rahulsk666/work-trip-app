@@ -1,5 +1,6 @@
 import { APP_COLORS } from "@/lib/consts";
 import { useLatestTripQuery } from "@/module/trip/hooks";
+import { useLatestWorkQuery } from "@/module/work/hooks";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -7,25 +8,45 @@ import { Text, TouchableOpacity, View } from "react-native";
 const DashboardActions = () => {
   const { data: trip } = useLatestTripQuery();
 
+  const { data: work } = useLatestWorkQuery(trip ? trip?.id : "");
+
   return (
     <View className="flex-row gap-3" style={{ marginVertical: 20 }}>
       {trip ? (
         <View className="flex-1 flex-row gap-3">
-          <TouchableOpacity
-            className="bg-primary flex-1 p-5 m-1 items-center justify-center rounded-2xl"
-            onPress={() => router.navigate("/(work)/work")}
-          >
-            <Ionicons
-              className="p-2"
-              name="paper-plane"
-              size={24}
-              color={APP_COLORS.textPrimary}
-            />
-            <Text className="text-textPrimary text-xl font-semibold mt-2">
-              Trip Details
-            </Text>
-          </TouchableOpacity>
-          {!trip?.end_time && (
+          {work ? (
+            <TouchableOpacity
+              className="flex-1 p-5 m-1 items-center justify-center rounded-2xl border border-borderSubtle bg-cardElevated"
+              onPress={() => console.log("stop work")}
+              disabled={!!work.end_time}
+            >
+              <Ionicons
+                className="p-2"
+                name="stop-circle"
+                size={28}
+                color={APP_COLORS.danger}
+              />
+              <Text className="text-textPrimary text-xl font-semibold mt-2">
+                Stop Work
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              className="bg-primary flex-1 p-5 m-1 items-center justify-center rounded-2xl"
+              onPress={() => console.log("start work")}
+            >
+              <Ionicons
+                className="p-2"
+                name="paper-plane"
+                size={24}
+                color={APP_COLORS.textPrimary}
+              />
+              <Text className="text-textPrimary text-xl font-semibold mt-2">
+                Start Work
+              </Text>
+            </TouchableOpacity>
+          )}
+          {!trip?.end_time && !work?.end_time && (
             <TouchableOpacity
               className="flex-1 p-5 m-1 items-center justify-center rounded-2xl border border-borderSubtle bg-cardElevated"
               onPress={() => router.navigate("/(trip)/stop")}
@@ -38,7 +59,7 @@ const DashboardActions = () => {
                 color={APP_COLORS.danger}
               />
               <Text className="text-textPrimary text-xl font-semibold mt-2">
-                Stop Work
+                Stop Trip
               </Text>
             </TouchableOpacity>
           )}

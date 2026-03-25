@@ -9,19 +9,33 @@ import {
   VehiclePhoto,
 } from "../schemas/trip.schema";
 
+export const TRIP_PAGE_SIZE = 10;
+
 export const tripApi = {
-  async getAll(userId: string): Promise<Trip[]> {
+  async getAll(
+    userId: string,
+    pageParam = 0,
+  ): Promise<{
+    data: Trip[];
+    nextPage: number | undefined;
+  }> {
+    const from = pageParam * TRIP_PAGE_SIZE;
+    const to = from + TRIP_PAGE_SIZE - 1;
+
     const { data, error } = await supabase
       .from("trips")
       .select("*")
       .eq("user_id", userId)
-      .eq("trip_date", { ascending: false });
+      .order("trip_date", { ascending: false })
+      .range(from, to);
 
-    if (error) {
-      throw new Error(error.message);
-    }
+    if (error) throw new Error(error.message);
 
-    return z.array(tripSchema).parse(data ?? []);
+    return {
+      data: z.array(tripSchema).parse(data ?? []),
+      nextPage:
+        data && data.length === TRIP_PAGE_SIZE ? pageParam + 1 : undefined,
+    };
   },
   async getById(id: string, userId: string): Promise<Trip> {
     const { data, error } = await supabase

@@ -1,21 +1,21 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { APP_COLORS } from "@/lib/consts";
 import { calculateDuration } from "@/lib/duration";
+import { formatDate } from "@/lib/fomatDate";
 import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
-import { Work } from "../schemas/work.schema";
+import { Trip } from "../schemas/trip.schema";
 
 interface WorkSessionCardProps {
-  work: Work;
+  trip: Trip;
 }
 
-const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
-  const duration =
-    work.start_time && work.end_time
-      ? calculateDuration(work.start_time, work.end_time)
-      : null;
+const TripCard = ({ trip }: WorkSessionCardProps) => {
+  const duration = trip?.start_time
+    ? calculateDuration(trip.start_time, trip.end_time, trip?.trip_date)
+    : null;
 
   return (
     <View className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center">
@@ -36,16 +36,15 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
             />
           </View>
           <Text className="text-lg font-bold text-textPrimary">
-            Work Activity
+            {formatDate(trip.trip_date, { showYear: true })}
           </Text>
         </View>
         <View
           className="flex-row justify-center items-center gap-1 m-1"
           style={{
-            backgroundColor:
-              work.status === "ENDED"
-                ? APP_COLORS.successShadow
-                : APP_COLORS.primaryShadow,
+            backgroundColor: trip.end_time
+              ? APP_COLORS.successShadow
+              : APP_COLORS.primaryShadow,
             paddingHorizontal: 3,
             borderRadius: 4,
             marginTop: 8,
@@ -56,7 +55,7 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
             name="checkmark-circle"
             size={12}
             color={
-              work.status === "ENDED"
+              trip.status === "ENDED"
                 ? APP_COLORS.successDark
                 : APP_COLORS.primary
             }
@@ -65,12 +64,12 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
             className="text-sm font-semibold"
             style={{
               color:
-                work.status === "ENDED"
+                trip.status === "ENDED"
                   ? APP_COLORS.successDark
                   : APP_COLORS.primaryDark,
             }}
           >
-            {work.status === "ENDED" ? "Completed" : "In Progress"}
+            {trip.status === "ENDED" ? "Completed" : "In Progress"}
           </Text>
         </View>
       </View>
@@ -78,10 +77,10 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
         <View className="flex-col gap-2 justify-start">
           <Text className="text-textSecondary font-bold">TIME</Text>
           <Text className="text-textSecondary font-bold">
-            {work.start_time ?? formatTime(work?.start_time)}
-            {work.start_time && work.end_time
-              ? ` - ${formatTime(work.end_time)}`
-              : ""}
+            {trip?.start_time ? formatTime(trip.start_time) : "00:00 AM"}
+            {trip?.end_time && trip.status === "ENDED"
+              ? ` - ${formatTime(trip.end_time)}:`
+              : " - 00:00 AM"}
           </Text>
         </View>
         <View className="flex-col gap-2 justify-start">
@@ -95,4 +94,4 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
   );
 };
 
-export default WorkSessionCard;
+export default TripCard;

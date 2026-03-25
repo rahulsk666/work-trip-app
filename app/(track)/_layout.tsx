@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 export default function WorkLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="work" />
+      <Stack.Screen name="track" />
     </Stack>
   );
 }

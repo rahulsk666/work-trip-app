@@ -2,31 +2,36 @@ import { supabase } from "@/integrations/supabase/supabase";
 import { z } from "zod";
 import { Work, WorkCreate, WorkEnd, workSchema } from "../schemas/work.schema";
 
-function getToday() {
-  const today = new Date().toISOString().split("T")[0];
-  const startOfDay = `${today}T00:00:00`;
-  const endOfDay = `${today}T23:59:59`;
-
-  return { startOfDay, endOfDay };
-}
+export const WORK_PAGE_SIZE = 10;
 
 export const workApi = {
-  async getAll(userId: string, tripId: string): Promise<Work[]> {
-    const { startOfDay, endOfDay } = getToday();
+  async getAll(
+    userId: string,
+    tripId: string,
+    pageParam = 0,
+    pageSize = WORK_PAGE_SIZE,
+  ): Promise<{
+    data: Work[];
+    nextPage: number | undefined;
+  }> {
+    const from = pageParam * pageSize;
+    const to = from + pageSize - 1;
+
     const { data, error } = await supabase
-      .from("work_sessions")
+      .from("work_Sessions")
       .select("*")
       .eq("user_id", userId)
       .eq("trip_id", tripId)
-      .gte("created_at", startOfDay)
-      .lte("created_at", endOfDay)
-      .order("created_at", { ascending: false });
+      .order("created_date", { ascending: false })
+      .range(from, to);
 
-    if (error) {
-      throw new Error(error.message);
-    }
+    if (error) throw new Error(error.message);
 
-    return z.array(workSchema).parse(data ?? []);
+    return {
+      data: z.array(workSchema).parse(data ?? []),
+      nextPage:
+        data && data.length === WORK_PAGE_SIZE ? pageParam + 1 : undefined,
+    };
   },
   async getById(id: string, userId: string): Promise<Work> {
     const { data, error } = await supabase

@@ -6,8 +6,9 @@ import { useLatestTripQuery } from "@/module/trip/hooks";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React from "react";
-import { ImageBackground, Text, View } from "react-native";
+import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
 
 const DutyInfo = () => {
   const { data: trip } = useLatestTripQuery();
@@ -84,12 +85,14 @@ const DutyInfo = () => {
         {/* Details */}
         <View className="p-5 flex gap-2">
           <Text className="text-textSecondary">Session Duration</Text>
-          <Text
-            className="text-textPrimary font-bold text-5xl"
-            style={{ fontSize: 48 }}
-          >
-            {duration?.formatted}
-          </Text>
+          <TouchableOpacity onPress={() => router.navigate("/(track)/track")}>
+            <Text
+              className="text-textPrimary font-bold text-5xl"
+              style={{ fontSize: 48 }}
+            >
+              {duration?.formatted}
+            </Text>
+          </TouchableOpacity>
           <View className="flex-row gap-2 items-center">
             <Fontisto
               name="map-marker-alt"

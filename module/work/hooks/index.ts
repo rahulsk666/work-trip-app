@@ -1,6 +1,11 @@
 import { useUserQuery } from "@/module/profile/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner-native";
 import { workApi } from "../api/work.api";
@@ -13,12 +18,18 @@ import {
 } from "../schemas/work.schema";
 
 // use trip queries
-export const useWorkQuery = (tripId: string) => {
+export const useWorkPaginatedQuery = (
+  tripId: string | null,
+  pageSize?: number,
+) => {
   const { data: user } = useUserQuery();
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: workKeys.getAll(),
-    queryFn: () => workApi.getAll(user!.id, tripId),
-    enabled: !!user?.id,
+    queryFn: ({ pageParam }) =>
+      workApi.getAll(user!.id, tripId as string, pageParam as number, pageSize),
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+    initialPageParam: 0,
+    enabled: !!user?.id && !!tripId,
   });
 };
 
@@ -36,7 +47,7 @@ export const useLatestWorkQuery = (tripId: string) => {
   return useQuery({
     queryKey: workKeys.latest(),
     queryFn: () => workApi.getLatest(user!.id, tripId),
-    enabled: !!user?.id,
+    enabled: !!user?.id && !!tripId,
   });
 };
 
@@ -87,15 +98,17 @@ export const useWorkCreateForm = () =>
       start_time: "",
       location: "",
       notes: "",
+      status: "STARTED",
     },
   });
 
-export const useWorkEndForm = (defaultValues?: WorkEnd) =>
+export const useWorkEndForm = () =>
   useForm({
     resolver: zodResolver(workEndSchema),
     defaultValues: {
       end_time: "",
       location: "",
       notes: "",
+      status: "ENDED",
     },
   });

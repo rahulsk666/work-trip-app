@@ -13,6 +13,7 @@ export const tripSchema = z.object({
   end_image: z.string().nullable().optional(),
   start_location: z.string(),
   end_location: z.string().nullable().optional(),
+  status: z.enum(["STARTED", "ENDED"]),
   current_location: z.string().nullable().optional(),
   created_at: z.string().optional(), // timestamptz
   updated_at: z.string().nullable().optional(),
@@ -25,6 +26,7 @@ export const tripCreateSchema = z.object({
   vehicle_id: z.string().nonempty("Vehicle not assigned"),
   trip_date: z.string(),
   start_time: z.string(),
+  status: z.enum(["STARTED", "ENDED"]).optional(),
   start_km: z.coerce.number().min(1, "Odometer reading is required"),
   start_location: z.string(),
   image_folder: z.string().optional(),
@@ -36,6 +38,7 @@ export const tripEditSchema = z.object({
   start_image: z.string().nullable().optional(),
   end_image: z.string().nullable().optional(),
   end_time: z.string().nullable().optional(),
+  status: z.enum(["STARTED", "ENDED"]).optional(),
   end_km: z.coerce.number().nullable().optional(),
   end_location: z.string().nullable().optional(),
   current_location: z.string().nullable().optional(),
@@ -47,6 +50,7 @@ export type TripEdit = z.infer<typeof tripEditSchema>;
 export const tripEndSchema = z.object({
   end_image: z.string().nullable(),
   end_time: z.string().nullable(),
+  status: z.enum(["STARTED", "ENDED"]).optional(),
   end_km: z.coerce.number().min(1, "Odometer reading is required"),
   end_location: z.string().nullable(),
 });

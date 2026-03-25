@@ -46,8 +46,9 @@ function RootNavigator() {
       >
         <Stack.Protected guard={isLoggedIn}>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="(profile)" options={{ headerShown: false }} />
           <Stack.Screen name="(trip)" options={{ headerShown: false }} />
-          <Stack.Screen name="(work)" options={{ headerShown: false }} />
+          <Stack.Screen name="(track)" options={{ headerShown: false }} />
           <Stack.Screen name="(receipt)" options={{ headerShown: false }} />
         </Stack.Protected>
         <Stack.Protected guard={!isLoggedIn}>
