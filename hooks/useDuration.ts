@@ -4,14 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 export function useDuration(
   startTime: string,
   endTime?: string | null,
-  tripDate?: string | null,
+  date?: string | null,
 ): Duration | null {
   // If trip date is in the past and no end time, cap at midnight
   const effectiveEndTime = useMemo(() => {
     if (endTime) return endTime;
 
-    if (tripDate) {
-      const midnight = new Date(tripDate);
+    if (date) {
+      const midnight = new Date(date);
       midnight.setDate(midnight.getDate() + 1);
       midnight.setHours(0, 0, 0, 0);
 
@@ -21,10 +21,10 @@ export function useDuration(
     }
 
     return null;
-  }, [endTime, tripDate]);
+  }, [endTime, date]);
 
   const [duration, setDuration] = useState<Duration | null>(
-    startTime ? calculateDuration(startTime, effectiveEndTime, tripDate) : null,
+    startTime ? calculateDuration(startTime, effectiveEndTime, date) : null,
   );
 
   useEffect(() => {
@@ -33,16 +33,16 @@ export function useDuration(
       return;
     }
 
-    setDuration(calculateDuration(startTime, effectiveEndTime, tripDate));
+    setDuration(calculateDuration(startTime, effectiveEndTime, date));
 
     if (effectiveEndTime) return;
 
     const interval = setInterval(() => {
-      setDuration(calculateDuration(startTime, undefined, tripDate));
+      setDuration(calculateDuration(startTime, undefined, date));
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startTime, effectiveEndTime, tripDate]);
+  }, [startTime, effectiveEndTime, date]);
 
   return duration;
 }

@@ -11,6 +11,8 @@
   "success": "#22C55E",
   "successDark": "#16A34A",
   "successShadow": "#22C55E1f",
+  "successButton": "#355F48",
+  "successText": "#9BE47A",
   "warning": "#F59E0B",
   "danger": "#EF4444",
   "dangerDark": "#E04F5F",

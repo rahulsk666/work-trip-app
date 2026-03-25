@@ -5,7 +5,40 @@ import { Work, WorkCreate, WorkEnd, workSchema } from "../schemas/work.schema";
 export const WORK_PAGE_SIZE = 10;
 
 export const workApi = {
-  async getAll(
+  async getAll(userId: string, tripId: string): Promise<Work[]> {
+    const { data, error } = await supabase
+      .from("work_sessions")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("trip_id", tripId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return z.array(workSchema).parse(data ?? []);
+  },
+  async getByLimit(
+    userId: string,
+    tripId: string,
+    limit: number,
+  ): Promise<Work[]> {
+    const { data, error } = await supabase
+      .from("work_sessions")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("trip_id", tripId)
+      .limit(limit)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return z.array(workSchema).parse(data ?? []);
+  },
+  async getByPagination(
     userId: string,
     tripId: string,
     pageParam = 0,
@@ -46,7 +79,7 @@ export const workApi = {
 
     return workSchema.parse(data);
   },
-  async getLatest(userId: string, tripId: string): Promise<Work | null> {
+  async getLatestWork(userId: string, tripId: string): Promise<Work | null> {
     const { data, error } = await supabase
       .from("work_sessions")
       .select("*")
@@ -60,18 +93,17 @@ export const workApi = {
     return data ? workSchema.parse(data) : null;
   },
   async create(data: WorkCreate): Promise<Work> {
-    const { data: tripData, error } = await supabase
+    const { data: workData, error } = await supabase
       .from("work_sessions")
       .insert(data)
       .select()
       .single();
 
     if (error) throw error;
-
-    return workSchema.parse(tripData);
+    return workSchema.parse(workData);
   },
   async edit(id: string, data: WorkEnd): Promise<Work> {
-    const { data: tripData, error } = await supabase
+    const { data: workData, error } = await supabase
       .from("work_sessions")
       .update(data)
       .eq("id", id)
@@ -79,6 +111,6 @@ export const workApi = {
       .single();
 
     if (error) throw error;
-    return workSchema.parse(tripData);
+    return workSchema.parse(workData);
   },
 };

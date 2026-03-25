@@ -10,6 +10,7 @@ export function calculateDuration(
   startTime: string,
   endTime?: string | null,
   tripDate?: string | null,
+  tillNow?: boolean,
 ): Duration {
   const start = new Date(startTime);
 

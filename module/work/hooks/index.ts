@@ -1,5 +1,6 @@
 import { useUserQuery } from "@/module/profile/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { PostgrestError } from "@supabase/supabase-js";
 import {
   useInfiniteQuery,
   useMutation,
@@ -19,17 +20,37 @@ import {
 
 // use trip queries
 export const useWorkPaginatedQuery = (
-  tripId: string | null,
+  tripId: string | undefined,
   pageSize?: number,
 ) => {
   const { data: user } = useUserQuery();
   return useInfiniteQuery({
-    queryKey: workKeys.getAll(),
+    queryKey: workKeys.getByPagination(),
     queryFn: ({ pageParam }) =>
-      workApi.getAll(user!.id, tripId as string, pageParam as number, pageSize),
+      workApi.getByPagination(
+        user!.id,
+        tripId as string,
+        pageParam as number,
+        pageSize,
+      ),
     getNextPageParam: (lastPage) => lastPage.nextPage,
     initialPageParam: 0,
     enabled: !!user?.id && !!tripId,
+  });
+};
+
+export const useWorkByLimitQuery = ({
+  tripId,
+  limit = 2,
+}: {
+  tripId: string;
+  limit: number;
+}) => {
+  const { data: user } = useUserQuery();
+  return useQuery({
+    queryKey: workKeys.getByLimit(),
+    queryFn: () => workApi.getByLimit(user!.id, tripId as string, limit),
+    enabled: !!tripId && !!user?.id,
   });
 };
 
@@ -42,11 +63,12 @@ export const useWorkByIdQuery = (id: string) => {
   });
 };
 
-export const useLatestWorkQuery = (tripId: string) => {
+export const useLatestWorkQuery = (tripId: string | undefined) => {
   const { data: user } = useUserQuery();
+
   return useQuery({
     queryKey: workKeys.latest(),
-    queryFn: () => workApi.getLatest(user!.id, tripId),
+    queryFn: () => workApi.getLatestWork(user!.id, tripId as string),
     enabled: !!user?.id && !!tripId,
   });
 };
@@ -59,14 +81,15 @@ export const useCreateWorkMutation = () => {
     mutationFn: (data: WorkCreate) => workApi.create(data),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: workKeys.all });
+      await qc.invalidateQueries({ queryKey: workKeys.latest() });
     },
 
-    onError: (err) => {
-      //   if (err?.code === "23505") {
-      //     toast.error("A Work has already been started for today");
-      //     return;
-      //   }
-      toast.error("Failed to start trip. Please try again");
+    onError: (err: PostgrestError | Error) => {
+      if ("code" in err && err?.code === "23505") {
+        toast.error("A Work has already been started for today");
+        return;
+      }
+      toast.error("Failed to start work. Please try again");
     },
   });
 };
@@ -84,7 +107,7 @@ export const useEndWorkMutation = () => {
       await qc.refetchQueries({ queryKey: workKeys.latest() });
     },
 
-    onError: () => toast.error("Failed to start trip. Please try again"),
+    onError: () => toast.error("Failed to start work. Please try again"),
   });
 };
 
@@ -107,7 +130,6 @@ export const useWorkEndForm = () =>
     resolver: zodResolver(workEndSchema),
     defaultValues: {
       end_time: "",
-      location: "",
       notes: "",
       status: "ENDED",
     },

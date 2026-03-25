@@ -4,6 +4,7 @@ import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
 import { withOpacity } from "@/lib/utils";
 import { useLatestTripQuery } from "@/module/trip/hooks";
+import { useLatestWorkQuery } from "@/module/work/hooks";
 import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -15,6 +16,7 @@ import SwipeButton from "rn-swipe-button";
 const DutyInfo = () => {
   const [visible, setvisible] = useState<boolean>(false);
   const { data: trip } = useLatestTripQuery();
+  const { data: work } = useLatestWorkQuery(trip?.id);
   const { address } = useTripAddress(trip?.current_location);
   const duration = useDuration(
     trip?.start_time ?? "",
@@ -109,35 +111,42 @@ const DutyInfo = () => {
             </View>
           </View>
           {trip.status === "STARTED" && (
-            <SwipeButton
-              disableResetOnTap
-              railBackgroundColor={APP_COLORS.dangerShadow}
-              railFillBorderColor={APP_COLORS.dangerDark}
-              railBorderColor={APP_COLORS.dangerDark}
-              onSwipeSuccess={() => {
-                setvisible(true);
-              }}
-              shouldResetAfterSuccess
-              swipeSuccessThreshold={80}
-              railFillBackgroundColor={APP_COLORS.dangerDark}
-              thumbIconBackgroundColor={APP_COLORS.dangerDark}
-              thumbIconBorderColor={APP_COLORS.dangerDark}
-              thumbIconComponent={() => (
-                <Ionicons name="square" color={APP_COLORS.white} size={20} />
-              )}
-              thumbIconStyles={{
-                shadowColor: APP_COLORS.dangerShadow,
-                shadowOffset: { width: 70, height: 70 },
-                shadowRadius: 70,
-                shadowOpacity: 0.8,
-                elevation: 10,
-                padding: 0,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-              titleColor={APP_COLORS.dangerDark}
-              title="Stop Session"
-            />
+            <View className="p-2">
+              <SwipeButton
+                disableResetOnTap
+                railBackgroundColor={APP_COLORS.dangerShadow}
+                railFillBorderColor={APP_COLORS.dangerDark}
+                railBorderColor={APP_COLORS.dangerDark}
+                onSwipeSuccess={() => {
+                  setvisible(true);
+                }}
+                disabled={work?.status === "STARTED"}
+                disabledRailBackgroundColor={APP_COLORS.dangerShadow}
+                disabledThumbIconBackgroundColor={APP_COLORS.textMuted}
+                disabledThumbIconBorderColor={APP_COLORS.dangerShadow}
+                shouldResetAfterSuccess
+                swipeSuccessThreshold={80}
+                railFillBackgroundColor={APP_COLORS.dangerDark}
+                thumbIconBackgroundColor={APP_COLORS.dangerDark}
+                thumbIconBorderColor={APP_COLORS.dangerDark}
+                thumbIconComponent={() => (
+                  <Ionicons name="square" color={APP_COLORS.white} size={20} />
+                )}
+                thumbIconStyles={{
+                  shadowColor: APP_COLORS.dangerShadow,
+                  shadowOffset: { width: 70, height: 70 },
+                  shadowRadius: 70,
+                  shadowOpacity: 0.8,
+                  elevation: 10,
+                  padding: 0,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                titleColor={APP_COLORS.dangerDark}
+                title="Stop Session"
+                titleStyles={{ fontWeight: 900 }}
+              />
+            </View>
           )}
         </LinearGradient>
       </ImageBackground>

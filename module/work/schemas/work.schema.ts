@@ -19,6 +19,7 @@ export type Work = z.infer<typeof workSchema>;
 
 export const workCreateSchema = z.object({
   trip_id: z.uuid(),
+  user_id: z.uuid(),
   start_time: z.string(),
   location: z.string(),
   status: z.enum(["STARTED", "ENDED"]),
@@ -29,8 +30,7 @@ export type WorkCreate = z.infer<typeof workCreateSchema>;
 
 export const workEndSchema = z.object({
   end_time: z.string(),
-  location: z.string().optional(),
-  status: z.enum(["STARTED", "ENDED"]).optional(),
+  status: z.enum(["STARTED", "ENDED"]),
   notes: z.string().optional(),
 });
 

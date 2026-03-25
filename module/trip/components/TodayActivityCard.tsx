@@ -1,22 +1,13 @@
 import WorkSessionCard from "@/module/work/components/WorkSessionCard";
-import { useWorkPaginatedQuery } from "@/module/work/hooks";
+import { useWorkByLimitQuery } from "@/module/work/hooks";
 import React from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
-const TodayActivityCard = ({ tripId }: { tripId: string | null }) => {
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    refetch,
-  } = useWorkPaginatedQuery(tripId, 2);
+const TodayActivityCard = ({ tripId }: { tripId: string }) => {
+  const { data: works } = useWorkByLimitQuery({ tripId: tripId, limit: 2 });
 
-  const works = data?.pages.flatMap((page) => page.data) ?? [];
   return (
-    <View className="flex-1 m-2 p-2  flex-col">
+    <View className="flex-1 mx-2 p-2  flex-col">
       <View className="flex-row justify-between">
         <Text className="text-textPrimary font-bold text-xl">
           Today&apos;s Activity
@@ -30,18 +21,11 @@ const TodayActivityCard = ({ tripId }: { tripId: string | null }) => {
         </TouchableOpacity>
       </View>
       <FlatList
+        className="mt-2"
         data={works}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <WorkSessionCard work={item} />}
         contentContainerStyle={{ gap: 10 }}
-        onEndReached={() => {
-          if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-        }}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
-        refreshing={isLoading}
-        onRefresh={refetch}
-        showsVerticalScrollIndicator={false}
       />
     </View>
   );

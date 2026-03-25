@@ -78,7 +78,7 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
         <View className="flex-col gap-2 justify-start">
           <Text className="text-textSecondary font-bold">TIME</Text>
           <Text className="text-textSecondary font-bold">
-            {work.start_time ?? formatTime(work?.start_time)}
+            {work.start_time && formatTime(work?.start_time)}
             {work.start_time && work.end_time
               ? ` - ${formatTime(work.end_time)}`
               : ""}
@@ -87,7 +87,7 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
         <View className="flex-col gap-2 justify-start">
           <Text className="text-textSecondary font-bold">DURATION</Text>
           <Text className="text-textSecondary font-bold">
-            {duration?.formatted ?? "00h 00m"}
+            {duration?.short ?? "00h 00m"}
           </Text>
         </View>
       </View>

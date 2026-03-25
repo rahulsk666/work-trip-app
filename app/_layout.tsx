@@ -17,6 +17,7 @@ import Loading from "@/components/Loading";
 import { SplashScreenController } from "@/components/splash-screen-controller";
 import { useAuthContext } from "@/hooks/use-auth-context";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { APP_COLORS } from "@/lib/consts";
 import AuthProvider from "@/providers/auth-provider";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -62,16 +63,16 @@ function RootNavigator() {
       <Toaster
         toastOptions={{
           style: {
-            backgroundColor: "#162635", // cardElevated - slightly elevated from background
+            backgroundColor: APP_COLORS.cardElevated, // cardElevated - slightly elevated from background
             borderWidth: 1,
-            borderColor: "#1F3446", // borderSubtle
+            borderColor: APP_COLORS.borderSubtle, // borderSubtle
           },
           titleStyle: {
-            color: "#E6EDF3", // textPrimary
+            color: APP_COLORS.textPrimary, // textPrimary
             fontWeight: "600",
           },
           descriptionStyle: {
-            color: "#9FB3C8", // textSecondary
+            color: APP_COLORS.textSecondary, // textSecondary
           },
         }}
       />
