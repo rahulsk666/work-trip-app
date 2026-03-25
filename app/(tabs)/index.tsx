@@ -20,7 +20,7 @@ export default function DashboardScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-background p-5">
+    <SafeAreaView className="flex-1 justify-between bg-background p-5">
       {/* Header */}
       <ProfileHeader
         pageName={`Welcome back, ${user?.name}`}

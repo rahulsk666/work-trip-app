@@ -1,3 +1,4 @@
+import ConfirmModal from "@/components/ConfirmModal";
 import { useDuration } from "@/hooks/useDuration";
 import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
@@ -7,10 +8,12 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
+import SwipeButton from "rn-swipe-button";
 
 const DutyInfo = () => {
+  const [visible, setvisible] = useState<boolean>(false);
   const { data: trip } = useLatestTripQuery();
   const { address } = useTripAddress(trip?.current_location);
   const duration = useDuration(
@@ -58,54 +61,97 @@ const DutyInfo = () => {
     );
   }
   return (
-    <ImageBackground
-      source={require("@/assets/map-fallback.png")}
-      imageStyle={{ borderRadius: 12 }}
-      style={{ borderRadius: 12, overflow: "hidden", marginVertical: 5 }}
-    >
-      <LinearGradient
-        colors={[withOpacity(APP_COLORS.card, 0.8), APP_COLORS.card]}
+    <View className="flex-col rounded-xl bg-darkCharcoal mb-2">
+      <ImageBackground
+        source={require("@/assets/map-fallback.png")}
+        imageStyle={{ borderRadius: 12 }}
+        style={{ borderRadius: 12, overflow: "hidden", marginTop: 5 }}
       >
-        {/* Header */}
-        <View className="flex-row items-center justify-between z-10 p-5">
-          <View className="bg-primary p-2 rounded-lg">
-            <Text className="text-textPrimary text-sm uppercase font-bold">
-              On Duty
-            </Text>
+        <LinearGradient
+          colors={[withOpacity(APP_COLORS.card, 0.8), APP_COLORS.card]}
+        >
+          {/* Header */}
+          <View className="flex-row items-center justify-between z-10 p-5">
+            <View className="bg-primary p-2 rounded-lg">
+              <Text className="text-textPrimary text-sm uppercase font-bold">
+                On Duty
+              </Text>
+            </View>
+            <View className="bg-textPrimary/20 w-[40px] h-[40px] rounded-full flex items-center justify-center">
+              <Ionicons
+                name="map-sharp"
+                size={20}
+                color={APP_COLORS.textPrimary}
+              />
+            </View>
           </View>
-          <View className="bg-textPrimary/20 w-[40px] h-[40px] rounded-full flex items-center justify-center">
-            <Ionicons
-              name="map-sharp"
-              size={20}
-              color={APP_COLORS.textPrimary}
-            />
-          </View>
-        </View>
 
-        {/* Details */}
-        <View className="p-5 flex gap-2">
-          <Text className="text-textSecondary">Session Duration</Text>
-          <TouchableOpacity onPress={() => router.navigate("/(track)/track")}>
-            <Text
-              className="text-textPrimary font-bold text-5xl"
-              style={{ fontSize: 48 }}
-            >
-              {duration?.formatted}
-            </Text>
-          </TouchableOpacity>
-          <View className="flex-row gap-2 items-center">
-            <Fontisto
-              name="map-marker-alt"
-              size={16}
-              color={APP_COLORS.textSecondary}
-            />
-            <Text className="text-textSecondary font-medium text-sm">
-              {address || "Fetching location..."}
-            </Text>
+          {/* Details */}
+          <View className="p-5 flex gap-2">
+            <Text className="text-textSecondary">Session Duration</Text>
+            <TouchableOpacity onPress={() => router.navigate("/(track)/track")}>
+              <Text
+                className="text-textPrimary font-bold text-5xl"
+                style={{ fontSize: 48 }}
+              >
+                {duration?.formatted}
+              </Text>
+            </TouchableOpacity>
+            <View className="flex-row gap-2 items-center">
+              <Fontisto
+                name="map-marker-alt"
+                size={16}
+                color={APP_COLORS.textSecondary}
+              />
+              <Text className="text-textSecondary font-medium text-sm">
+                {address || "Fetching location..."}
+              </Text>
+            </View>
           </View>
-        </View>
-      </LinearGradient>
-    </ImageBackground>
+          {trip.status === "STARTED" && (
+            <SwipeButton
+              disableResetOnTap
+              railBackgroundColor={APP_COLORS.dangerShadow}
+              railFillBorderColor={APP_COLORS.dangerDark}
+              railBorderColor={APP_COLORS.dangerDark}
+              onSwipeSuccess={() => {
+                setvisible(true);
+              }}
+              shouldResetAfterSuccess
+              swipeSuccessThreshold={80}
+              railFillBackgroundColor={APP_COLORS.dangerDark}
+              thumbIconBackgroundColor={APP_COLORS.dangerDark}
+              thumbIconBorderColor={APP_COLORS.dangerDark}
+              thumbIconComponent={() => (
+                <Ionicons name="square" color={APP_COLORS.white} size={20} />
+              )}
+              thumbIconStyles={{
+                shadowColor: APP_COLORS.dangerShadow,
+                shadowOffset: { width: 70, height: 70 },
+                shadowRadius: 70,
+                shadowOpacity: 0.8,
+                elevation: 10,
+                padding: 0,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              titleColor={APP_COLORS.dangerDark}
+              title="Stop Session"
+            />
+          )}
+        </LinearGradient>
+      </ImageBackground>
+
+      <ConfirmModal
+        visible={visible}
+        title="Do you want to Stop the Trip ?"
+        onCancel={() => setvisible(false)}
+        onConfirm={() => {
+          setvisible(false);
+          router.navigate("/(trip)/stop");
+        }}
+      />
+    </View>
   );
 };
 

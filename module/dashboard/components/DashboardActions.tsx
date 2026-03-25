@@ -46,23 +46,6 @@ const DashboardActions = () => {
               </Text>
             </TouchableOpacity>
           )}
-          {!trip?.end_time && !work?.end_time && (
-            <TouchableOpacity
-              className="flex-1 p-5 m-1 items-center justify-center rounded-2xl border border-borderSubtle bg-cardElevated"
-              onPress={() => router.navigate("/(trip)/stop")}
-              disabled={!!trip.end_time}
-            >
-              <Ionicons
-                className="p-2"
-                name="stop-circle"
-                size={28}
-                color={APP_COLORS.danger}
-              />
-              <Text className="text-textPrimary text-xl font-semibold mt-2">
-                Stop Trip
-              </Text>
-            </TouchableOpacity>
-          )}
         </View>
       ) : (
         <>
