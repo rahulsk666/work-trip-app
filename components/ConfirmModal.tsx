@@ -90,14 +90,13 @@ const ConfirmModal = ({
               style={[
                 styles.button,
                 styles.confirmButton,
-                { backgroundColor: color },
                 isLoading && styles.disabledButton,
               ]}
               onPress={onConfirm}
               disabled={isLoading}
             >
               {isLoading ? (
-                <ActivityIndicator size="small" color="#fff" />
+                <ActivityIndicator size="small" color={APP_COLORS.white} />
               ) : (
                 <Text style={styles.confirmText}>{confirmText}</Text>
               )}
@@ -162,16 +161,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   cancelButton: {
-    backgroundColor: APP_COLORS.darkCharcoal,
+    backgroundColor: APP_COLORS.dangerDark,
   },
   confirmButton: {
-    // backgroundColor set dynamically via variant color
+    backgroundColor: APP_COLORS.successDark,
   },
   disabledButton: {
     opacity: 0.6,
   },
   cancelText: {
-    color: APP_COLORS.textSecondary,
+    color: APP_COLORS.textPrimary,
     fontWeight: "600",
     fontSize: 15,
   },

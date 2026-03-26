@@ -49,13 +49,12 @@ export const workApi = {
   }> {
     const from = pageParam * pageSize;
     const to = from + pageSize - 1;
-
     const { data, error } = await supabase
-      .from("work_Sessions")
+      .from("work_sessions")
       .select("*")
       .eq("user_id", userId)
       .eq("trip_id", tripId)
-      .order("created_date", { ascending: false })
+      .order("created_at", { ascending: false })
       .range(from, to);
 
     if (error) throw new Error(error.message);

@@ -1,5 +1,6 @@
 import WorkSessionCard from "@/module/work/components/WorkSessionCard";
 import { useWorkByLimitQuery } from "@/module/work/hooks";
+import { router } from "expo-router";
 import React from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
 
@@ -14,7 +15,7 @@ const TodayActivityCard = ({ tripId }: { tripId: string }) => {
         </Text>
         <TouchableOpacity
           className="items-center justify-center"
-          onPress={() => console.log("View ALl")}
+          onPress={() => router.navigate(`/(trip)/${tripId}`)}
           activeOpacity={1}
         >
           <Text className="text-primary">View all</Text>

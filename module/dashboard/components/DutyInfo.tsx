@@ -1,4 +1,3 @@
-import ConfirmModal from "@/components/ConfirmModal";
 import { useDuration } from "@/hooks/useDuration";
 import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
@@ -9,12 +8,11 @@ import Fontisto from "@expo/vector-icons/Fontisto";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import SwipeButton from "rn-swipe-button";
 
 const DutyInfo = () => {
-  const [visible, setvisible] = useState<boolean>(false);
   const { data: trip } = useLatestTripQuery();
   const { data: work } = useLatestWorkQuery(trip?.id);
   const { address } = useTripAddress(trip?.current_location);
@@ -63,7 +61,7 @@ const DutyInfo = () => {
     );
   }
   return (
-    <View className="flex-col rounded-xl bg-darkCharcoal mb-2">
+    <View className="flex-col rounded-xl overflow-hidden bg-darkCharcoal mb-2">
       <ImageBackground
         source={require("@/assets/map-fallback.png")}
         imageStyle={{ borderRadius: 12 }}
@@ -111,26 +109,38 @@ const DutyInfo = () => {
             </View>
           </View>
           {trip.status === "STARTED" && (
-            <View className="p-2">
+            <View className="p-2 bg-cardElevated rounded-b-lg overflow-hidden">
               <SwipeButton
                 disableResetOnTap
                 railBackgroundColor={APP_COLORS.dangerShadow}
                 railFillBorderColor={APP_COLORS.dangerDark}
-                railBorderColor={APP_COLORS.dangerDark}
+                railBorderColor={
+                  work?.status === "STARTED"
+                    ? APP_COLORS.textMuted
+                    : APP_COLORS.dangerDark
+                }
                 onSwipeSuccess={() => {
-                  setvisible(true);
+                  router.navigate("/(trip)/stop");
                 }}
                 disabled={work?.status === "STARTED"}
-                disabledRailBackgroundColor={APP_COLORS.dangerShadow}
-                disabledThumbIconBackgroundColor={APP_COLORS.textMuted}
-                disabledThumbIconBorderColor={APP_COLORS.dangerShadow}
+                disabledRailBackgroundColor={APP_COLORS.textMutedShadow}
+                disabledThumbIconBackgroundColor={APP_COLORS.textMutedShadow}
+                disabledThumbIconBorderColor={APP_COLORS.textMuted}
                 shouldResetAfterSuccess
                 swipeSuccessThreshold={80}
                 railFillBackgroundColor={APP_COLORS.dangerDark}
                 thumbIconBackgroundColor={APP_COLORS.dangerDark}
                 thumbIconBorderColor={APP_COLORS.dangerDark}
                 thumbIconComponent={() => (
-                  <Ionicons name="square" color={APP_COLORS.white} size={20} />
+                  <Ionicons
+                    name="square"
+                    color={
+                      work?.status === "STARTED"
+                        ? APP_COLORS.textMuted
+                        : APP_COLORS.white
+                    }
+                    size={20}
+                  />
                 )}
                 thumbIconStyles={{
                   shadowColor: APP_COLORS.dangerShadow,
@@ -142,7 +152,11 @@ const DutyInfo = () => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                titleColor={APP_COLORS.dangerDark}
+                titleColor={
+                  work?.status === "STARTED"
+                    ? APP_COLORS.textMuted
+                    : APP_COLORS.dangerDark
+                }
                 title="Stop Session"
                 titleStyles={{ fontWeight: 900 }}
               />
@@ -150,16 +164,6 @@ const DutyInfo = () => {
           )}
         </LinearGradient>
       </ImageBackground>
-
-      <ConfirmModal
-        visible={visible}
-        title="Do you want to Stop the Trip ?"
-        onCancel={() => setvisible(false)}
-        onConfirm={() => {
-          setvisible(false);
-          router.navigate("/(trip)/stop");
-        }}
-      />
     </View>
   );
 };

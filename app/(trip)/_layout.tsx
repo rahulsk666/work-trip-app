@@ -5,6 +5,7 @@ export default function TripLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="start" />
       <Stack.Screen name="stop" />
+      <Stack.Screen name="[id]" />
     </Stack>
   );
 }

@@ -1,11 +1,13 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useDuration } from "@/hooks/useDuration";
 import { APP_COLORS } from "@/lib/consts";
-import { calculateDuration } from "@/lib/duration";
+import { getLocalDate } from "@/lib/date";
 import { formatDate } from "@/lib/fomatDate";
 import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Trip } from "../schemas/trip.schema";
 
 interface WorkSessionCardProps {
@@ -13,12 +15,14 @@ interface WorkSessionCardProps {
 }
 
 const TripCard = ({ trip }: WorkSessionCardProps) => {
-  const duration = trip?.start_time
-    ? calculateDuration(trip.start_time, trip.end_time, trip?.trip_date)
-    : null;
+  const duration = useDuration(trip.start_time, trip.end_time, trip?.trip_date);
 
   return (
-    <View className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center">
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => router.push(`/(trip)/${trip.id}`)}
+      className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center"
+    >
       <View className="flex-row justify-between">
         <View className="flex-row justify-start items-center gap-2">
           <View
@@ -79,19 +83,21 @@ const TripCard = ({ trip }: WorkSessionCardProps) => {
           <Text className="text-textSecondary font-bold">TIME</Text>
           <Text className="text-textSecondary font-bold">
             {trip?.start_time ? formatTime(trip.start_time) : "00:00 AM"}
-            {trip?.end_time && trip.status === "ENDED"
-              ? ` - ${formatTime(trip.end_time)}:`
-              : " - 00:00 AM"}
+            {trip && trip.status === "ENDED"
+              ? trip.end_time && trip.trip_date !== getLocalDate()
+                ? ` - ${formatTime(trip.end_time)}:`
+                : " - 00:00 AM"
+              : ""}
           </Text>
         </View>
         <View className="flex-col gap-2 justify-start">
           <Text className="text-textSecondary font-bold">DURATION</Text>
           <Text className="text-textSecondary font-bold">
-            {duration?.formatted ?? "00h 00m"}
+            {duration?.short ?? "00h 00m"}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

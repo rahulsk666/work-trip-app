@@ -25,7 +25,7 @@ export const useWorkPaginatedQuery = (
 ) => {
   const { data: user } = useUserQuery();
   return useInfiniteQuery({
-    queryKey: workKeys.getByPagination(),
+    queryKey: workKeys.getByPagination(tripId),
     queryFn: ({ pageParam }) =>
       workApi.getByPagination(
         user!.id,
@@ -48,7 +48,7 @@ export const useWorkByLimitQuery = ({
 }) => {
   const { data: user } = useUserQuery();
   return useQuery({
-    queryKey: workKeys.getByLimit(),
+    queryKey: workKeys.getByLimit(tripId),
     queryFn: () => workApi.getByLimit(user!.id, tripId as string, limit),
     enabled: !!tripId && !!user?.id,
   });
@@ -67,7 +67,7 @@ export const useLatestWorkQuery = (tripId: string | undefined) => {
   const { data: user } = useUserQuery();
 
   return useQuery({
-    queryKey: workKeys.latest(),
+    queryKey: workKeys.latest(tripId),
     queryFn: () => workApi.getLatestWork(user!.id, tripId as string),
     enabled: !!user?.id && !!tripId,
   });
@@ -81,7 +81,6 @@ export const useCreateWorkMutation = () => {
     mutationFn: (data: WorkCreate) => workApi.create(data),
     onSuccess: async () => {
       await qc.invalidateQueries({ queryKey: workKeys.all });
-      await qc.invalidateQueries({ queryKey: workKeys.latest() });
     },
 
     onError: (err: PostgrestError | Error) => {
@@ -103,8 +102,7 @@ export const useEndWorkMutation = () => {
       await qc.invalidateQueries({
         queryKey: [workKeys.all],
       });
-      await qc.refetchQueries({ queryKey: workKeys.today() }); // ✅ force refetch
-      await qc.refetchQueries({ queryKey: workKeys.latest() });
+      await qc.refetchQueries({ queryKey: workKeys.all });
     },
 
     onError: () => toast.error("Failed to start work. Please try again"),

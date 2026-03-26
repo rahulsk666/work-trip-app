@@ -1,3 +1,4 @@
+import ConfirmModal from "@/components/ConfirmModal";
 import { useDuration } from "@/hooks/useDuration";
 import { useRequestLocation } from "@/hooks/useRequestLoaction";
 import { APP_COLORS } from "@/lib/consts";
@@ -11,11 +12,20 @@ import {
 } from "@/module/work/hooks";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { toast } from "sonner-native";
 
 const DashboardActions = () => {
+  const [modal, setModal] = useState<{
+    title: string;
+    visible: boolean;
+    onConfirm: () => void;
+  }>({
+    title: "",
+    visible: false,
+    onConfirm: () => {},
+  });
   const { data: user } = useUserQuery();
   const { data: trip } = useLatestTripQuery();
   const { data: work } = useLatestWorkQuery(trip?.id);
@@ -28,34 +38,51 @@ const DashboardActions = () => {
     trip?.trip_date,
   );
 
-  const handleWorkCreate = async () => {
-    if (!location) {
-      toast.error("Please enable location services");
-      return;
-    }
-    if (!trip?.id) {
-      toast.error("No active trip found");
-      return;
-    }
-    if (!user?.id) {
-      toast.error("Please try again.");
-      return;
-    }
-    await createWork({
-      user_id: user?.id,
-      location: `POINT(${location.coords.longitude} ${location.coords.latitude})`,
-      status: "STARTED",
-      start_time: getLocalDateTime(),
-      trip_id: trip?.id,
+  const handleWorkCreate = () => {
+    requestLocation();
+    setModal({
+      title: "Start Work ?",
+      visible: true,
+      onConfirm: async () => {
+        closeModal();
+
+        if (!location) {
+          toast.error("Please enable location services");
+          return;
+        }
+        if (!trip?.id) {
+          toast.error("No active trip found");
+          return;
+        }
+        if (!user?.id) {
+          toast.error("Please try again.");
+          return;
+        }
+
+        await createWork({
+          user_id: user.id,
+          location: `POINT(${location.coords.longitude} ${location.coords.latitude})`,
+          status: "STARTED",
+          start_time: getLocalDateTime(),
+          trip_id: trip.id,
+        });
+      },
     });
   };
 
+  const closeModal = () =>
+    setModal({ title: "", visible: false, onConfirm: () => {} });
+
   const handleWorkEdit = async (id: string) => {
-    await endWork({
-      id: id,
-      data: {
-        end_time: getLocalDateTime(),
-        status: "ENDED",
+    setModal({
+      title: "Stop Work ?",
+      visible: true,
+      onConfirm: async () => {
+        closeModal();
+        await endWork({
+          id,
+          data: { end_time: getLocalDateTime(), status: "ENDED" },
+        });
       },
     });
   };
@@ -104,7 +131,7 @@ const DashboardActions = () => {
             <TouchableOpacity
               className="flex-1 p-5 m-1 items-center justify-center flex-row gap-2 rounded-2xl"
               style={{ backgroundColor: APP_COLORS.successButton }}
-              onPress={() => handleWorkCreate()}
+              onPress={handleWorkCreate}
             >
               <Ionicons
                 name="play-circle"
@@ -133,6 +160,13 @@ const DashboardActions = () => {
       ) : (
         <></>
       )}
+
+      <ConfirmModal
+        visible={modal.visible}
+        title={modal.title}
+        onCancel={closeModal}
+        onConfirm={modal.onConfirm}
+      />
     </View>
   );
 };

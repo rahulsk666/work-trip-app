@@ -84,7 +84,7 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
               : ""}
           </Text>
         </View>
-        <View className="flex-col gap-2 justify-start">
+        <View className="flex-col gap-2 justify-start items-center">
           <Text className="text-textSecondary font-bold">DURATION</Text>
           <Text className="text-textSecondary font-bold">
             {duration?.short ?? "00h 00m"}
