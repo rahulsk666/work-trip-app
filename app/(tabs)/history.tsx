@@ -1,15 +1,15 @@
+import ProfileHeader from "@/components/profile-header";
+import TripHistory from "@/module/trip/components/TripHistory";
 import React from "react";
-import { StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const HistoryScreen = () => {
   return (
-    <SafeAreaView className="flex-1 bg-background">
-      <Text>HistoryScreen</Text>
+    <SafeAreaView className="flex-1 bg-background px-3 pt-5">
+      <ProfileHeader pageName="Previous Trips" showDate ShowSettings />
+      <TripHistory />
     </SafeAreaView>
   );
 };
 
 export default HistoryScreen;
-
-const styles = StyleSheet.create({});

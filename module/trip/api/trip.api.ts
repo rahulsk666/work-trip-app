@@ -80,10 +80,13 @@ export const tripApi = {
   },
 
   async getLatest(userId: string): Promise<Trip | null> {
+    const today = new Date().toISOString().split("T")[0];
+
     const { data, error } = await supabase
       .from("trips")
       .select("*")
       .eq("user_id", userId)
+      .eq("trip_date", today)
       .order("trip_date", { ascending: false })
       .limit(1)
       .maybeSingle();

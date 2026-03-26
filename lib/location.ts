@@ -75,3 +75,30 @@ export function parseWKBPoint(
     return null;
   }
 }
+
+export function decimalToDMS(value: number | string, type: "lat" | "lng") {
+  if (!value) {
+    return null;
+  }
+  if (typeof value === "string") {
+    value = parseFloat(value);
+  }
+  const absolute = Math.abs(value);
+
+  const degrees = Math.floor(absolute);
+
+  const minutesFull = (absolute - degrees) * 60;
+  const minutes = Math.floor(minutesFull);
+
+  const seconds = ((minutesFull - minutes) * 60).toFixed(2);
+
+  let direction;
+
+  if (type === "lat") {
+    direction = value >= 0 ? "N" : "S";
+  } else {
+    direction = value >= 0 ? "E" : "W";
+  }
+
+  return `${degrees}°${minutes}'${seconds}"${direction}`;
+}

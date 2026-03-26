@@ -7,7 +7,7 @@ export default function AuthLayout() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="Login" />
+      <Stack.Screen name="login" />
     </Stack>
   );
 }
