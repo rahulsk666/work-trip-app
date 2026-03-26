@@ -4,6 +4,7 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useDuration } from "@/hooks/useDuration";
 import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
+import { formatTime } from "@/lib/formatTime";
 import { decimalToDMS } from "@/lib/location";
 import { router } from "expo-router";
 import React from "react";
@@ -52,7 +53,7 @@ const TripSessionCard = () => {
         <TripCountDown duration={duration} />
         <View className="p-2 justify-center items-center">
           <Text className="text-textSecondary font-bold">
-            Started at 08:45 AM
+            Started at {formatTime(trip?.start_time as string)}
           </Text>
         </View>
         <View style={{ height: 120 }}>

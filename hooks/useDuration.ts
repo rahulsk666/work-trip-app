@@ -1,22 +1,19 @@
+import { getLocalMidnight } from "@/lib/date";
 import { calculateDuration, Duration } from "@/lib/duration";
 import { useEffect, useMemo, useState } from "react";
 
 export function useDuration(
   startTime: string,
   endTime?: string | null,
-  date?: string | null,
+  date?: string | null, // kept for midnight cap logic only
 ): Duration | null {
-  // If trip date is in the past and no end time, cap at midnight
   const effectiveEndTime = useMemo(() => {
     if (endTime) return endTime;
 
     if (date) {
-      const midnight = new Date(date);
-      midnight.setDate(midnight.getDate() + 1);
-      midnight.setHours(0, 0, 0, 0);
-
+      const midnight = getLocalMidnight(date);
       if (new Date() > midnight) {
-        return midnight.toISOString(); // treat as ended at midnight
+        return midnight.toISOString();
       }
     }
 
@@ -24,7 +21,7 @@ export function useDuration(
   }, [endTime, date]);
 
   const [duration, setDuration] = useState<Duration | null>(
-    startTime ? calculateDuration(startTime, effectiveEndTime, date) : null,
+    startTime ? calculateDuration(startTime, effectiveEndTime) : null,
   );
 
   useEffect(() => {
@@ -33,16 +30,16 @@ export function useDuration(
       return;
     }
 
-    setDuration(calculateDuration(startTime, effectiveEndTime, date));
+    setDuration(calculateDuration(startTime, effectiveEndTime));
 
-    if (effectiveEndTime) return;
+    if (effectiveEndTime) return; // ✅ no interval if trip ended
 
     const interval = setInterval(() => {
-      setDuration(calculateDuration(startTime, undefined, date));
+      setDuration(calculateDuration(startTime)); // ✅ no date param needed
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [startTime, effectiveEndTime, date]);
+  }, [startTime, effectiveEndTime]);
 
   return duration;
 }

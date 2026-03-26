@@ -42,9 +42,10 @@ const TripCard = ({ trip }: WorkSessionCardProps) => {
         <View
           className="flex-row justify-center items-center gap-1 m-1"
           style={{
-            backgroundColor: trip.end_time
-              ? APP_COLORS.successShadow
-              : APP_COLORS.primaryShadow,
+            backgroundColor:
+              trip.status === "ENDED"
+                ? APP_COLORS.successShadow
+                : APP_COLORS.primaryShadow,
             paddingHorizontal: 3,
             borderRadius: 4,
             marginTop: 8,

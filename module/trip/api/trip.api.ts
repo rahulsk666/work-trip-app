@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/supabase";
+import { getLocalDate } from "@/lib/date";
 import { z } from "zod";
 import {
   Trip,
@@ -42,7 +43,8 @@ export const tripApi = {
       .from("trips")
       .select("*")
       .eq("user_id", userId)
-      .eq("id", id);
+      .eq("id", id)
+      .single();
 
     if (error) {
       throw new Error(error.message);
@@ -51,7 +53,7 @@ export const tripApi = {
     return tripSchema.parse(data);
   },
   async getToday(userId: string): Promise<Trip | null> {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getLocalDate();
 
     const { data, error } = await supabase
       .from("trips")
@@ -64,7 +66,7 @@ export const tripApi = {
     return data ? tripSchema.parse(data) : null;
   },
   async getLatest(userId: string): Promise<Trip | null> {
-    const today = new Date().toISOString().split("T")[0];
+    const today = getLocalDate();
 
     const { data, error } = await supabase
       .from("trips")

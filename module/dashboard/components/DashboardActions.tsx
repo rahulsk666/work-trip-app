@@ -1,6 +1,7 @@
 import { useDuration } from "@/hooks/useDuration";
 import { useRequestLocation } from "@/hooks/useRequestLoaction";
 import { APP_COLORS } from "@/lib/consts";
+import { getLocalDateTime } from "@/lib/date";
 import { useUserQuery } from "@/module/profile/hooks";
 import { useLatestTripQuery } from "@/module/trip/hooks";
 import {
@@ -44,7 +45,7 @@ const DashboardActions = () => {
       user_id: user?.id,
       location: `POINT(${location.coords.longitude} ${location.coords.latitude})`,
       status: "STARTED",
-      start_time: new Date().toISOString(),
+      start_time: getLocalDateTime(),
       trip_id: trip?.id,
     });
   };
@@ -53,7 +54,7 @@ const DashboardActions = () => {
     await endWork({
       id: id,
       data: {
-        end_time: new Date().toISOString(),
+        end_time: getLocalDateTime(),
         status: "ENDED",
       },
     });
