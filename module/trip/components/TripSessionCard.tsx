@@ -4,7 +4,9 @@ import { IconSymbol } from "@/components/ui/icon-symbol";
 import { useDuration } from "@/hooks/useDuration";
 import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
+import { formatTime } from "@/lib/formatTime";
 import { decimalToDMS } from "@/lib/location";
+import { useLatestWorkQuery } from "@/module/work/hooks";
 import { router } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -13,6 +15,7 @@ import TripCountDown from "./TripCountdown";
 
 const TripSessionCard = () => {
   const { data: trip } = useLatestTripQuery();
+  const { data: work } = useLatestWorkQuery(trip?.id);
   const duration = useDuration(
     trip?.start_time ?? "",
     trip?.end_time,
@@ -52,7 +55,7 @@ const TripSessionCard = () => {
         <TripCountDown duration={duration} />
         <View className="p-2 justify-center items-center">
           <Text className="text-textSecondary font-bold">
-            Started at 08:45 AM
+            Started at {formatTime(trip?.start_time as string)}
           </Text>
         </View>
         <View style={{ height: 120 }}>
@@ -119,20 +122,22 @@ const TripSessionCard = () => {
           className="p-2 justify-center items-center rounded-xl bg-danger/60"
           style={{
             borderWidth: 1,
-            borderColor: trip?.end_time
-              ? APP_COLORS.textMuted
-              : APP_COLORS.danger,
+            borderColor:
+              trip?.end_time || work?.status === "STARTED"
+                ? APP_COLORS.textMuted
+                : APP_COLORS.danger,
             marginTop: 20,
-            backgroundColor: trip?.end_time
-              ? APP_COLORS.darkCharcoal
-              : APP_COLORS.dangerShadow,
+            backgroundColor:
+              trip?.end_time || work?.status === "STARTED"
+                ? APP_COLORS.darkCharcoal
+                : APP_COLORS.dangerShadow,
           }}
           activeOpacity={0.9}
-          disabled={!!trip?.end_time}
+          disabled={!!trip?.end_time || work?.status === "STARTED"}
           onPress={() => router.replace("/(trip)/stop")}
         >
           <Text
-            className={`text-xl font-bold ${trip?.end_time ? "text-textMuted" : "text-danger"}`}
+            className={`text-xl font-bold ${trip?.end_time || work?.status === "STARTED" ? "text-textMuted" : "text-danger"}`}
           >
             Stop Session
           </Text>

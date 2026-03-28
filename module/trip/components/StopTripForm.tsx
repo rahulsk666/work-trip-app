@@ -1,6 +1,7 @@
 import Loading from "@/components/Loading";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { useRequestLocation } from "@/hooks/useRequestLoaction";
+import { getLocalDateTime } from "@/lib/date";
 import TripFormUI from "@/module/trip/components/TripFormUI";
 import {
   useEditTripMutation,
@@ -70,7 +71,8 @@ const StopTripForm = () => {
         id: todayTrip.id,
         data: {
           ...data,
-          end_time: new Date().toISOString(),
+          status: "ENDED",
+          end_time: getLocalDateTime(),
           end_location: `POINT(${location.coords.longitude} ${location.coords.latitude})`,
           end_image: endUrl,
         },

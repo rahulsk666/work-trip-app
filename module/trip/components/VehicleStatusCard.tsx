@@ -1,6 +1,8 @@
 import SelectVehiclesModal from "@/components/select-vehicles-modal";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { APP_COLORS } from "@/lib/consts";
+import { getLocalDate } from "@/lib/date";
+import { formatTime } from "@/lib/formatTime";
 import { useAvailableVehicles } from "@/module/vehicle/hooks";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import React, { useState } from "react";
@@ -77,11 +79,7 @@ const VehicleStatusCard = ({
         <View className="flex-row justify-start items-center bg-red-100 p-2 gap-2 rounded-lg">
           <IconSymbol name="clock" size={15} color={APP_COLORS.textMuted} />
           <Text className="text-textMuted text-sm font-bold">
-            {new Date().toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            })}
+            {formatTime(new Date(getLocalDate()))}
           </Text>
         </View>
       </View>

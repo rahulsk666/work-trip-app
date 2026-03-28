@@ -10,7 +10,7 @@ const TodaysActivity = () => {
   const { data: trip } = useLatestTripQuery();
 
   const duration = trip
-    ? calculateDuration(trip.start_time, trip.end_time, trip.trip_date)
+    ? calculateDuration(trip.start_time, trip.end_time)
     : null;
 
   const kmDriven =
@@ -23,7 +23,7 @@ const TodaysActivity = () => {
       <View className="flex-row items-center justify-between mt-3">
         <StatCard
           icon="time"
-          label="Hours"
+          label="Work Hours"
           color={trip ? APP_COLORS.primary : APP_COLORS.textMuted}
           disableShadow={trip ? false : true}
           value={duration ? duration.short : "0h 00m"}

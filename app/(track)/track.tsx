@@ -6,8 +6,8 @@ import { useLatestTripQuery } from "@/module/trip/hooks";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Trip = () => {
-  const { isLoading } = useLatestTripQuery();
+const TripTrack = () => {
+  const { data: trip, isLoading } = useLatestTripQuery();
   if (isLoading) {
     return <Loading />;
   }
@@ -15,9 +15,9 @@ const Trip = () => {
     <SafeAreaView className="flex-1 bg-background m-2">
       <ProfileHeader pageName="Work Tracker" ShowSettings showDate />
       <TripSessionCard />
-      <TodayActivityCard />
+      {trip && <TodayActivityCard tripId={trip?.id} />}
     </SafeAreaView>
   );
 };
 
-export default Trip;
+export default TripTrack;

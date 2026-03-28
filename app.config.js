@@ -27,11 +27,6 @@ export default {
         "ACCESS_COARSE_LOCATION",
         "ACCESS_BACKGROUND_LOCATION",
       ],
-      config: {
-        googleMaps: {
-          apiKey: process.env.EXPO_GOOGLE_MAPS_API_KEY,
-        },
-      },
     },
     web: {
       output: "static",

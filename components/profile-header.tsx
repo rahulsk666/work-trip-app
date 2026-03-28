@@ -1,4 +1,5 @@
 import { APP_COLORS } from "@/lib/consts";
+import { getLocalDate } from "@/lib/date";
 import { formatDate } from "@/lib/fomatDate";
 import { useUserQuery } from "@/module/profile/hooks";
 import { router } from "expo-router";
@@ -63,7 +64,7 @@ const ProfileHeader = ({
             )}
             {showDate && (
               <Text className="text-textSecondary text-xs font-semibold">
-                {formatDate(new Date())}
+                {formatDate(new Date(getLocalDate()))}
               </Text>
             )}
           </View>

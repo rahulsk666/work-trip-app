@@ -1,6 +1,12 @@
 import { useUserQuery } from "@/module/profile/hooks";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { PostgrestError } from "@supabase/supabase-js";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner-native";
 import { tripApi } from "../api/trip.api";
@@ -10,18 +16,20 @@ import {
   tripCreateSchema,
   TripEdit,
   tripEditSchema,
-  TripEnd,
   tripEndSchema,
   UpdateLocation,
   VehiclePhoto,
 } from "../schemas/trip.schema";
 
 // use trip queries
-export const useTripQuery = () => {
+export const useTripPaginatedQuery = () => {
   const { data: user } = useUserQuery();
-  return useQuery({
+
+  return useInfiniteQuery({
     queryKey: tripKeys.getAll(),
-    queryFn: () => tripApi.getAll(user!.id),
+    queryFn: ({ pageParam }) => tripApi.getAll(user!.id, pageParam as number),
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+    initialPageParam: 0,
     enabled: !!user?.id,
   });
 };
@@ -64,8 +72,8 @@ export const useCreateTripMutation = () => {
       // toast.success("Trip started successfully");
     },
 
-    onError: (err) => {
-      if (err?.code === "23505") {
+    onError: (err: PostgrestError | Error) => {
+      if ("code" in err && err.code === "23505") {
         toast.error("A trip has already been started for today");
         return;
       }
@@ -119,6 +127,7 @@ export const useTripCreateForm = () =>
       start_time: "",
       start_km: "",
       start_location: "",
+      status: "STARTED",
     },
   });
 
@@ -128,7 +137,7 @@ export const useTripEditForm = (defaultValues?: TripEdit) =>
     defaultValues: defaultValues as TripEdit,
   });
 
-export const useTripEndForm = (defaultValues?: TripEnd) =>
+export const useTripEndForm = () =>
   useForm({
     resolver: zodResolver(tripEndSchema),
     defaultValues: {
@@ -136,5 +145,6 @@ export const useTripEndForm = (defaultValues?: TripEnd) =>
       end_image: null,
       end_time: null,
       end_location: null,
+      status: "ENDED",
     },
   });

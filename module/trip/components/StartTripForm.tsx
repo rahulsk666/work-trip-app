@@ -1,6 +1,7 @@
 import Loading from "@/components/Loading";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import { useRequestLocation } from "@/hooks/useRequestLoaction";
+import { getLocalDate, getLocalDateTime } from "@/lib/date";
 import { useUserQuery } from "@/module/profile/hooks";
 import TripFormUI from "@/module/trip/components/TripFormUI";
 import {
@@ -54,10 +55,11 @@ const StartTripForm = () => {
     try {
       const trip = await createTrip({
         ...data,
+        status: "STARTED",
         user_id: user?.id,
         vehicle_id: vehicle.id,
-        trip_date: new Date().toISOString().split("T")[0],
-        start_time: new Date().toISOString(),
+        trip_date: getLocalDate(),
+        start_time: getLocalDateTime(),
         start_location: `POINT(${location.coords.longitude} ${location.coords.latitude})`,
       });
 
