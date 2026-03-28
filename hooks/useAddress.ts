@@ -1,9 +1,9 @@
 import { getAddressFromCoords } from "@/lib/location";
 import { useEffect, useState } from "react";
-import { useTripCoordinates } from "./useTripCoordinates";
+import { useCoordinates } from "./useCoordinates";
 
-export function useTripAddress(location?: string | null) {
-  const coords = useTripCoordinates(location);
+export function useAddress(location?: string | null) {
+  const coords = useCoordinates(location);
   const [address, setAddress] = useState<string | null>(null);
 
   useEffect(() => {

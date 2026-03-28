@@ -2,9 +2,9 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import { useDuration } from "@/hooks/useDuration";
 import { Duration } from "@/lib/duration";
+import { default as ImageUpload } from "@/module/trip/components/ImageUpload";
 import TripCountDown from "@/module/trip/components/TripCountdown";
 import TripCurrentLocation from "@/module/trip/components/TripCurrentLocation";
-import TripImageUpload from "@/module/trip/components/TripImageUpload";
 import VehicleStatusCard from "@/module/trip/components/VehicleStatusCard";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import * as Location from "expo-location";
@@ -125,7 +125,7 @@ const TripFormUI = ({
             {isStop ? "End Dashboard Photo *" : "Dashboard Photo *"}
           </Text>
           <View className="justify-center flex-row items-center gap-2 mt-2">
-            <TripImageUpload
+            <ImageUpload
               name={isStop ? "End Dashboard" : "Dashboard Image"}
               pickImageCamera={dashboardImage.pickImageCamera}
               uploading={dashboardImage.uploading}
@@ -144,13 +144,13 @@ const TripFormUI = ({
           </Text>
           <View className="justify-center flex-col items-center gap-2 mt-2">
             <View className="justify-center flex-row items-center gap-2 mt-2">
-              <TripImageUpload
+              <ImageUpload
                 name="Front Image"
                 pickImageCamera={frontImage.pickImageCamera}
                 uploading={frontImage.uploading}
                 preview={frontImage.preview}
               />
-              <TripImageUpload
+              <ImageUpload
                 name="Back Image"
                 pickImageCamera={backImage.pickImageCamera}
                 uploading={backImage.uploading}
@@ -158,13 +158,13 @@ const TripFormUI = ({
               />
             </View>
             <View className="justify-center flex-row items-center gap-2 mt-2">
-              <TripImageUpload
+              <ImageUpload
                 name="Left Image"
                 pickImageCamera={leftImage.pickImageCamera}
                 uploading={leftImage.uploading}
                 preview={leftImage.preview}
               />
-              <TripImageUpload
+              <ImageUpload
                 name="Right Image"
                 pickImageCamera={rightImage.pickImageCamera}
                 uploading={rightImage.uploading}

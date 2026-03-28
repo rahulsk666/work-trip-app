@@ -14,6 +14,8 @@
   "successButton": "#355F48",
   "successText": "#9BE47A",
   "warning": "#F59E0B",
+  "warningDark": "#D97706",
+  "warningShadow": "#F59E0B1F",
   "danger": "#EF4444",
   "dangerDark": "#E04F5F",
   "dangerShadow": "#EF44441F",

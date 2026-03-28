@@ -1,7 +1,7 @@
 import { parseWKBPoint } from "@/lib/location";
 import { useEffect, useState } from "react";
 
-export function useTripCoordinates(location?: string | null) {
+export function useCoordinates(location?: string | null) {
   const [coords, setCoords] = useState<{
     latitude: number;
     longitude: number;

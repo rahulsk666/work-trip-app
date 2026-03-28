@@ -1,5 +1,4 @@
 import { useUserQuery } from "@/module/profile/hooks";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { PostgrestError } from "@supabase/supabase-js";
 import {
   useInfiniteQuery,
@@ -7,16 +6,10 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
 import { toast } from "sonner-native";
 import { workApi } from "../api/work.api";
 import { workKeys } from "../constants/work.key";
-import {
-  WorkCreate,
-  workCreateSchema,
-  WorkEnd,
-  workEndSchema,
-} from "../schemas/work.schema";
+import { WorkCreate, WorkEnd } from "../schemas/work.schema";
 
 // use trip queries
 export const useWorkPaginatedQuery = (
@@ -58,7 +51,7 @@ export const useWorkByIdQuery = (id: string) => {
   const { data: user } = useUserQuery();
   return useQuery({
     queryKey: workKeys.getById(id),
-    queryFn: () => workKeys.getById(id),
+    queryFn: () => workApi.getById(id),
     enabled: !!id && !!user?.id,
   });
 };
@@ -108,27 +101,3 @@ export const useEndWorkMutation = () => {
     onError: () => toast.error("Failed to start work. Please try again"),
   });
 };
-
-// form hook
-
-export const useWorkCreateForm = () =>
-  useForm({
-    resolver: zodResolver(workCreateSchema),
-    defaultValues: {
-      trip_id: "",
-      start_time: "",
-      location: "",
-      notes: "",
-      status: "STARTED",
-    },
-  });
-
-export const useWorkEndForm = () =>
-  useForm({
-    resolver: zodResolver(workEndSchema),
-    defaultValues: {
-      end_time: "",
-      notes: "",
-      status: "ENDED",
-    },
-  });

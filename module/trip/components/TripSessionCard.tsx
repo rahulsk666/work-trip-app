@@ -1,8 +1,8 @@
 import StatusBadge from "@/components/StatusBadge";
 import StatusDot from "@/components/StatusDot";
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useAddress } from "@/hooks/useAddress";
 import { useDuration } from "@/hooks/useDuration";
-import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
 import { formatTime } from "@/lib/formatTime";
 import { decimalToDMS } from "@/lib/location";
@@ -21,7 +21,7 @@ const TripSessionCard = () => {
     trip?.end_time,
     trip?.trip_date,
   );
-  const { coords } = useTripAddress(trip?.current_location);
+  const { coords } = useAddress(trip?.current_location);
 
   return (
     <>

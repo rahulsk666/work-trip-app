@@ -1,4 +1,6 @@
 import Loading from "@/components/Loading";
+import { APP_COLORS } from "@/lib/consts";
+import { useReceiptPaginatedQuery } from "@/module/receipt/hooks";
 import TripDetailHeaderCard from "@/module/trip/components/TripDetailHeaderCard";
 import TripDetailTabSwitcher, {
   TripDetailTab,
@@ -6,16 +8,17 @@ import TripDetailTabSwitcher, {
 import { useTripByIdQuery } from "@/module/trip/hooks";
 import WorkSessionCard from "@/module/work/components/WorkSessionCard";
 import { useWorkPaginatedQuery } from "@/module/work/hooks";
+import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { ActivityIndicator, View } from "react-native";
+import { ActivityIndicator, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TripDetailScreen = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
 
-  const [activeTab, setActiveTab] = useState<TripDetailTab>("work");
+  const [activeTab, setActiveTab] = useState<TripDetailTab>("Work");
 
   const tripId = Array.isArray(id) ? id[0] : id;
 
@@ -29,11 +32,20 @@ const TripDetailScreen = () => {
     refetch: refetchWork,
   } = useWorkPaginatedQuery(tripId);
 
-  const works = workData?.pages.flatMap((page) => page.data) ?? [];
-  const receipts: any[] = [];
+  const {
+    data: receiptData,
+    fetchNextPage: fetchNextReceipt,
+    hasNextPage: hasNextReceipt,
+    isFetchingNextPage: isFetchingReceipt,
+    isLoading: isLoadingReceipt,
+    refetch: refetchReceipt,
+  } = useReceiptPaginatedQuery(tripId);
 
-  const activeData = activeTab === "work" ? works : receipts;
-  const isLoadingActive = activeTab === "work" ? isLoadingWork : false;
+  const works = workData?.pages.flatMap((page) => page.data) ?? [];
+  const receipts = receiptData?.pages.flatMap((page) => page.data) ?? [];
+
+  const activeData = activeTab === "Work" ? works : receipts;
+  const isLoadingActive = activeTab === "Work" ? isLoadingWork : false;
 
   if (isLoading) {
     return <Loading />;
@@ -46,57 +58,57 @@ const TripDetailScreen = () => {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
-      <FlatList
-        data={activeData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) =>
-          activeTab === "work" ? (
-            <WorkSessionCard work={item} />
-          ) : (
-            // 🔜 <ReceiptCard receipt={item} />
-            <View />
-          )
-        }
-        contentContainerStyle={{ gap: 10 }}
-        onEndReached={() => {
-          if (activeTab === "work" && hasNextWork && !isFetchingWork) {
-            fetchNextWork();
+      {activeTab === "Work" ? (
+        <FlatList
+          data={works}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <WorkSessionCard work={item} />}
+          contentContainerStyle={{ gap: 10 }}
+          ListEmptyComponent={
+            !isLoadingWork ? (
+              <View className="items-center justify-center py-10 gap-2">
+                <Ionicons
+                  name="briefcase-outline"
+                  size={40}
+                  color={APP_COLORS.textMuted}
+                />
+                <Text className="font-poppins text-textSecondary text-sm">
+                  No work sessions found
+                </Text>
+              </View>
+            ) : null
           }
-          // 🔜 add receipts pagination here
-        }}
-        onEndReachedThreshold={0.5}
+          onEndReached={() => {
+            if (hasNextWork && !isFetchingWork) fetchNextWork();
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingWork ? (
+              <ActivityIndicator style={{ padding: 16 }} />
+            ) : null
+          }
+          refreshing={isLoadingWork}
+          onRefresh={refetchWork}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : (
+        <></>
+        // <FlatList
+        //   data={receipts}
+        //   keyExtractor={(item) => item.id}
+        //   // renderItem={({ item }) => <ReceiptCard receipt={item} />}
+        //   contentContainerStyle={{ paddingHorizontal: 16, gap: 10 }}
         //   ListEmptyComponent={
-        //   !isLoadingActive ? (
         //     <View className="items-center justify-center py-10 gap-2">
-        //       <Ionicons
-        //         name={activeTab === "work" ? "briefcase-outline" : "receipt-outline"}
-        //         size={40}
-        //         color={APP_COLORS.textMuted}
-        //       />
+        //       <Ionicons name="receipt-outline" size={40} color={APP_COLORS.textMuted} />
         //       <Text className="font-poppins text-textSecondary text-sm">
-        //         No {activeTab === "work" ? "work sessions" : "receipts"} found
+        //         No receipts found
         //       </Text>
         //     </View>
-        //   ) : null
-        // }
-        // ListHeaderComponent={() => (
-        //   <>
-        //     <TripDetailHeaderCard trip={trip} />
-        //     <TripDetailTabSwitcher
-        //       activeTab={activeTab}
-        //       setActiveTab={setActiveTab}
-        //     />
-        //   </>
-        // )}
-        ListFooterComponent={
-          isFetchingWork && activeTab === "work" ? (
-            <ActivityIndicator style={{ padding: 16 }} />
-          ) : null
-        }
-        refreshing={isLoadingActive}
-        onRefresh={activeTab === "work" ? refetchWork : undefined}
-        showsVerticalScrollIndicator={false}
-      />
+        //   }
+        //   showsVerticalScrollIndicator={false}
+        // />
+      )}
     </SafeAreaView>
   );
 };

@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 
-export type TripDetailTab = "work" | "receipts";
+export type TripDetailTab = "Work" | "Receipts";
 
 interface TripDetailTabSwitcherProps {
   activeTab: TripDetailTab;
@@ -19,22 +19,28 @@ const TripDetailTabSwitcher = ({
       className="flex-row rounded-xl"
       style={{ backgroundColor: APP_COLORS.cardElevated }}
     >
-      {(["work", "receipts"] as TripDetailTab[]).map((tab) => (
+      {(["Work", "Receipts"] as TripDetailTab[]).map((tab) => (
         <TouchableOpacity
           key={tab}
           onPress={() => setActiveTab(tab)}
-          className="flex-1 p-2 rounded-lg items-center justify-center flex-row gap-2"
+          className="flex-1 p-2 rounded-full items-center justify-center flex-row gap-2"
           style={{
             backgroundColor:
-              activeTab === tab ? APP_COLORS.primary : "transparent",
+              activeTab === tab
+                ? tab === "Work"
+                  ? APP_COLORS.successShadow
+                  : APP_COLORS.warningShadow
+                : "transparent",
           }}
         >
           <Ionicons
-            name={tab === "work" ? "briefcase" : "receipt"}
+            name={tab === "Work" ? "briefcase" : "receipt"}
             size={16}
             color={
               activeTab === tab
-                ? APP_COLORS.textPrimary
+                ? tab === "Work"
+                  ? APP_COLORS.successDark
+                  : APP_COLORS.warningDark
                 : APP_COLORS.textSecondary
             }
           />
@@ -43,7 +49,9 @@ const TripDetailTabSwitcher = ({
             style={{
               color:
                 activeTab === tab
-                  ? APP_COLORS.textPrimary
+                  ? tab === "Work"
+                    ? APP_COLORS.successDark
+                    : APP_COLORS.warningDark
                   : APP_COLORS.textSecondary,
             }}
           >

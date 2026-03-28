@@ -84,9 +84,16 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
               : ""}
           </Text>
         </View>
-        <View className="flex-col gap-2 justify-start items-center">
+        <View className="flex-col gap-2 justify-center">
           <Text className="text-textSecondary font-bold">DURATION</Text>
-          <Text className="text-textSecondary font-bold">
+          <Text
+            className="text-textSecondary font-bold rounded-lg text-center p-1"
+            style={{
+              backgroundColor: APP_COLORS.successShadow,
+              color: APP_COLORS.successDark,
+              textAlign: "center",
+            }}
+          >
             {duration?.short ?? "00h 00m"}
           </Text>
         </View>
