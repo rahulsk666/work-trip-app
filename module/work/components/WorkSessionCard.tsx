@@ -3,6 +3,7 @@ import { APP_COLORS } from "@/lib/consts";
 import { calculateDuration } from "@/lib/duration";
 import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Work } from "../schemas/work.schema";
@@ -18,11 +19,18 @@ const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
       ? calculateDuration(work.start_time, work.end_time)
       : null;
 
+  const formattedIndex = String(Number(index) + 1).padStart(3, "0");
+
   return (
     <TouchableOpacity
       className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center"
       activeOpacity={1}
-      onPress={() => console.log("Work Detail")}
+      onPress={() =>
+        router.navigate({
+          pathname: "/(work)/[id]",
+          params: { id: work.id, index: index },
+        })
+      }
     >
       <View className="flex-row justify-between">
         <View className="flex-row justify-start items-center gap-2">
@@ -40,8 +48,8 @@ const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
               color={APP_COLORS.primary}
             />
           </View>
-          <Text className="text-lg font-bold text-textPrimary">
-            #{index + 1}
+          <Text className="text-xl font-bold text-textPrimary">
+            #{formattedIndex}
           </Text>
         </View>
         <View
