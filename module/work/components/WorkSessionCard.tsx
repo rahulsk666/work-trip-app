@@ -4,21 +4,26 @@ import { calculateDuration } from "@/lib/duration";
 import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Work } from "../schemas/work.schema";
 
 interface WorkSessionCardProps {
   work: Work;
+  index: number;
 }
 
-const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
+const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
   const duration =
     work.start_time && work.end_time
       ? calculateDuration(work.start_time, work.end_time)
       : null;
 
   return (
-    <View className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center">
+    <TouchableOpacity
+      className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center"
+      activeOpacity={1}
+      onPress={() => console.log("Work Detail")}
+    >
       <View className="flex-row justify-between">
         <View className="flex-row justify-start items-center gap-2">
           <View
@@ -36,7 +41,7 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
             />
           </View>
           <Text className="text-lg font-bold text-textPrimary">
-            Work Activity
+            #{index + 1}
           </Text>
         </View>
         <View
@@ -98,7 +103,7 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

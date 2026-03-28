@@ -9,6 +9,8 @@ export const receiptSchema = z.object({
   amount: z.coerce.number(),
   description: z.string().max(100, "Description is too long").optional(),
   image_url: z.string().nullable().optional(),
+  created_at: z.string().nullable().optional(),
+  updated_at: z.string().nullable().optional(),
 });
 
 export type Receipt = z.infer<typeof receiptSchema>;

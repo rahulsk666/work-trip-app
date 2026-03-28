@@ -1,5 +1,6 @@
 import Loading from "@/components/Loading";
 import { APP_COLORS } from "@/lib/consts";
+import ReceiptCard from "@/module/receipt/components/ReceiptCard";
 import { useReceiptPaginatedQuery } from "@/module/receipt/hooks";
 import TripDetailHeaderCard from "@/module/trip/components/TripDetailHeaderCard";
 import TripDetailTabSwitcher, {
@@ -62,7 +63,9 @@ const TripDetailScreen = () => {
         <FlatList
           data={works}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <WorkSessionCard work={item} />}
+          renderItem={({ item, index }) => (
+            <WorkSessionCard work={item} index={index} />
+          )}
           contentContainerStyle={{ gap: 10 }}
           ListEmptyComponent={
             !isLoadingWork ? (
@@ -92,22 +95,36 @@ const TripDetailScreen = () => {
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <></>
-        // <FlatList
-        //   data={receipts}
-        //   keyExtractor={(item) => item.id}
-        //   // renderItem={({ item }) => <ReceiptCard receipt={item} />}
-        //   contentContainerStyle={{ paddingHorizontal: 16, gap: 10 }}
-        //   ListEmptyComponent={
-        //     <View className="items-center justify-center py-10 gap-2">
-        //       <Ionicons name="receipt-outline" size={40} color={APP_COLORS.textMuted} />
-        //       <Text className="font-poppins text-textSecondary text-sm">
-        //         No receipts found
-        //       </Text>
-        //     </View>
-        //   }
-        //   showsVerticalScrollIndicator={false}
-        // />
+        <FlatList
+          data={receipts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => <ReceiptCard receipt={item} />}
+          contentContainerStyle={{ gap: 10 }}
+          ListEmptyComponent={
+            <View className="items-center justify-center py-10 gap-2">
+              <Ionicons
+                name="receipt-outline"
+                size={40}
+                color={APP_COLORS.textMuted}
+              />
+              <Text className="font-poppins text-textSecondary text-sm">
+                No receipts found
+              </Text>
+            </View>
+          }
+          onEndReached={() => {
+            if (hasNextReceipt && !isFetchingReceipt) fetchNextReceipt();
+          }}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingReceipt ? (
+              <ActivityIndicator style={{ padding: 16 }} />
+            ) : null
+          }
+          refreshing={isLoadingReceipt}
+          onRefresh={refetchReceipt}
+          showsVerticalScrollIndicator={false}
+        />
       )}
     </SafeAreaView>
   );
