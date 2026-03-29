@@ -1,4 +1,5 @@
 import AppMapView from "@/components/AppMapView";
+import Loading from "@/components/Loading";
 import ProfileHeader from "@/components/profile-header";
 import { formatDate } from "@/lib/fomatDate";
 import WorkDetailCard from "@/module/work/components/WorkDetailCard";
@@ -15,6 +16,10 @@ const WorkDetailScreen = () => {
   }>();
   const { data: work } = useWorkByIdQuery(id);
   const formattedIndex = String(Number(index) + 1).padStart(3, "0");
+
+  if (!work) {
+    return <Loading />;
+  }
   return (
     <SafeAreaView className="flex-1 bg-background">
       <ProfileHeader pageName="Work Detail" ShowSettings />
@@ -32,7 +37,11 @@ const WorkDetailScreen = () => {
           height={400}
         />
       </View>
-      <WorkDetailCard startTime={work?.start_time} endTime={work?.end_time} />
+      <WorkDetailCard
+        startTime={work?.start_time}
+        endTime={work?.end_time}
+        workDate={work?.created_at ? formatDate(work?.created_at) : ""}
+      />
     </SafeAreaView>
   );
 };

@@ -1,6 +1,6 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useDuration } from "@/hooks/useDuration";
 import { APP_COLORS } from "@/lib/consts";
-import { calculateDuration } from "@/lib/duration";
 import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
@@ -14,10 +14,7 @@ interface WorkSessionCardProps {
 }
 
 const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
-  const duration =
-    work.start_time && work.end_time
-      ? calculateDuration(work.start_time, work.end_time)
-      : null;
+  const duration = useDuration(work.start_time, work.end_time, work.created_at);
 
   const formattedIndex = String(Number(index) + 1).padStart(3, "0");
 

@@ -1,7 +1,9 @@
 import TitleLabel from "@/components/title-label";
+import { useDuration } from "@/hooks/useDuration";
+import { calculateTotalWorkTime } from "@/lib/calaculateWork";
 import { APP_COLORS } from "@/lib/consts";
-import { calculateDuration } from "@/lib/duration";
 import { useLatestTripQuery } from "@/module/trip/hooks";
+import { useWorkByTripQuery } from "@/module/work/hooks";
 import React from "react";
 import { View } from "react-native";
 import StatCard from "./StatCard";
@@ -9,9 +11,14 @@ import StatCard from "./StatCard";
 const TodaysActivity = () => {
   const { data: trip } = useLatestTripQuery();
 
-  const duration = trip
-    ? calculateDuration(trip.start_time, trip.end_time)
-    : null;
+  const duration = useDuration(
+    trip?.start_time ?? "",
+    trip?.end_time,
+    trip?.trip_date,
+  );
+
+  const { data: works } = useWorkByTripQuery({ tripId: trip?.id });
+  const totalWorks = calculateTotalWorkTime(works ?? []);
 
   const kmDriven =
     trip?.end_km && trip?.start_km
@@ -26,7 +33,7 @@ const TodaysActivity = () => {
           label="Work Hours"
           color={trip ? APP_COLORS.primary : APP_COLORS.textMuted}
           disableShadow={trip ? false : true}
-          value={duration ? duration.short : "0h 00m"}
+          value={totalWorks?.formatted ?? "00h 00m"}
         />
         <StatCard
           icon="speedometer-sharp"

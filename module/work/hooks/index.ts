@@ -32,6 +32,15 @@ export const useWorkPaginatedQuery = (
   });
 };
 
+export const useWorkByTripQuery = ({ tripId }: { tripId?: string }) => {
+  const { data: user } = useUserQuery();
+  return useQuery({
+    queryKey: workKeys.getByAll(tripId),
+    queryFn: () => workApi.getAll(user!.id, tripId as string),
+    enabled: !!tripId && !!user?.id,
+  });
+};
+
 export const useWorkByLimitQuery = ({
   tripId,
   limit = 2,

@@ -1,5 +1,5 @@
+import { useDuration } from "@/hooks/useDuration";
 import { APP_COLORS } from "@/lib/consts";
-import { calculateDuration } from "@/lib/duration";
 import { formatTime } from "@/lib/formatTime";
 import React from "react";
 import { Text, View } from "react-native";
@@ -7,11 +7,15 @@ import { Text, View } from "react-native";
 interface WorkDetailCardProps {
   startTime?: string;
   endTime?: string | null;
+  workDate?: string | null;
 }
 
-const WorkDetailCard = ({ startTime, endTime }: WorkDetailCardProps) => {
-  const duration =
-    startTime && endTime ? calculateDuration(startTime, endTime) : null;
+const WorkDetailCard = ({
+  startTime,
+  endTime,
+  workDate,
+}: WorkDetailCardProps) => {
+  const duration = useDuration(startTime ?? "", endTime, workDate);
   return (
     <View className="bg-card rounded-xl" style={{ padding: 10, margin: 15 }}>
       <View className="flex-col justify-start gap-6 p-2">
@@ -33,7 +37,7 @@ const WorkDetailCard = ({ startTime, endTime }: WorkDetailCardProps) => {
             </Text>
           </View>
           <View className="flex-col gap-2 items-center">
-            <Text className="text-textPrimary">Work Start Time</Text>
+            <Text className="text-textPrimary">Work End Time</Text>
             <Text className="text-center text-textPrimary text-lg font-bold">
               {endTime ? formatTime(endTime) : ""}
             </Text>
