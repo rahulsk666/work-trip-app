@@ -9,7 +9,7 @@ const Trip = () => {
   return (
     <SafeAreaView className="flex-1 bg-background m-2">
       <ProfileHeader
-        pageName={`${trip ? "Work Tracker" : "Daily Trip Tracker"}`}
+        pageName={"Stop Trip"}
         showOnline={trip ? false : true}
         OnlineStatus
         ShowSettings

@@ -1,14 +1,17 @@
 import Button from "@/components/Button";
+import ConfirmModal from "@/components/ConfirmModal";
 import Input from "@/components/Input";
 import { useDuration } from "@/hooks/useDuration";
+import { APP_COLORS } from "@/lib/consts";
 import { Duration } from "@/lib/duration";
 import { default as ImageUpload } from "@/module/trip/components/ImageUpload";
 import TripCountDown from "@/module/trip/components/TripCountdown";
 import TripCurrentLocation from "@/module/trip/components/TripCurrentLocation";
 import VehicleStatusCard from "@/module/trip/components/VehicleStatusCard";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
+import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
-import React from "react";
+import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import { ScrollView, Text, View } from "react-native";
 import { toast } from "sonner-native";
@@ -68,6 +71,15 @@ const TripFormUI = ({
     trip?.end_time,
     trip?.trip_date,
   );
+  const [modal, setModal] = useState<{
+    visible: boolean;
+    onConfirm: () => void;
+  }>({
+    visible: false,
+    onConfirm: () => {},
+  });
+
+  const closeModal = () => setModal({ visible: false, onConfirm: () => {} });
 
   return (
     <ScrollView
@@ -196,7 +208,10 @@ const TripFormUI = ({
             }
             classname="w-full m-2"
             onPress={handleSubmit(
-              (data) => onSubmit(data),
+              (data) =>
+                isStop
+                  ? setModal({ visible: true, onConfirm: () => onSubmit(data) })
+                  : onSubmit(data),
               () => toast.error("Please fill in all required fields"),
             )}
             disabled={isLoading}
@@ -204,6 +219,18 @@ const TripFormUI = ({
           />
         </View>
       </View>
+      <ConfirmModal
+        visible={modal.visible}
+        description="Ending this trip will prevent adding any more work sessions today.
+        Please ensure you have completed all work, reached home/base, and will not use the company vehicle for personal activities."
+        onConfirm={modal.onConfirm}
+        onCancel={closeModal}
+        title="Confirm Trip End?"
+        icon={
+          <Ionicons name="warning" size={40} color={APP_COLORS.warningDark} />
+        }
+        variant="warning"
+      />
     </ScrollView>
   );
 };
