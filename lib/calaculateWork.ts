@@ -3,9 +3,6 @@ import { Work } from "@/module/work/schemas/work.schema";
 export const calculateTotalWorkTime = (works: Work[]) => {
   let totalMs = 0;
 
-  if (!works) {
-    return;
-  }
   works.forEach((work) => {
     if (!work.start_time) return;
 
