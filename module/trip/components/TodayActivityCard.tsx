@@ -25,7 +25,9 @@ const TodayActivityCard = ({ tripId }: { tripId: string }) => {
         className="mt-2"
         data={works}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <WorkSessionCard work={item} />}
+        renderItem={({ item, index }) => (
+          <WorkSessionCard work={item} index={index} />
+        )}
         contentContainerStyle={{ gap: 10 }}
       />
     </View>

@@ -1,24 +1,32 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
+import { useDuration } from "@/hooks/useDuration";
 import { APP_COLORS } from "@/lib/consts";
-import { calculateDuration } from "@/lib/duration";
 import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Work } from "../schemas/work.schema";
 
 interface WorkSessionCardProps {
   work: Work;
+  index: number;
 }
 
-const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
-  const duration =
-    work.start_time && work.end_time
-      ? calculateDuration(work.start_time, work.end_time)
-      : null;
-
+const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
+  const duration = useDuration(work.start_time, work.end_time, work.created_at);
+  const formattedIndex = String(Number(index) + 1).padStart(3, "0");
   return (
-    <View className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center">
+    <TouchableOpacity
+      className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center"
+      activeOpacity={1}
+      onPress={() =>
+        router.navigate({
+          pathname: "/(work)/[id]",
+          params: { id: work.id, index: index },
+        })
+      }
+    >
       <View className="flex-row justify-between">
         <View className="flex-row justify-start items-center gap-2">
           <View
@@ -35,8 +43,8 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
               color={APP_COLORS.primary}
             />
           </View>
-          <Text className="text-lg font-bold text-textPrimary">
-            Work Activity
+          <Text className="text-xl font-bold text-textPrimary">
+            #{formattedIndex}
           </Text>
         </View>
         <View
@@ -84,14 +92,21 @@ const WorkSessionCard = ({ work }: WorkSessionCardProps) => {
               : ""}
           </Text>
         </View>
-        <View className="flex-col gap-2 justify-start items-center">
+        <View className="flex-col gap-2 justify-center">
           <Text className="text-textSecondary font-bold">DURATION</Text>
-          <Text className="text-textSecondary font-bold">
+          <Text
+            className="text-textSecondary font-bold rounded-lg text-center p-1"
+            style={{
+              backgroundColor: APP_COLORS.successShadow,
+              color: APP_COLORS.successDark,
+              textAlign: "center",
+            }}
+          >
             {duration?.short ?? "00h 00m"}
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

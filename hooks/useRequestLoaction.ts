@@ -7,6 +7,7 @@ export function useRequestLocation() {
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null,
   );
+
   const [displayCurrentAddress, setDisplayCurrentAddress] = useState<
     string | null
   >(null);

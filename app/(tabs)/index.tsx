@@ -15,7 +15,7 @@ export default function DashboardScreen() {
   const { data: latestTrip, isLoading } = useLatestTripQuery();
   useLocationTracking(latestTrip?.id ?? null);
 
-  if (isLoading) {
+  if (isLoading || latestTrip === undefined) {
     return <Loading />;
   }
 

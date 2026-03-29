@@ -1,5 +1,5 @@
+import { useAddress } from "@/hooks/useAddress";
 import { useDuration } from "@/hooks/useDuration";
-import { useTripAddress } from "@/hooks/useTripAddress";
 import { APP_COLORS } from "@/lib/consts";
 import { withOpacity } from "@/lib/utils";
 import { useLatestTripQuery } from "@/module/trip/hooks";
@@ -15,7 +15,7 @@ import SwipeButton from "rn-swipe-button";
 const DutyInfo = () => {
   const { data: trip } = useLatestTripQuery();
   const { data: work } = useLatestWorkQuery(trip?.id);
-  const { address } = useTripAddress(trip?.current_location);
+  const { address } = useAddress(trip?.current_location);
   const duration = useDuration(
     trip?.start_time ?? "",
     trip?.end_time,

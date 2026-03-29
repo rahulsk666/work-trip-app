@@ -12,7 +12,7 @@ interface TripImageUploadProps {
   preview?: string | null;
 }
 
-const TripImageUpload = ({
+const ImageUpload = ({
   name,
   pickImage,
   pickImageCamera,
@@ -58,4 +58,4 @@ const TripImageUpload = ({
   );
 };
 
-export default TripImageUpload;
+export default ImageUpload;

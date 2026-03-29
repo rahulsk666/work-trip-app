@@ -1,13 +1,18 @@
 import { supabase } from "@/integrations/supabase/supabase";
 import { z } from "zod";
-import { Work, WorkCreate, WorkEnd, workSchema } from "../schemas/work.schema";
+import {
+  Receipt,
+  ReceiptCreate,
+  ReceiptEdit,
+  receiptSchema,
+} from "../schemas/receipt.schema";
 
-export const WORK_PAGE_SIZE = 10;
+export const RECEIPT_PAGE_SIZE = 10;
 
-export const workApi = {
-  async getAll(userId: string, tripId: string): Promise<Work[]> {
+export const receiptApi = {
+  async getAll(userId: string, tripId: string): Promise<Receipt[]> {
     const { data, error } = await supabase
-      .from("work_sessions")
+      .from("receipts")
       .select("*")
       .eq("user_id", userId)
       .eq("trip_id", tripId)
@@ -17,15 +22,15 @@ export const workApi = {
       throw new Error(error.message);
     }
 
-    return z.array(workSchema).parse(data ?? []);
+    return z.array(receiptSchema).parse(data ?? []);
   },
   async getByLimit(
     userId: string,
     tripId: string,
     limit: number,
-  ): Promise<Work[]> {
+  ): Promise<Receipt[]> {
     const { data, error } = await supabase
-      .from("work_sessions")
+      .from("receipts")
       .select("*")
       .eq("user_id", userId)
       .eq("trip_id", tripId)
@@ -36,21 +41,21 @@ export const workApi = {
       throw new Error(error.message);
     }
 
-    return z.array(workSchema).parse(data ?? []);
+    return z.array(receiptSchema).parse(data ?? []);
   },
   async getByPagination(
     userId: string,
     tripId: string,
     pageParam = 0,
-    pageSize = WORK_PAGE_SIZE,
+    pageSize = RECEIPT_PAGE_SIZE,
   ): Promise<{
-    data: Work[];
+    data: Receipt[];
     nextPage: number | undefined;
   }> {
     const from = pageParam * pageSize;
     const to = from + pageSize - 1;
     const { data, error } = await supabase
-      .from("work_sessions")
+      .from("receipts")
       .select("*")
       .eq("user_id", userId)
       .eq("trip_id", tripId)
@@ -60,14 +65,14 @@ export const workApi = {
     if (error) throw new Error(error.message);
 
     return {
-      data: z.array(workSchema).parse(data ?? []),
+      data: z.array(receiptSchema).parse(data ?? []),
       nextPage:
-        data && data.length === WORK_PAGE_SIZE ? pageParam + 1 : undefined,
+        data && data.length === RECEIPT_PAGE_SIZE ? pageParam + 1 : undefined,
     };
   },
-  async getById(id: string): Promise<Work> {
+  async getById(id: string): Promise<Receipt> {
     const { data, error } = await supabase
-      .from("work_sessions")
+      .from("receipts")
       .select("*")
       .eq("id", id)
       .single();
@@ -76,11 +81,11 @@ export const workApi = {
       throw new Error(error.message);
     }
 
-    return workSchema.parse(data);
+    return receiptSchema.parse(data);
   },
-  async getLatestWork(userId: string, tripId: string): Promise<Work | null> {
+  async getLatestWork(userId: string, tripId: string): Promise<Receipt | null> {
     const { data, error } = await supabase
-      .from("work_sessions")
+      .from("receipts")
       .select("*")
       .eq("user_id", userId)
       .eq("trip_id", tripId)
@@ -89,27 +94,27 @@ export const workApi = {
       .maybeSingle();
 
     if (error) throw error;
-    return data ? workSchema.parse(data) : null;
+    return data ? receiptSchema.parse(data) : null;
   },
-  async create(data: WorkCreate): Promise<Work> {
-    const { data: workData, error } = await supabase
-      .from("work_sessions")
+  async create(data: ReceiptCreate): Promise<Receipt> {
+    const { data: receiptData, error } = await supabase
+      .from("receipts")
       .insert(data)
       .select()
       .single();
 
-    if (error) throw error;
-    return workSchema.parse(workData);
+    if (error) console.log(error);
+    return receiptSchema.parse(receiptData);
   },
-  async edit(id: string, data: WorkEnd): Promise<Work> {
-    const { data: workData, error } = await supabase
-      .from("work_sessions")
+  async edit(id: string, data: ReceiptEdit): Promise<Receipt> {
+    const { data: receipData, error } = await supabase
+      .from("receipts")
       .update(data)
       .eq("id", id)
       .select()
       .single();
 
     if (error) throw error;
-    return workSchema.parse(workData);
+    return receiptSchema.parse(receipData);
   },
 };

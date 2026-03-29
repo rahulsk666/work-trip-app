@@ -1,6 +1,8 @@
 import { useDuration } from "@/hooks/useDuration";
+import { calculateTotalWorkTime } from "@/lib/calaculateWork";
 import { formatDate } from "@/lib/fomatDate";
 import { formatTime } from "@/lib/formatTime";
+import { useWorkByTripQuery } from "@/module/work/hooks";
 import React from "react";
 import { Text, View } from "react-native";
 import { Trip } from "../schemas/trip.schema";
@@ -11,7 +13,8 @@ const TripDetailHeaderCard = ({ trip }: { trip?: Trip }) => {
     trip?.end_time,
     trip?.trip_date,
   );
-
+  const { data: works } = useWorkByTripQuery({ tripId: trip?.id });
+  const totalWorks = calculateTotalWorkTime(works ?? []);
   return (
     <View className="flex-col items-center bg-cardElevated p-2 rounded-xl gap-2">
       <View>
@@ -30,7 +33,7 @@ const TripDetailHeaderCard = ({ trip }: { trip?: Trip }) => {
       <View className="flex-row justify-between" style={{ gap: 40 }}>
         <View className="flex-col items-center justify-center">
           <Text className="text-textPrimary">Work Time</Text>
-          <Text className="text-textPrimary">34h 24m</Text>
+          <Text className="text-textPrimary">{totalWorks?.formatted}</Text>
         </View>
         <View className="flex-col items-center justify-center">
           <Text className="text-textPrimary">Trip Start Time</Text>

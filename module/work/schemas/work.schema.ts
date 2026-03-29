@@ -13,6 +13,8 @@ export const workSchema = z.object({
   location: z.string().nullable().optional(), // POINT(lng lat)
   status: z.enum(["STARTED", "ENDED"]),
   notes: z.string().nullable().optional(),
+  created_at: z.string().nullable().optional(),
+  updated_at: z.string().nullable().optional(),
 });
 
 export type Work = z.infer<typeof workSchema>;
