@@ -15,9 +15,7 @@ interface WorkSessionCardProps {
 
 const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
   const duration = useDuration(work.start_time, work.end_time, work.created_at);
-
   const formattedIndex = String(Number(index) + 1).padStart(3, "0");
-
   return (
     <TouchableOpacity
       className="bg-card p-2 m-1 gap-2 rounded-lg flex-col justify-center"

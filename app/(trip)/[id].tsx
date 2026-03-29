@@ -95,7 +95,9 @@ const TripDetailScreen = () => {
         <FlatList
           data={receipts}
           keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => <ReceiptCard receipt={item} />}
+          renderItem={({ item, index }) => (
+            <ReceiptCard receipt={item} index={index} />
+          )}
           contentContainerStyle={{ gap: 10 }}
           ListEmptyComponent={
             <View className="items-center justify-center py-10 gap-2">

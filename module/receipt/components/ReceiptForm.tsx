@@ -113,7 +113,7 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
                 type="default"
                 error={fieldState.error?.message}
                 multiline
-                numberOfLines={3}
+                numberOfLines={2}
               />
             )}
           />

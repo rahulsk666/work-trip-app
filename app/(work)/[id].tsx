@@ -14,11 +14,11 @@ const WorkDetailScreen = () => {
     id: string;
     index: string;
   }>();
-  const { data: work } = useWorkByIdQuery(id);
+  const { data: work, isLoading } = useWorkByIdQuery(id);
   const formattedIndex = String(Number(index) + 1).padStart(3, "0");
 
-  if (!work) {
-    return <Loading />;
+  if (!work || isLoading) {
+    return <Loading label="Loading work details..." />;
   }
   return (
     <SafeAreaView className="flex-1 bg-background">

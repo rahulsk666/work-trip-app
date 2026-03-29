@@ -45,7 +45,7 @@ const Input = ({
           onBlur={onBlur}
           keyboardType={type}
           multiline={multiline}
-          numberOfLines={1}
+          numberOfLines={numberOfLines}
           style={{
             textAlignVertical: multiline ? "top" : "center",
             minHeight: multiline ? 100 : undefined,

@@ -8,6 +8,7 @@ export default function ReceiptLayout() {
       }}
     >
       <Stack.Screen name="receipt" />
+      <Stack.Screen name="[id]" />
     </Stack>
   );
 }
