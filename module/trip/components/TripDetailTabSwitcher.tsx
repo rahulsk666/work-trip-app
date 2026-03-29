@@ -31,6 +31,13 @@ const TripDetailTabSwitcher = ({
                   ? APP_COLORS.successShadow
                   : APP_COLORS.warningShadow
                 : "transparent",
+            borderWidth: 1.5,
+            borderColor:
+              activeTab === tab
+                ? tab === "Work"
+                  ? APP_COLORS.successButton
+                  : APP_COLORS.warningDark
+                : "transparent",
           }}
         >
           <Ionicons

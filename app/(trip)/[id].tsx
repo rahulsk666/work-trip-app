@@ -45,8 +45,8 @@ const TripDetailScreen = () => {
   const works = workData?.pages.flatMap((page) => page.data) ?? [];
   const receipts = receiptData?.pages.flatMap((page) => page.data) ?? [];
 
-  if (isLoading) {
-    return <Loading />;
+  if (isLoading || !trip) {
+    return <Loading label="Loading Trip details.." />;
   }
 
   return (
