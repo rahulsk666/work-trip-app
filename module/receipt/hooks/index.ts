@@ -99,5 +99,6 @@ export const useReceiptCreateForm = () =>
       amount: "",
       description: "",
       image_url: "",
+      status: "PENDING",
     },
   });
