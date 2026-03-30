@@ -1,5 +1,6 @@
 import { APP_COLORS } from "@/lib/consts";
 import { formatTime } from "@/lib/formatTime";
+import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -49,19 +50,63 @@ const ReceiptCard = ({ receipt, index }: ReceiptCardProps) => {
           </Text>
         </View>
       </View>
-
-      <View className="flex-col gap-2 p-4">
-        <Text className="text-textSecondary font-bold">AMOUNT</Text>
-        <Text
-          className="text-textSecondary font-bold rounded-lg text-center p-1"
+      <View className="flex-col justify-between items-center gap-2">
+        <View
+          className="flex-row items-center justify-center p-1 rounded-lg"
           style={{
-            backgroundColor: APP_COLORS.warningShadow,
-            color: APP_COLORS.warningDark,
-            textAlign: "center",
+            backgroundColor:
+              receipt.status === "PENDING"
+                ? APP_COLORS.warningShadow
+                : receipt.status === "VERIFIED"
+                  ? APP_COLORS.successShadow
+                  : APP_COLORS.dangerShadow,
+            gap: 3,
+            paddingHorizontal: 9,
+            marginVertical: 6,
           }}
         >
-          {receipt.amount}$
-        </Text>
+          <Ionicons
+            name="checkmark-circle"
+            size={12}
+            color={
+              receipt.status === "PENDING"
+                ? APP_COLORS.warningDark
+                : receipt.status === "VERIFIED"
+                  ? APP_COLORS.successDark
+                  : APP_COLORS.dangerDark
+            }
+          />
+          <Text
+            className="text-sm font-semibold"
+            style={{
+              color:
+                receipt.status === "PENDING"
+                  ? APP_COLORS.warningDark
+                  : receipt.status === "VERIFIED"
+                    ? APP_COLORS.successDark
+                    : APP_COLORS.dangerDark,
+            }}
+          >
+            {receipt.status === "PENDING"
+              ? "Pending"
+              : receipt.status === "VERIFIED"
+                ? "Verified"
+                : "Rejected"}
+          </Text>
+        </View>
+        <View className="flex-col gap-2 p-2 px-4">
+          <Text className="text-textSecondary font-bold">AMOUNT</Text>
+          <Text
+            className="text-textSecondary font-bold rounded-lg text-center p-1"
+            style={{
+              backgroundColor: APP_COLORS.warningShadow,
+              color: APP_COLORS.warningDark,
+              textAlign: "center",
+            }}
+          >
+            {receipt.amount}$
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );

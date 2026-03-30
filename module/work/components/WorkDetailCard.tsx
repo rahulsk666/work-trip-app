@@ -3,6 +3,7 @@ import { useDuration } from "@/hooks/useDuration";
 import { APP_COLORS } from "@/lib/consts";
 import { formatDate } from "@/lib/fomatDate";
 import { formatTime } from "@/lib/formatTime";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
 import { Work } from "../schemas/work.schema";
@@ -37,9 +38,43 @@ const WorkDetailCard = ({ work, index }: WorkDetailCardProps) => {
       </View>
       <View className="bg-card rounded-xl" style={{ padding: 10, margin: 15 }}>
         <View className="flex-col justify-start gap-6 p-2">
-          <Text className="text-textSecondary text-xl font-bold">
-            WORK METRICS
-          </Text>
+          <View className="flex-row justify-between">
+            <Text className="text-textSecondary text-xl font-bold">
+              WORK METRICS
+            </Text>
+            <View
+              className="flex-row items-center justify-center p-1 rounded-lg"
+              style={{
+                backgroundColor:
+                  work.status === "STARTED"
+                    ? APP_COLORS.primaryShadow
+                    : APP_COLORS.successShadow,
+                gap: 3,
+                paddingHorizontal: 10,
+              }}
+            >
+              <Ionicons
+                name="checkmark-circle"
+                size={16}
+                color={
+                  work.status === "STARTED"
+                    ? APP_COLORS.primaryDark
+                    : APP_COLORS.successDark
+                }
+              />
+              <Text
+                className="text-lg font-bold"
+                style={{
+                  color:
+                    work.status === "STARTED"
+                      ? APP_COLORS.primaryDark
+                      : APP_COLORS.successDark,
+                }}
+              >
+                {work.status === "ENDED" ? "Completed" : "In Progress"}
+              </Text>
+            </View>
+          </View>
           <View className="flex-col gap-2">
             <Text className="text-textMuted">DURATION</Text>
             <Text

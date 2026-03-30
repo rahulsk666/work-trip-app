@@ -44,16 +44,15 @@ const TripCard = ({ trip }: WorkSessionCardProps) => {
           </Text>
         </View>
         <View
-          className="flex-row justify-center items-center gap-1 m-1"
+          className="flex-row justify-center items-center p-1 gap-1 m-1"
           style={{
             backgroundColor:
               trip.status === "ENDED"
                 ? APP_COLORS.successShadow
                 : APP_COLORS.primaryShadow,
-            paddingHorizontal: 3,
+            paddingHorizontal: 5,
             borderRadius: 4,
             marginTop: 8,
-            height: "50%",
           }}
         >
           <Ionicons
@@ -62,7 +61,7 @@ const TripCard = ({ trip }: WorkSessionCardProps) => {
             color={
               trip.status === "ENDED"
                 ? APP_COLORS.successDark
-                : APP_COLORS.primary
+                : APP_COLORS.primaryDark
             }
           />
           <Text

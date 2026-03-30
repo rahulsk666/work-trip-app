@@ -1,5 +1,6 @@
 import { APP_COLORS } from "@/lib/consts";
 import { formatDate } from "@/lib/fomatDate";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, Text, View } from "react-native";
 import { Receipt } from "../schemas/receipt.schema";
@@ -36,8 +37,50 @@ const ReceiptDetailCard = ({ receipt, index }: ReceiptDetailCardProps) => {
         className="bg-card rounded-xl flex-col p-4 gap-6"
         style={{ marginTop: 20 }}
       >
-        <View>
+        <View className="flex-row justify-between">
           <Text className="text-textSecondary font-bold">RECEIPT INFO</Text>
+          <View
+            className="flex-row items-center justify-center p-1 rounded-lg"
+            style={{
+              backgroundColor:
+                receipt.status === "PENDING"
+                  ? APP_COLORS.warningShadow
+                  : receipt.status === "VERIFIED"
+                    ? APP_COLORS.successShadow
+                    : APP_COLORS.dangerShadow,
+              gap: 3,
+              paddingHorizontal: 10,
+            }}
+          >
+            <Ionicons
+              name="checkmark-circle"
+              size={16}
+              color={
+                receipt.status === "PENDING"
+                  ? APP_COLORS.warningDark
+                  : receipt.status === "VERIFIED"
+                    ? APP_COLORS.successDark
+                    : APP_COLORS.dangerDark
+              }
+            />
+            <Text
+              className="text-lg font-bold"
+              style={{
+                color:
+                  receipt.status === "PENDING"
+                    ? APP_COLORS.warningDark
+                    : receipt.status === "VERIFIED"
+                      ? APP_COLORS.successDark
+                      : APP_COLORS.dangerDark,
+              }}
+            >
+              {receipt.status === "PENDING"
+                ? "Pending"
+                : receipt.status === "VERIFIED"
+                  ? "Verified"
+                  : "Rejected"}
+            </Text>
+          </View>
         </View>
         <View className="flex-col gap-2">
           <Text className="text-textMuted font-bold">AMOUNT</Text>
