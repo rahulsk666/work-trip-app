@@ -17,7 +17,7 @@ import {
   ReceiptEdit,
 } from "../schemas/receipt.schema";
 
-// use trip queries
+// use receipt queries
 export const useReceiptPaginatedQuery = (
   tripId: string | undefined,
   pageSize?: number,
@@ -57,7 +57,7 @@ export const useLatestReceiptQuery = (tripId: string | undefined) => {
   });
 };
 
-// trip mutations
+// receipt mutations
 
 export const useCreateReceiptMutation = () => {
   const qc = useQueryClient();

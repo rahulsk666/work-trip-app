@@ -115,7 +115,7 @@ export const useImageUpload = ({
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ["images"],
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [9, 16],
       quality: 0.8,
       base64: true,
     });

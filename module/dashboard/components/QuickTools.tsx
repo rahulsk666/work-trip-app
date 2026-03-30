@@ -30,6 +30,7 @@ const QuickTools = ({ disabled }: QuickToolsProps) => {
         <QuickToolCard
           icon="shield-alert"
           label="Accident"
+          onPress={() => router.navigate("/(accident)/accident")}
           color={disabled ? APP_COLORS.textMuted : APP_COLORS.danger}
           disabled={disabled}
         />
