@@ -4,7 +4,6 @@ import { useLocationTracking } from "@/hooks/useLocationTracking";
 import DashboardActions from "@/module/dashboard/components/DashboardActions";
 import DutyInfo from "@/module/dashboard/components/DutyInfo";
 import QuickTools from "@/module/dashboard/components/QuickTools";
-import TodaysActivity from "@/module/dashboard/components/TodaysActivity";
 import { useUserQuery } from "@/module/profile/hooks";
 import { useLatestTripQuery } from "@/module/trip/hooks";
 import React from "react";
@@ -31,9 +30,7 @@ export default function DashboardScreen() {
       />
 
       <DutyInfo />
-      <TodaysActivity />
       <QuickTools disabled={latestTrip ? false : true} />
-
       <DashboardActions />
     </SafeAreaView>
   );

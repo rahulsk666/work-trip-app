@@ -18,16 +18,15 @@ export default function StatCard({
 }) {
   return (
     <View
-      className={`${disableShadow ? "bg-background" : "bg-card"} rounded-2xl p-4 border border-borderSubtle`}
-      style={{ width: "48%" }}
+      className={`${disableShadow ? "bg-background" : "bg-card"} rounded-2xl p-4 border border-borderSubtle w-full flex-1 items-center`}
     >
       <View className="flex-row items-center gap-2">
         <View
           className={`flex items-center justify-center rounded-md`}
           style={{
             backgroundColor: withOpacity(color, 0.1),
-            width: 30,
-            height: 30,
+            // width: 30,
+            // height: 30,
           }}
         >
           <Ionicons name={icon} size={20} color={color} />

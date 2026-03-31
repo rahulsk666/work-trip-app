@@ -27,7 +27,8 @@ const DutyInfo = () => {
       <View
         className="bg-darkCharcoal rounded-xl p-5 items-center justify-center"
         style={{
-          minHeight: 150,
+          minHeight: 130,
+          maxHeight: 150,
           borderStyle: "dashed",
           borderWidth: 2,
           borderColor: withOpacity(APP_COLORS.textPrimary, 0.3),
@@ -61,7 +62,10 @@ const DutyInfo = () => {
     );
   }
   return (
-    <View className="flex-col rounded-xl overflow-hidden bg-darkCharcoal mb-2">
+    <View
+      className="flex-col rounded-xl overflow-hidden bg-darkCharcoal mb-2"
+      style={{ minHeight: 300 }}
+    >
       <ImageBackground
         source={require("@/assets/map-fallback.png")}
         imageStyle={{ borderRadius: 12 }}

@@ -11,12 +11,9 @@ interface QuickToolsProps {
 
 const QuickTools = ({ disabled }: QuickToolsProps) => {
   return (
-    <View className="mt-3">
+    <View className="">
       <TitleLabel title="Quick Tools" />
-      <View
-        className="flex-row items-center justify-center mt-3 gap-6"
-        style={{ width: "100%" }}
-      >
+      <View className="flex-row items-center justify-center mt-3 gap-3">
         <QuickToolCard
           icon="receipt-text"
           label="Receipts"

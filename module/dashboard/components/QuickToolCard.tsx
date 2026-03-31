@@ -20,7 +20,7 @@ export default function QuickToolCard({
 }) {
   return (
     <TouchableOpacity
-      className="rounded-2xl p-4 items-center border border-borderSubtle"
+      className="flex-1 rounded-lg p-4 items-center border border-borderSubtle"
       style={{
         padding: 20,
         paddingHorizontal: 40,
