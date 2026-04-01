@@ -5,6 +5,11 @@ export default {
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
+    splash: {
+      image: "./assets/images/splash.png",
+      resizeMode: "contain",
+      backgroundColor: "#90B8F8",
+    },
     scheme: "work-trip-app",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
@@ -14,10 +19,8 @@ export default {
     },
     android: {
       adaptiveIcon: {
-        backgroundColor: "#E6F4FE",
-        foregroundImage: "./assets/images/android-icon-foreground.png",
-        backgroundImage: "./assets/images/android-icon-background.png",
-        monochromeImage: "./assets/images/android-icon-monochrome.png",
+        foregroundImage: "./assets/images/adaptive-icon.png",
+        backgroundColor: "#90B8F8",
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
@@ -41,7 +44,7 @@ export default {
           image: "./assets/images/splash-icon.png",
           imageWidth: 200,
           resizeMode: "contain",
-          backgroundColor: "#ffffff",
+          backgroundColor: "#90B8F8",
           dark: { backgroundColor: "#000000" },
         },
       ],

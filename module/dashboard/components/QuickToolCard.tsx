@@ -20,10 +20,12 @@ export default function QuickToolCard({
 }) {
   return (
     <TouchableOpacity
-      className="rounded-2xl p-4 items-center border border-borderSubtle"
+      className="flex-1 rounded-lg p-4 items-center border border-borderSubtle"
       style={{
-        width: "30%",
-        height: "100%",
+        padding: 20,
+        paddingHorizontal: 40,
+        justifyContent: "space-between",
+        alignContent: "center",
         backgroundColor: disabled ? APP_COLORS.background : APP_COLORS.card,
       }}
       disabled={disabled}
@@ -34,8 +36,8 @@ export default function QuickToolCard({
         className={`flex items-center justify-center rounded-full`}
         style={{
           backgroundColor: withOpacity(color, 0.1),
-          width: 40,
-          height: 40,
+          // width: 40,
+          // height: 40,
         }}
       >
         <MaterialCommunityIcons name={icon} size={20} color={color} />

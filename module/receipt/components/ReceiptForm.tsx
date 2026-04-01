@@ -36,6 +36,7 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
         ...data,
         trip_id: tripId,
         user_id: user?.id,
+        status: "PENDING",
       });
 
       const receiptImageUrl = await receiptImage.upload(`${receipt.id}`);

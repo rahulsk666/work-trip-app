@@ -15,6 +15,7 @@ import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { toast } from "sonner-native";
+import TodaysActivity from "./TodaysActivity";
 
 const DashboardActions = () => {
   const [modal, setModal] = useState<{
@@ -92,12 +93,16 @@ const DashboardActions = () => {
   }, []);
 
   return (
-    <View className="flex-row gap-3" style={{ marginVertical: 20 }}>
+    <View
+      className="flex-1 gap-3 justify-between"
+      style={{ marginVertical: 20, height: "100%" }}
+    >
       {trip && !trip?.end_time ? (
-        <View className="flex-1 flex-row gap-3">
+        <View className="flex-1 flex-col gap-3">
+          <TodaysActivity />
           {work && work.status === "STARTED" ? (
             <TouchableOpacity
-              className="flex-1 p-2 m-1 flex-row items-center justify-center rounded-2xl"
+              className="p-2 m-1 flex-row items-center justify-center rounded-2xl"
               style={{
                 backgroundColor: APP_COLORS.dangerShadow,
                 borderWidth: 1,
@@ -129,7 +134,7 @@ const DashboardActions = () => {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              className="flex-1 p-5 m-1 items-center justify-center flex-row gap-2 rounded-2xl"
+              className="p-5 m-1 items-center justify-center flex-row gap-2 rounded-2xl"
               style={{ backgroundColor: APP_COLORS.successButton }}
               onPress={handleWorkCreate}
             >
@@ -148,15 +153,18 @@ const DashboardActions = () => {
           )}
         </View>
       ) : !trip?.end_time ? (
-        <TouchableOpacity
-          className="bg-primary flex-1 flex-row p-5 m-1 gap-2 items-center justify-center rounded-2xl"
-          onPress={() => router.navigate("/(trip)/start")}
-        >
-          <Ionicons name="play" size={30} color={APP_COLORS.textPrimary} />
-          <Text className="text-textPrimary text-3xl font-bold">
-            Start Trip
-          </Text>
-        </TouchableOpacity>
+        <View className="flex-1 flex-col justify-between gap-3">
+          <TouchableOpacity
+            className="bg-primary flex-row p-5 m-1 gap-2 items-center justify-center rounded-2xl"
+            onPress={() => router.navigate("/(trip)/start")}
+          >
+            <Ionicons name="play" size={30} color={APP_COLORS.textPrimary} />
+            <Text className="text-textPrimary text-3xl font-bold">
+              Start Trip
+            </Text>
+          </TouchableOpacity>
+          <TodaysActivity />
+        </View>
       ) : (
         <></>
       )}

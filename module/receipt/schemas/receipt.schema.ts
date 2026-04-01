@@ -9,6 +9,7 @@ export const receiptSchema = z.object({
   amount: z.coerce.number(),
   description: z.string().max(100, "Description is too long").optional(),
   image_url: z.string().nullable().optional(),
+  status: z.enum(["PENDING", "VERIFIED", "REJECTED"]),
   created_at: z.string().nullable().optional(),
   updated_at: z.string().nullable().optional(),
 });
@@ -18,6 +19,10 @@ export type Receipt = z.infer<typeof receiptSchema>;
 export const receiptCreateSchema = z.object({
   amount: z.coerce.number().min(1, "Amount is required"),
   description: z.string().nullable().optional(),
+  status: z
+    .enum(["PENDING", "VERIFIED", "REJECTED"])
+    .default("PENDING")
+    .optional(),
   image_url: z.string().nullable().optional(),
 });
 

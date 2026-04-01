@@ -11,9 +11,9 @@ interface QuickToolsProps {
 
 const QuickTools = ({ disabled }: QuickToolsProps) => {
   return (
-    <View className="mt-3">
+    <View className="">
       <TitleLabel title="Quick Tools" />
-      <View className="flex-row items-center justify-between mt-3">
+      <View className="flex-row items-center justify-center mt-3 gap-3">
         <QuickToolCard
           icon="receipt-text"
           label="Receipts"
@@ -22,14 +22,9 @@ const QuickTools = ({ disabled }: QuickToolsProps) => {
           disabled={disabled}
         />
         <QuickToolCard
-          icon="note-edit"
-          label="Vehicle Log"
-          color={disabled ? APP_COLORS.textMuted : APP_COLORS.success}
-          disabled={disabled}
-        />
-        <QuickToolCard
           icon="shield-alert"
           label="Accident"
+          onPress={() => router.navigate("/(accident)/accident")}
           color={disabled ? APP_COLORS.textMuted : APP_COLORS.danger}
           disabled={disabled}
         />

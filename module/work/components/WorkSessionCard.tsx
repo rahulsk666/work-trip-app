@@ -48,16 +48,16 @@ const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
           </Text>
         </View>
         <View
-          className="flex-row justify-center items-center gap-1 m-1"
+          className="flex-row justify-center items-center rounded-lg p-1 gap-1 m-1"
           style={{
             backgroundColor:
               work.status === "ENDED"
                 ? APP_COLORS.successShadow
                 : APP_COLORS.primaryShadow,
-            paddingHorizontal: 3,
+            paddingHorizontal: 4,
             borderRadius: 4,
             marginTop: 8,
-            height: "50%",
+            // height: "50%",
           }}
         >
           <Ionicons
@@ -66,7 +66,7 @@ const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
             color={
               work.status === "ENDED"
                 ? APP_COLORS.successDark
-                : APP_COLORS.primary
+                : APP_COLORS.primaryDark
             }
           />
           <Text
