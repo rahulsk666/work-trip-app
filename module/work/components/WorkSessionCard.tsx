@@ -57,7 +57,6 @@ const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
             paddingHorizontal: 4,
             borderRadius: 4,
             marginTop: 8,
-            // height: "50%",
           }}
         >
           <Ionicons

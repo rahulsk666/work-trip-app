@@ -10,13 +10,12 @@ import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Trip } from "../schemas/trip.schema";
 
-interface WorkSessionCardProps {
+interface TripCardProps {
   trip: Trip;
 }
 
-const TripCard = ({ trip }: WorkSessionCardProps) => {
+const TripCard = ({ trip }: TripCardProps) => {
   const duration = useDuration(trip.start_time, trip.end_time, trip?.trip_date);
-
   return (
     <TouchableOpacity
       activeOpacity={1}
@@ -82,11 +81,11 @@ const TripCard = ({ trip }: WorkSessionCardProps) => {
           <Text className="text-textSecondary font-bold">TIME</Text>
           <Text className="text-textSecondary font-bold">
             {trip?.start_time ? formatTime(trip.start_time) : "00:00 AM"}
-            {trip && trip.status === "ENDED"
-              ? trip.end_time && trip.trip_date !== getLocalDate()
-                ? ` - ${formatTime(trip.end_time)}:`
-                : " - 00:00 AM"
-              : ""}
+            {trip && trip.status === "ENDED" && trip.end_time
+              ? ` - ${formatTime(trip.end_time)}:`
+              : trip.end_time && trip.trip_date !== getLocalDate()
+                ? ""
+                : " - 00:00 AM"}
           </Text>
         </View>
         <View className="flex-col gap-2 justify-start">

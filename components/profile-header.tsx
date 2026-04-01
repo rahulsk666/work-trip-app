@@ -76,7 +76,7 @@ const ProfileHeader = ({
         <TouchableOpacity
           className="bg-cardElevated p-2 rounded-full items-center justify-center"
           activeOpacity={0}
-          onPress={() => router.navigate("/(tabs)/settings")}
+          onPress={() => router.navigate("/(tabs)/profile")}
         >
           <IconSymbol name="gearshape" color={"white"} />
         </TouchableOpacity>
