@@ -175,7 +175,9 @@ const DashboardActions = () => {
           <TodaysActivity />
         </View>
       ) : (
-        <></>
+        <>
+          <TodaysActivity />
+        </>
       )}
 
       <ConfirmModal
