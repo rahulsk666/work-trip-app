@@ -1,6 +1,6 @@
 import Loading from "@/components/Loading";
 import { useImageUpload } from "@/hooks/useImageUpload";
-import { useRequestLocation } from "@/hooks/useRequestLoaction";
+import { useRequestLocation } from "@/hooks/useRequestLocation";
 import { getLocalDateTime } from "@/lib/date";
 import TripFormUI from "@/module/trip/components/TripFormUI";
 import {

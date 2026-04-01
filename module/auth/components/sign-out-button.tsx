@@ -5,7 +5,7 @@ import React from "react";
 import { Text, TouchableOpacity } from "react-native";
 
 async function onSignOutButtonPress() {
-  await GoogleSignin.signOut(); // ✅ sign out from Google too
+  await GoogleSignin.signOut();
   const { error } = await supabase.auth.signOut();
   router.navigate("/(auth)/login");
 

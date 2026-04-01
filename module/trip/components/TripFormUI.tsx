@@ -13,7 +13,14 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
-import { ScrollView, Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import { Trip } from "../schemas/trip.schema";
 
@@ -65,6 +72,7 @@ const TripFormUI = ({
   handleSubmit,
   onSubmit,
 }: TripFormUIProps) => {
+  const insets = useSafeAreaInsets();
   const isStop = mode === "stop";
   const duration = useDuration(
     trip?.start_time ?? "",
@@ -82,12 +90,20 @@ const TripFormUI = ({
   const closeModal = () => setModal({ visible: false, onConfirm: () => {} });
 
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerStyle={{ paddingBottom: 40 }}
-      showsVerticalScrollIndicator={false}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
     >
-      <View className="m-2 mx-4 p-2 rounded-lg">
+      {/* <View className="m-2 mx-4 p-2 rounded-lg"> */}
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: insets.bottom + 16, // ✅ accounts for nav bar
+        }}
+        keyboardShouldPersistTaps="handled"
+        className="gap-2 p-2 m-2"
+        showsVerticalScrollIndicator={false}
+      >
         {/* Vehicle selector — start only */}
         {!isStop && (
           <Controller
@@ -218,7 +234,8 @@ const TripFormUI = ({
             style={{ width: "100%" }}
           />
         </View>
-      </View>
+      </ScrollView>
+      {/* </View> */}
       <ConfirmModal
         visible={modal.visible}
         description="Ending this trip will prevent adding any more work sessions today.
@@ -231,7 +248,7 @@ const TripFormUI = ({
         }
         variant="warning"
       />
-    </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

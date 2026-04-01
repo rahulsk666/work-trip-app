@@ -1,6 +1,6 @@
 import ConfirmModal from "@/components/ConfirmModal";
 import { useDuration } from "@/hooks/useDuration";
-import { useRequestLocation } from "@/hooks/useRequestLoaction";
+import { useRequestLocation } from "@/hooks/useRequestLocation";
 import { APP_COLORS } from "@/lib/consts";
 import { getLocalDateTime } from "@/lib/date";
 import { useUserQuery } from "@/module/profile/hooks";

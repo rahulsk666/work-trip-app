@@ -49,10 +49,13 @@ import Loading from "@/components/Loading";
 import { SplashScreenController } from "@/components/splash-screen-controller";
 import { useAuthContext } from "@/hooks/use-auth-context";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { supabase } from "@/integrations/supabase/supabase";
 import { APP_COLORS } from "@/lib/consts";
 import AuthProvider from "@/providers/auth-provider";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { AppState } from "react-native";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -66,6 +69,18 @@ const queryClient = new QueryClient();
 
 function RootNavigator() {
   const { isLoggedIn, isLoading } = useAuthContext();
+
+  useEffect(() => {
+    const sub = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        supabase.auth.startAutoRefresh();
+      } else {
+        supabase.auth.stopAutoRefresh();
+      }
+    });
+
+    return () => sub.remove(); // cleanup
+  }, []);
 
   if (isLoading) {
     return <Loading />;

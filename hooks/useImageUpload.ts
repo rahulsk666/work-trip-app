@@ -1,7 +1,9 @@
 import { supabase } from "@/integrations/supabase/supabase";
+import { APP_COLORS } from "@/lib/consts";
 import { decode } from "base64-arraybuffer";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
+import { Linking, Platform } from "react-native";
 import { toast } from "sonner-native";
 
 interface useImageUploadProps {
@@ -37,12 +39,23 @@ export const useImageUpload = ({
     try {
       const { status } =
         await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== "granted") throw new Error("Permission denied");
+
+      if (status !== "granted") {
+        toast.error("Gallery permission denied. Open settings to enable it.", {
+          action: {
+            label: "Open Settings",
+            onClick: () => Linking.openSettings(),
+          },
+          actionButtonStyle: { backgroundColor: APP_COLORS.primary },
+          actionButtonTextStyle: { color: APP_COLORS.textPrimary },
+        });
+        return;
+      }
 
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ["images"],
-        allowsEditing: true,
-        aspect: [1, 1],
+        // allowsEditing: true,
+        // aspect: [1, 1],
         quality: 0.8,
         base64: true,
       });
@@ -81,12 +94,22 @@ export const useImageUpload = ({
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    if (status !== "granted") throw new Error("Permission denied");
+    if (status !== "granted") {
+      toast.error("Gallery permission denied. Open settings to enable it.", {
+        action: {
+          label: "Open Settings",
+          onClick: () => Linking.openSettings(),
+        },
+        actionButtonStyle: { backgroundColor: APP_COLORS.primary },
+        actionButtonTextStyle: { color: APP_COLORS.textPrimary },
+      });
+      return;
+    }
 
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [1, 1],
+      // allowsEditing: true,
+      // aspect: [1, 1],
       quality: 0.8,
       base64: true,
     });
@@ -100,22 +123,32 @@ export const useImageUpload = ({
   };
 
   const pickImageCamera = async () => {
-    const enabled = await ImagePicker.requestCameraPermissionsAsync();
-    if (!enabled) {
-      toast.error("Please enable Camera permissions in your device settings");
-      return;
-    }
-    const { status } = await ImagePicker.getCameraPermissionsAsync();
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
     if (status !== "granted") {
-      toast.error("Please enable Camera permissions in your device settings");
+      toast.error("Camera permission denied. Open settings to enable it.", {
+        action: {
+          label: "Open Settings",
+          onClick: () => Linking.openSettings(),
+        },
+        actionButtonStyle: {
+          backgroundColor: APP_COLORS.primary,
+        },
+        actionButtonTextStyle: {
+          color: APP_COLORS.textPrimary,
+        },
+      });
       return;
+    }
+
+    if (Platform.OS === "android") {
+      await new Promise((resolve) => setTimeout(resolve, 200));
     }
 
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ["images"],
-      allowsEditing: true,
-      aspect: [1, 1],
+      // allowsEditing: true,
+      // aspect: [1, 1],
       quality: 0.8,
       base64: true,
     });
