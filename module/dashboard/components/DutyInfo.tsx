@@ -25,12 +25,13 @@ const DutyInfo = () => {
   if (!trip) {
     return (
       <View
-        className="flex-1 bg-darkCharcoal rounded-xl p-5 items-center justify-center"
+        className="bg-darkCharcoal rounded-xl items-center justify-center"
         style={{
           borderStyle: "dashed",
           borderWidth: 2,
           borderColor: withOpacity(APP_COLORS.textPrimary, 0.3),
           marginVertical: 5,
+          padding: 15,
         }}
       >
         <Ionicons
@@ -61,8 +62,8 @@ const DutyInfo = () => {
   }
   return (
     <View
-      className="flex-1 flex-col rounded-xl overflow-hidden bg-darkCharcoal mb-2"
-      style={{ flex: 1, minHeight: 150 }}
+      className="flex-col rounded-xl overflow-hidden bg-darkCharcoal"
+      style={{ marginBottom: 10 }}
     >
       <ImageBackground
         source={require("@/assets/map-fallback.png")}
@@ -71,9 +72,13 @@ const DutyInfo = () => {
       >
         <LinearGradient
           colors={[withOpacity(APP_COLORS.card, 0.8), APP_COLORS.card]}
+          className="overflow-hidden"
         >
           {/* Header */}
-          <View className="flex-row items-center justify-between z-10 p-5">
+          <View
+            className="flex-row items-center justify-between z-10"
+            style={{ padding: 10 }}
+          >
             <View className="bg-primary p-2 rounded-lg">
               <Text className="text-textPrimary text-sm uppercase font-bold">
                 On Duty
@@ -89,12 +94,12 @@ const DutyInfo = () => {
           </View>
 
           {/* Details */}
-          <View className="p-5 flex gap-2">
+          <View className="flex gap-2" style={{ padding: 10 }}>
             <Text className="text-textSecondary">Session Duration</Text>
             <TouchableOpacity onPress={() => router.navigate("/(track)/track")}>
               <Text
                 className="text-textPrimary font-bold text-5xl"
-                style={{ fontSize: 48 }}
+                style={{ fontSize: 48, lineHeight: 52 }}
               >
                 {duration?.formatted}
               </Text>
@@ -111,7 +116,7 @@ const DutyInfo = () => {
             </View>
           </View>
           {trip.status === "STARTED" && (
-            <View className="p-2 bg-cardElevated rounded-b-lg overflow-hidden">
+            <View className="p-1 bg-cardElevated rounded-b-lg">
               <SwipeButton
                 disableResetOnTap
                 railBackgroundColor={APP_COLORS.dangerShadow}

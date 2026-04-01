@@ -50,7 +50,10 @@ const TripDetailScreen = () => {
   }
 
   return (
-    <SafeAreaView className="flex-1 p-4 gap-2 bg-background flex-col">
+    <SafeAreaView
+      className="flex-1 gap-2 bg-background flex-col"
+      style={{ padding: 10 }}
+    >
       <TripDetailHeaderCard trip={trip} />
       <TripDetailTabSwitcher
         activeTab={activeTab}

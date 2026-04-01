@@ -35,7 +35,7 @@ export default function DashboardScreen() {
       />
       <ScrollView
         style={{ flex: 1 }} // ✅ fills remaining space
-        contentContainerStyle={{ flexGrow: 1 }} // ✅ content stretches to fill
+        contentContainerStyle={{ flexGrow: 1, padding: 5 }} // ✅ content stretches to fill
         showsVerticalScrollIndicator={false}
       >
         <DutyInfo />

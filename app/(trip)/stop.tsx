@@ -7,7 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Trip = () => {
   const { data: trip } = useLatestTripQuery();
   return (
-    <SafeAreaView className="flex-1 bg-background m-2">
+    <SafeAreaView className="flex-1 bg-background p-1">
       <ProfileHeader
         pageName={"Stop Trip"}
         showOnline={trip ? false : true}

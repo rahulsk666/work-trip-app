@@ -36,7 +36,7 @@ const ProfileHeader = ({
   const { data: user } = useUserQuery();
   return (
     <View
-      className={`flex-row justify-between items-center m-2 $ ${ParentDivClassName}`}
+      className={`flex-row justify-between items-center m-2 p-1 $ ${ParentDivClassName}`}
     >
       {/* Profile */}
       <View className="flex-row items-center gap-3 flex-1 p-2">

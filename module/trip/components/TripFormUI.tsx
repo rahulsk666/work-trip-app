@@ -226,7 +226,13 @@ const TripFormUI = ({
             onPress={handleSubmit(
               (data) =>
                 isStop
-                  ? setModal({ visible: true, onConfirm: () => onSubmit(data) })
+                  ? setModal({
+                      visible: true,
+                      onConfirm: () => {
+                        closeModal();
+                        onSubmit(data);
+                      },
+                    })
                   : onSubmit(data),
               () => toast.error("Please fill in all required fields"),
             )}

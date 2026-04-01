@@ -126,7 +126,11 @@ const DashboardActions = () => {
               {duration && (
                 <Text
                   className="text-3xl font-bold"
-                  style={{ color: APP_COLORS.dangerDark }}
+                  style={{
+                    color: APP_COLORS.dangerDark,
+                    fontSize: 30,
+                    lineHeight: 34,
+                  }}
                 >
                   {duration?.formatted}
                 </Text>
@@ -134,8 +138,8 @@ const DashboardActions = () => {
             </TouchableOpacity>
           ) : (
             <TouchableOpacity
-              className="p-5 m-1 items-center justify-center flex-row gap-2 rounded-2xl"
-              style={{ backgroundColor: APP_COLORS.successButton }}
+              className="m-1 items-center justify-center flex-row gap-2 rounded-2xl"
+              style={{ backgroundColor: APP_COLORS.successButton, padding: 15 }}
               onPress={handleWorkCreate}
             >
               <Ionicons
@@ -144,8 +148,12 @@ const DashboardActions = () => {
                 color={APP_COLORS.successText}
               />
               <Text
-                className="text-3xl font-bold"
-                style={{ color: APP_COLORS.successText }}
+                className="font-bold"
+                style={{
+                  color: APP_COLORS.successText,
+                  fontSize: 30,
+                  lineHeight: 34,
+                }}
               >
                 Start Work
               </Text>
@@ -155,7 +163,8 @@ const DashboardActions = () => {
       ) : !trip?.end_time ? (
         <View className="flex-1 flex-col justify-between gap-3">
           <TouchableOpacity
-            className="bg-primary flex-row p-5 m-1 gap-2 items-center justify-center rounded-2xl"
+            className="bg-primary flex-row m-1 gap-2 items-center justify-center rounded-2xl"
+            style={{ padding: 10 }}
             onPress={() => router.navigate("/(trip)/start")}
           >
             <Ionicons name="play" size={30} color={APP_COLORS.textPrimary} />
