@@ -7,19 +7,14 @@ import { Receipt } from "../schemas/receipt.schema";
 
 interface ReceiptDetailCardProps {
   receipt: Receipt;
-  index?: string;
 }
 
-const ReceiptDetailCard = ({ receipt, index }: ReceiptDetailCardProps) => {
-  const formattedIndex = String(Number(index) + 1).padStart(3, "0");
+const ReceiptDetailCard = ({ receipt }: ReceiptDetailCardProps) => {
   return (
     <View>
       <View className="flex-col justify-start p-4">
         <Text className="text-3xl text-textMuted font-bold">
           {receipt.created_at ? formatDate(receipt?.created_at) : ""}
-        </Text>
-        <Text className="text-primary text-5xl font-bold">
-          #{formattedIndex}
         </Text>
       </View>
       <View>

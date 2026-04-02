@@ -83,7 +83,7 @@ const TripCard = ({ trip }: TripCardProps) => {
             {trip?.start_time ? formatTime(trip.start_time) : "00:00 AM"}
             {trip && trip.status === "ENDED" && trip.end_time
               ? ` - ${formatTime(trip.end_time)}:`
-              : trip.end_time && trip.trip_date !== getLocalDate()
+              : !trip.end_time && trip.trip_date === getLocalDate()
                 ? ""
                 : " - 00:00 AM"}
           </Text>

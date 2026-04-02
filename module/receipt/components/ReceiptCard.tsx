@@ -19,7 +19,7 @@ const ReceiptCard = ({ receipt, index }: ReceiptCardProps) => {
       onPress={() =>
         router.navigate({
           pathname: "/(receipt)/[id]",
-          params: { id: receipt.id, index: index },
+          params: { id: receipt.id },
         })
       }
     >
