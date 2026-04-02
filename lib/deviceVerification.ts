@@ -1,14 +1,18 @@
 import { supabase } from "@/integrations/supabase/supabase";
-import * as Device from "expo-device";
+import * as Application from "expo-application";
 
 export const getDeviceId = (): string => {
-  return `${Device.modelName ?? "unknown"}-${Device.osVersion ?? "unknown"}-${Device.osBuildId ?? "unknown"}`;
+  const androidId = Application.getAndroidId();
+  if (!androidId) throw new Error("Could not get Android device ID");
+  return androidId;
 };
 
 export const verifyAndRegisterDevice = async (
   userId: string,
 ): Promise<boolean> => {
   try {
+    const currentDeviceId = getDeviceId();
+
     const { data: user, error } = await supabase
       .from("users")
       .select("device_id")
@@ -17,9 +21,7 @@ export const verifyAndRegisterDevice = async (
 
     if (error) throw error;
 
-    const currentDeviceId = getDeviceId();
-
-    // ✅ First login — no device registered yet, save and allow
+    // ✅ First login — register device and allow
     if (!user?.device_id) {
       const { error: updateError } = await supabase
         .from("users")
@@ -28,18 +30,27 @@ export const verifyAndRegisterDevice = async (
 
       if (updateError) throw updateError;
 
+      console.log("Device registered:", currentDeviceId);
       return true;
     }
 
     // ✅ Verify current device matches registered device
-    return user.device_id === currentDeviceId;
+    const isMatch = user.device_id === currentDeviceId;
+    console.log(
+      isMatch ? "Device verified ✅" : "Device mismatch ❌",
+      "\nRegistered:",
+      user.device_id,
+      "\nCurrent:",
+      currentDeviceId,
+    );
+    return isMatch;
   } catch (err) {
     console.error("Device verification failed:", err);
     throw err;
   }
 };
 
-// ✅ Use this if you want to reset a user's device (e.g. admin action)
+// ✅ Reset device — admin/support use when user gets a new phone
 export const resetDeviceRegistration = async (
   userId: string,
 ): Promise<void> => {
