@@ -24,16 +24,20 @@ const VehicleStatusCard = ({
   const [visible, setVisible] = useState(false);
   const { data: vehicles } = useAvailableVehicles();
   return (
-    <View className="bg-cardElevated p-2 rounded-lg">
+    <TouchableOpacity
+      activeOpacity={1}
+      onPress={() => setVisible(true)}
+      className="bg-cardElevated p-2 rounded-lg"
+    >
       <View className="flex-row justify-between items-center">
         <View className="flex-col gap-2">
           <View className="flex-row justify-start gap-1 items-center">
             <Text className="text-textSecondary p-2 justify-start text-xl font-semibold">
               Assigned Vehicle
             </Text>
-            <TouchableOpacity onPress={() => setVisible(true)} className="p-2">
+            {/* <TouchableOpacity onPress={() => setVisible(true)} className="p-2">
               <IconSymbol name="pencil.tip" size={18} color={"white"} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
           <View className="p-2">
             <Text className="text-white justify-start text-lg font-medium">
@@ -95,7 +99,7 @@ const VehicleStatusCard = ({
           }
         }}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 
