@@ -139,21 +139,52 @@ export default function AuthProvider({ children }: PropsWithChildren) {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (
-          session &&
-          (_event === "SIGNED_IN" ||
-            _event === "INITIAL_SESSION")
-        ) {
+      async (_event, session) => {
+
+        // 🔹 Only verify device on SIGNED_IN
+        if (_event === "SIGNED_IN" && session) {
+
           setIsLoading(true);
 
-          checkWhitelistAndAuthLinking(session);
-        } else {
-          queryClient.clear();
-          setSession(null);
-          setProfile(null);
-          setIsLoading(false);
+          await checkWhitelistAndAuthLinking(session);
+
+          return;
         }
+
+        // 🔹 App reopened with stored session
+        if (_event === "INITIAL_SESSION" && session) {
+
+          try {
+            // Just restore session — no device check
+            const { data: profileData } = await supabase
+              .from("users")
+              .select("*")
+              .eq("auth_user_id", session.user.id)
+              .single();
+
+            setProfile(profileData);
+            setSession(session);
+
+          } catch (err) {
+
+            console.error("Initial session restore failed:", err);
+
+            await supabase.auth.signOut();
+
+            setSession(null);
+            setProfile(null);
+          }
+
+          setIsLoading(false);
+
+          return;
+        }
+
+        // 🔹 Logged out
+        queryClient.clear();
+        setSession(null);
+        setProfile(null);
+        setIsLoading(false);
       },
     );
 
