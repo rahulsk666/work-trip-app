@@ -15,7 +15,7 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: APP_COLORS.background,
           borderTopColor: APP_COLORS.borderSubtle,
-          marginBottom: 5,
+          paddingBottom: 10,
         },
       }}
     >
