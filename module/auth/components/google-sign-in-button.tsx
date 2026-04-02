@@ -1,62 +1,95 @@
 import { supabase } from "@/integrations/supabase/supabase";
+import { APP_COLORS } from "@/lib/consts";
+import { verifyAndRegisterDevice } from "@/lib/deviceVerification";
 import {
   GoogleSignin,
   isErrorWithCode,
   isSuccessResponse,
   statusCodes,
 } from "@react-native-google-signin/google-signin";
-import { Image, Text, TouchableOpacity } from "react-native";
+import { useState } from "react";
+import {
+  ActivityIndicator,
+  Image,
+  Linking,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { toast } from "sonner-native";
 
 export default function GoogleSignInButton() {
+  const [loading, setLoading] = useState(false); // ✅ loading state
+
   const signIn = async () => {
+    if (loading) return;
     try {
+      setLoading(true); // ✅ start loading
+
       await GoogleSignin.hasPlayServices();
       const response = await GoogleSignin.signIn();
+
       if (isSuccessResponse(response)) {
-        console.log(response);
         if (response.data.idToken) {
-          const { error } = await supabase.auth.signInWithIdToken({
+          const { data, error } = await supabase.auth.signInWithIdToken({
             provider: "google",
             token: response.data.idToken,
           });
+
           if (error) {
             console.error(error.message);
-            toast.error("Error occured. try again");
+            toast.error("Error occurred. Try again");
+            return;
+          }
+
+          const userId = data.user?.id;
+          if (!userId) return;
+
+          const isVerified = await verifyAndRegisterDevice(userId);
+
+          if (!isVerified) {
+            await supabase.auth.signOut();
+            toast.error("This account is registered on a different device.", {
+              action: {
+                label: "Contact Support",
+                onClick: () => Linking.openURL("mailto:support@yourapp.com"),
+              },
+              actionButtonStyle: { backgroundColor: APP_COLORS.primary },
+              actionButtonTextStyle: { color: "#FFFFFF" },
+            });
+            return;
           }
         }
       } else {
-        // sign in was cancelled by user
-        toast.error("Signin was cancelled");
+        toast.error("Sign in was cancelled");
       }
     } catch (error) {
       if (isErrorWithCode(error)) {
         switch (error.code) {
           case statusCodes.IN_PROGRESS:
-            // operation (eg. sign in) already in progress
             break;
           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-            // Android only, play services not available or outdated
             console.error(error.message);
-            toast.error("Play service not available");
+            toast.error("Play services not available");
             break;
           default:
             console.error(error.message);
-            // some other error happened
-            toast.error("Error occurred.try again");
+            toast.error("Error occurred. Try again");
         }
       } else {
-        // an error that's not related to google sign in occurred
         console.error(
           error instanceof Error ? error.message : "An error occurred",
         );
-        toast.error("Error occurred.try again");
+        toast.error("Error occurred. Try again");
       }
+    } finally {
+      setLoading(false); // ✅ stop loading
     }
   };
+
   return (
     <TouchableOpacity
       onPress={signIn}
+      disabled={loading} // ✅ disable while loading
       style={{
         flexDirection: "row",
         alignItems: "center",
@@ -72,13 +105,22 @@ export default function GoogleSignInButton() {
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 2,
+        opacity: loading ? 0.7 : 1, // ✅ dimmed while loading
       }}
       activeOpacity={1}
     >
-      <Image
-        source={require("@/assets/google-logo.png")}
-        style={{ width: 24, height: 24, marginRight: 10 }}
-      />
+      {loading ? (
+        <ActivityIndicator
+          size="small"
+          color="#757575"
+          style={{ marginRight: 10 }}
+        />
+      ) : (
+        <Image
+          source={require("@/assets/google-logo.png")}
+          style={{ width: 24, height: 24, marginRight: 10 }}
+        />
+      )}
       <Text
         style={{
           fontSize: 16,
@@ -87,7 +129,7 @@ export default function GoogleSignInButton() {
           fontWeight: "500",
         }}
       >
-        Sign in with Google
+        {loading ? "Signing in..." : "Sign in with Google"}
       </Text>
     </TouchableOpacity>
   );
