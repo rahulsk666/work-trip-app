@@ -15,6 +15,7 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: APP_COLORS.background,
           borderTopColor: APP_COLORS.borderSubtle,
+          marginBottom: 5,
         },
       }}
     >
@@ -42,15 +43,6 @@ export default function TabLayout() {
           title: "Profile",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="person.2" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: "Settings",
-          tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="gearshape.fill" color={color} />
           ),
         }}
       />

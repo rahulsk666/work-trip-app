@@ -7,7 +7,14 @@ import ImageUpload from "@/module/trip/components/ImageUpload";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Controller } from "react-hook-form";
-import { Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import {
   useCreateReceiptMutation,
@@ -16,6 +23,7 @@ import {
 } from "../hooks";
 
 const ReceiptForm = ({ tripId }: { tripId?: string }) => {
+  const insets = useSafeAreaInsets();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { data: user } = useUserQuery();
   const { handleSubmit, control } = useReceiptCreateForm();
@@ -61,80 +69,93 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
       {isLoading && (
         <Loading showBackground={false} label="Adding Receipt..." />
       )}
-      <View>
-        {/* Dashboard photo */}
-        <View>
-          <Text className="text-textSecondary text-base mt-2">
-            Receipt Photo *
-          </Text>
-          <View className="justify-center flex-row items-center gap-2 mt-2">
-            <ImageUpload
-              name={"Receipt Image"}
-              pickImageCamera={receiptImage.pickImageCamera}
-              uploading={receiptImage.uploading}
-              preview={receiptImage.preview}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            paddingBottom: insets.bottom + 16, // ✅ accounts for nav bar
+          }}
+          keyboardShouldPersistTaps="handled"
+          className="gap-2"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Dashboard photo */}
+          <View>
+            <Text className="text-textSecondary text-base mt-2">
+              Receipt Photo *
+            </Text>
+            <View className="justify-center flex-row items-center gap-2 mt-2">
+              <ImageUpload
+                name={"Receipt Image"}
+                pickImageCamera={receiptImage.pickImageCamera}
+                uploading={receiptImage.uploading}
+                preview={receiptImage.preview}
+              />
+            </View>
+            <Text className="text-textMuted mt-2">
+              Take clear photo of the Receipt
+            </Text>
+          </View>
+          {/* Amount */}
+          <View className="gap-2">
+            <Text className="text-textSecondary text-base mt-2">Amount *</Text>
+            <Controller
+              name={"amount"}
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  value={field.value?.toString() ?? ""}
+                  onChange={(val) =>
+                    field.onChange(val ? Number(val) : undefined)
+                  }
+                  type="number-pad"
+                  error={fieldState.error?.message}
+                  prefix="$"
+                />
+              )}
             />
           </View>
-          <Text className="text-textMuted mt-2">
-            Take clear photo of the Receipt
-          </Text>
-        </View>
-        {/* Amount */}
-        <View className="gap-2">
-          <Text className="text-textSecondary text-base mt-2">Amount *</Text>
-          <Controller
-            name={"amount"}
-            control={control}
-            render={({ field, fieldState }) => (
-              <Input
-                {...field}
-                value={field.value?.toString() ?? ""}
-                onChange={(val) =>
-                  field.onChange(val ? Number(val) : undefined)
-                }
-                type="number-pad"
-                error={fieldState.error?.message}
-                prefix="$"
-              />
-            )}
-          />
-        </View>
-        {/* Description */}
-        <View className="gap-2">
-          <Text className="text-textSecondary text-base mt-2">
-            Description *
-          </Text>
-          <Controller
-            name={"description"}
-            control={control}
-            render={({ field, fieldState }) => (
-              <Input
-                {...field}
-                value={field.value?.toString() ?? ""}
-                type="default"
-                error={fieldState.error?.message}
-                multiline
-                numberOfLines={2}
-              />
-            )}
-          />
-        </View>
-        <View className="items-center mt-4">
-          <Button
-            text={isLoading ? "Adding receipt..." : "Add Receipt"}
-            classname="w-full m-2"
-            onPress={handleSubmit(
-              (data) => onSubmit(data),
-              (error) => {
-                console.log(error);
-                toast.error("Please fill in all required fields");
-              },
-            )}
-            disabled={isLoading}
-            style={{ width: "100%" }}
-          />
-        </View>
-      </View>
+          {/* Description */}
+          <View className="gap-2">
+            <Text className="text-textSecondary text-base mt-2">
+              Description *
+            </Text>
+            <Controller
+              name={"description"}
+              control={control}
+              render={({ field, fieldState }) => (
+                <Input
+                  {...field}
+                  value={field.value?.toString() ?? ""}
+                  type="default"
+                  error={fieldState.error?.message}
+                  multiline
+                  numberOfLines={2}
+                />
+              )}
+            />
+          </View>
+          <View className="items-center mt-4">
+            <Button
+              text={isLoading ? "Adding receipt..." : "Add Receipt"}
+              classname="w-full m-2"
+              onPress={handleSubmit(
+                (data) => onSubmit(data),
+                (error) => {
+                  console.log(error);
+                  toast.error("Please fill in all required fields");
+                },
+              )}
+              disabled={isLoading}
+              style={{ width: "100%" }}
+            />
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };
