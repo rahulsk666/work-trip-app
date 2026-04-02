@@ -1,10 +1,11 @@
 import SelectVehiclesModal from "@/components/select-vehicles-modal";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { APP_COLORS } from "@/lib/consts";
-import { getLocalDate } from "@/lib/date";
+import { getLocalDateTime } from "@/lib/date";
 import { formatTime } from "@/lib/formatTime";
 import { useAvailableVehicles } from "@/module/vehicle/hooks";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
+import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
@@ -24,20 +25,18 @@ const VehicleStatusCard = ({
   const [visible, setVisible] = useState(false);
   const { data: vehicles } = useAvailableVehicles();
   return (
-    <TouchableOpacity
-      activeOpacity={1}
-      onPress={() => setVisible(true)}
+    <View
       className="bg-cardElevated p-2 rounded-lg"
     >
       <View className="flex-row justify-between items-center">
         <View className="flex-col gap-2">
-          <View className="flex-row justify-start gap-1 items-center">
+          <View className="flex-row justify-center gap-1 items-center">
             <Text className="text-textSecondary p-2 justify-start text-xl font-semibold">
               Assigned Vehicle
             </Text>
-            {/* <TouchableOpacity onPress={() => setVisible(true)} className="p-2">
-              <IconSymbol name="pencil.tip" size={18} color={"white"} />
-            </TouchableOpacity> */}
+            <TouchableOpacity onPress={() => setVisible(true)} className="p-2 items-center justify-center">
+              {visible ? <Ionicons name="chevron-up" size={20} color={APP_COLORS.textSecondary} /> : <Ionicons name="chevron-down" size={20} color={APP_COLORS.textSecondary} />}
+            </TouchableOpacity>
           </View>
           <View className="p-2">
             <Text className="text-white justify-start text-lg font-medium">
@@ -55,6 +54,7 @@ const VehicleStatusCard = ({
               : require("@/assets/default-vehicle.png")
           }
           alt="vehicle-image"
+          resizeMode="cover"
           className="rounded-lg m-2"
           style={{ width: 80, height: 80 }}
         />
@@ -83,7 +83,7 @@ const VehicleStatusCard = ({
         <View className="flex-row justify-start items-center bg-red-100 p-2 gap-2 rounded-lg">
           <IconSymbol name="clock" size={15} color={APP_COLORS.textMuted} />
           <Text className="text-textMuted text-sm font-bold">
-            {formatTime(new Date(getLocalDate()))}
+            {formatTime(getLocalDateTime())}
           </Text>
         </View>
       </View>
@@ -99,7 +99,7 @@ const VehicleStatusCard = ({
           }
         }}
       />
-    </TouchableOpacity>
+    </View>
   );
 };
 
