@@ -16,7 +16,7 @@ export const verifyAndRegisterDevice = async (
     const { data: user, error } = await supabase
       .from("users")
       .select("device_id")
-      .eq("id", userId)
+      .eq("auth_user_id", userId)
       .single();
 
     if (error) throw error;
@@ -26,7 +26,7 @@ export const verifyAndRegisterDevice = async (
       const { error: updateError } = await supabase
         .from("users")
         .update({ device_id: currentDeviceId })
-        .eq("id", userId);
+        .eq("auth_user_id", userId);
 
       if (updateError) throw updateError;
 
