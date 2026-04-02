@@ -25,17 +25,30 @@ const VehicleStatusCard = ({
   const [visible, setVisible] = useState(false);
   const { data: vehicles } = useAvailableVehicles();
   return (
-    <View
-      className="bg-cardElevated p-2 rounded-lg"
-    >
+    <View className="bg-cardElevated p-2 rounded-lg">
       <View className="flex-row justify-between items-center">
         <View className="flex-col gap-2">
           <View className="flex-row justify-center gap-1 items-center">
             <Text className="text-textSecondary p-2 justify-start text-xl font-semibold">
               Assigned Vehicle
             </Text>
-            <TouchableOpacity onPress={() => setVisible(true)} className="p-2 items-center justify-center">
-              {visible ? <Ionicons name="chevron-up" size={20} color={APP_COLORS.textSecondary} /> : <Ionicons name="chevron-down" size={20} color={APP_COLORS.textSecondary} />}
+            <TouchableOpacity
+              onPress={() => setVisible(true)}
+              className="p-2 items-center justify-center"
+            >
+              {visible ? (
+                <Ionicons
+                  name="chevron-up"
+                  size={20}
+                  color={APP_COLORS.textSecondary}
+                />
+              ) : (
+                <Ionicons
+                  name="chevron-down"
+                  size={20}
+                  color={APP_COLORS.textSecondary}
+                />
+              )}
             </TouchableOpacity>
           </View>
           <View className="p-2">
@@ -47,17 +60,24 @@ const VehicleStatusCard = ({
             </Text>
           </View>
         </View>
-        <Image
-          source={
-            vehicle?.image_url
-              ? { uri: vehicle?.image_url }
-              : require("@/assets/default-vehicle.png")
-          }
-          alt="vehicle-image"
-          resizeMode="cover"
-          className="rounded-lg m-2"
-          style={{ width: 80, height: 80 }}
-        />
+        <TouchableOpacity activeOpacity={1} onPress={() => setVisible(true)}>
+          {vehicle?.image_url ? (
+            <Image
+              source={{ uri: vehicle?.image_url }}
+              alt="vehicle-image"
+              resizeMode="cover"
+              className="rounded-lg m-2"
+              style={{ width: 80, height: 80 }}
+            />
+          ) : (
+            <Ionicons
+              name="car-outline"
+              size={80}
+              className="m-2"
+              color={APP_COLORS.textMuted}
+            />
+          )}
+        </TouchableOpacity>
       </View>
       <View
         style={{

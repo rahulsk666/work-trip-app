@@ -46,6 +46,7 @@ const SelectVehiclesModal = ({
               style={{ maxHeight: 180 }}
               renderItem={({ item }) => (
                 <TouchableOpacity
+                  activeOpacity={1}
                   onPress={() => {
                     onChange && onChange(item.id, item);
                     setVisible(false);
