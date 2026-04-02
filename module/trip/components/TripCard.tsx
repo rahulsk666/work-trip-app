@@ -91,7 +91,9 @@ const TripCard = ({ trip }: TripCardProps) => {
         <View className="flex-col gap-2 justify-start">
           <Text className="text-textSecondary font-bold">DURATION</Text>
           <Text className="text-textSecondary font-bold">
-            {duration?.short ?? "00h 00m"}
+            {trip.trip_date === getLocalDate()
+              ? duration?.formatted
+              : (duration?.short ?? "00h 00m")}
           </Text>
         </View>
       </View>
