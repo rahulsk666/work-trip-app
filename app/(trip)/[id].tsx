@@ -54,7 +54,7 @@ const TripDetailScreen = () => {
       className="flex-1 gap-2 bg-background flex-col"
       style={{ padding: 10 }}
     >
-      <TripDetailHeaderCard trip={trip} />
+      <TripDetailHeaderCard activeTab={activeTab} trip={trip} />
       <TripDetailTabSwitcher
         activeTab={activeTab}
         setActiveTab={setActiveTab}
