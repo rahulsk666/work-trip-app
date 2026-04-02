@@ -14,6 +14,7 @@ export const userSchema = z.object({
   role: z.string(),
   is_active: z.boolean(),
   auth_user_id: z.uuid().nullable().optional(),
+  device_id: z.string().nullable().optional(),
   created_at: z.string(),
   updated_at: z.string().optional(),
 });
@@ -25,6 +26,7 @@ export const userEditSchema = z.object({
   phone: z.string().nullable().optional(),
   avatar_url: z.string().optional(),
   is_active: z.boolean().optional(),
+  device_id: z.string().nullable().optional(),
 });
 
 export type UserEdit = z.infer<typeof userEditSchema>;
