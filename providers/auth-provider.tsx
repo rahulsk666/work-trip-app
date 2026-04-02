@@ -105,7 +105,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
                 label: "Contact Support",
                 onClick: () =>
                   Linking.openURL(
-                    "mailto:support@yourapp.com",
+                    "mailto:",
                   ),
               },
             },
