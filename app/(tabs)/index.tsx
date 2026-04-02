@@ -7,6 +7,7 @@ import QuickTools from "@/module/dashboard/components/QuickTools";
 import { useUserQuery } from "@/module/profile/hooks";
 import { useLatestTripQuery } from "@/module/trip/hooks";
 import React from "react";
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DashboardScreen() {
@@ -19,7 +20,11 @@ export default function DashboardScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 justify-between bg-background p-5">
+    <SafeAreaView
+      className="flex-1 bg-background"
+      style={{ paddingHorizontal: 12 }}
+      edges={["top"]}
+    >
       {/* Header */}
       <ProfileHeader
         pageName={`Welcome back, ${user?.name}`}
@@ -28,10 +33,15 @@ export default function DashboardScreen() {
         synced={!!isLoading ? false : !!latestTrip}
         ParentDivClassName="mx-0"
       />
-
-      <DutyInfo />
-      <QuickTools disabled={latestTrip ? false : true} />
-      <DashboardActions />
+      <ScrollView
+        style={{ flex: 1 }} // ✅ fills remaining space
+        contentContainerStyle={{ flexGrow: 1, padding: 5 }} // ✅ content stretches to fill
+        showsVerticalScrollIndicator={false}
+      >
+        <DutyInfo />
+        <QuickTools disabled={latestTrip ? false : true} />
+        <DashboardActions />
+      </ScrollView>
     </SafeAreaView>
   );
 }

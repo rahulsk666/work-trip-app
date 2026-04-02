@@ -1,5 +1,5 @@
 import { IconSymbol } from "@/components/ui/icon-symbol";
-import { calculateTotalWorkTime } from "@/lib/calaculateWork";
+import { calculateTotalWorkTime } from "@/lib/calculateWork";
 import { APP_COLORS } from "@/lib/consts";
 import { useLatestTripQuery } from "@/module/trip/hooks";
 import { useWorkByTripQuery } from "@/module/work/hooks";

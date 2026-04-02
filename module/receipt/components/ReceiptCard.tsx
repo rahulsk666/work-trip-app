@@ -19,20 +19,22 @@ const ReceiptCard = ({ receipt, index }: ReceiptCardProps) => {
       onPress={() =>
         router.navigate({
           pathname: "/(receipt)/[id]",
-          params: { id: receipt.id, index: index },
+          params: { id: receipt.id },
         })
       }
     >
       <View className="flex-1 flex-row gap-5" style={{ gap: 20 }}>
-        <Image
-          source={{
-            uri: receipt.image_url ? receipt.image_url : "",
-          }}
-          width={100}
-          height={100}
-          resizeMode="contain"
-          className="rounded-lg"
-        />
+        <View className="items-center overflow-hidden">
+          <Image
+            source={{
+              uri: receipt.image_url ? receipt.image_url : "",
+            }}
+            width={100}
+            height={100}
+            resizeMode="cover"
+            style={{ borderRadius: 8 }}
+          />
+        </View>
         <View
           className="flex-col gap-2 justify-center"
           style={{ flex: 1, flexShrink: 1 }}

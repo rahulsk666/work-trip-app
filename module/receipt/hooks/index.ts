@@ -57,6 +57,15 @@ export const useLatestReceiptQuery = (tripId: string | undefined) => {
   });
 };
 
+export const useReceiptByTripQuery = ({ tripId }: { tripId?: string }) => {
+  const { data: user } = useUserQuery();
+  return useQuery({
+    queryKey: receiptKeys.getByAll(tripId),
+    queryFn: () => receiptApi.getAll(user!.id, tripId as string),
+    enabled: !!tripId && !!user?.id,
+  });
+};
+
 // receipt mutations
 
 export const useCreateReceiptMutation = () => {

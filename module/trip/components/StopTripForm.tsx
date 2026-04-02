@@ -1,6 +1,6 @@
 import Loading from "@/components/Loading";
 import { useImageUpload } from "@/hooks/useImageUpload";
-import { useRequestLocation } from "@/hooks/useRequestLoaction";
+import { useRequestLocation } from "@/hooks/useRequestLocation";
 import { getLocalDateTime } from "@/lib/date";
 import TripFormUI from "@/module/trip/components/TripFormUI";
 import {
@@ -35,7 +35,15 @@ const StopTripForm = () => {
   const onSubmit = async (data: any) => {
     if (isLoading) return;
     if (!todayTrip) return toast.error("No active trip found");
+
     if (!location) return toast.error("Location is required to end the trip");
+    if (data.end_km && todayTrip.start_km) {
+      if (Number(data.end_km) <= todayTrip.start_km) {
+        return toast.error(
+          `End KM must be greater than Start KM (${todayTrip.start_km} km)`,
+        );
+      }
+    }
     if (!dashboardImage.asset) return toast.error("Dashboard image required");
     if (!frontImage.asset) return toast.error("Front image required");
     if (!backImage.asset) return toast.error("Back image required");

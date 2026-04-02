@@ -36,7 +36,7 @@ const ProfileHeader = ({
   const { data: user } = useUserQuery();
   return (
     <View
-      className={`flex-row justify-between items-center m-2 $ ${ParentDivClassName}`}
+      className={`flex-row justify-between items-center m-2 p-1 $ ${ParentDivClassName}`}
     >
       {/* Profile */}
       <View className="flex-row items-center gap-3 flex-1 p-2">
@@ -76,7 +76,7 @@ const ProfileHeader = ({
         <TouchableOpacity
           className="bg-cardElevated p-2 rounded-full items-center justify-center"
           activeOpacity={0}
-          onPress={() => router.navigate("/(tabs)/settings")}
+          onPress={() => router.navigate("/(tabs)/profile")}
         >
           <IconSymbol name="gearshape" color={"white"} />
         </TouchableOpacity>

@@ -3,13 +3,20 @@ import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Loading from "@/components/Loading";
 import { useImageUpload } from "@/hooks/useImageUpload";
-import { useRequestLocation } from "@/hooks/useRequestLoaction";
+import { useRequestLocation } from "@/hooks/useRequestLocation";
 import { useUserQuery } from "@/module/profile/hooks";
 import ImageUpload from "@/module/trip/components/ImageUpload";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
-import { Text, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { toast } from "sonner-native";
 import {
   useAccidentCreateForm,
@@ -22,6 +29,7 @@ interface AccidentFormProps {
 }
 
 const AccidentForm = ({ tripId }: AccidentFormProps) => {
+  const insets = useSafeAreaInsets();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { location, displayCurrentAddress, requestLocation } =
     useRequestLocation();
@@ -89,80 +97,95 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
   }
 
   return (
-    <View className="gap-2">
-      <View>
-        <AppMapView
-          mode={{
-            type: "live",
-            location,
-            requestLocation,
-            displayCurrentAddress,
-          }}
-          label={"Accident Location"}
-          markerTitle="Current Location"
-          height={180}
-        />
-      </View>
-
-      <View>
-        <Text className="text-textSecondary text-base mt-2">
-          Accident Image *
-        </Text>
-        <View className="justify-center flex-row items-center gap-2 mt-2">
-          <ImageUpload
-            name="Accident Image"
-            pickImageCamera={accidentImage1.pickImage}
-            uploading={accidentImage1.uploading}
-            preview={accidentImage1.preview}
-          />
-          <ImageUpload
-            name="Accident Image"
-            pickImageCamera={accidentImage2.pickImage}
-            uploading={accidentImage2.uploading}
-            preview={accidentImage2.preview}
-          />
-          <ImageUpload
-            name="Accident Image"
-            pickImageCamera={accidentImage3.pickImage}
-            uploading={accidentImage3.uploading}
-            preview={accidentImage3.preview}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingBottom: insets.bottom + 16, // ✅ accounts for nav bar
+        }}
+        keyboardShouldPersistTaps="handled"
+        className="gap-2"
+        showsVerticalScrollIndicator={false}
+      >
+        <View>
+          <AppMapView
+            mode={{
+              type: "live",
+              location,
+              requestLocation,
+              displayCurrentAddress,
+            }}
+            label={"Accident Location"}
+            markerTitle="Current Location"
+            height={180}
           />
         </View>
-      </View>
 
-      <View className="gap-2">
-        <Text className="text-textSecondary text-base mt-2">Description *</Text>
-        <Controller
-          name={"description"}
-          control={control}
-          render={({ field, fieldState }) => (
-            <Input
-              {...field}
-              value={field.value?.toString() ?? ""}
-              type="default"
-              error={fieldState.error?.message}
-              multiline
-              numberOfLines={5}
+        <View>
+          <Text className="text-textSecondary text-base mt-2">
+            Accident Image *
+          </Text>
+          <View className="justify-center flex-row items-center gap-2 mt-2">
+            <ImageUpload
+              name="Accident Image"
+              pickImageCamera={accidentImage1.pickImage}
+              uploading={accidentImage1.uploading}
+              preview={accidentImage1.preview}
             />
-          )}
-        />
-      </View>
-      <View className="items-center" style={{ marginTop: 10 }}>
-        <Button
-          text={isLoading ? "Reporting accident..." : "Report Accident"}
-          classname="w-full m-2"
-          onPress={handleSubmit(
-            (data) => onSubmit(data),
-            (error) => {
-              console.log(error);
-              toast.error("Please fill in all required fields");
-            },
-          )}
-          disabled={isLoading}
-          style={{ width: "100%" }}
-        />
-      </View>
-    </View>
+            <ImageUpload
+              name="Accident Image"
+              pickImageCamera={accidentImage2.pickImage}
+              uploading={accidentImage2.uploading}
+              preview={accidentImage2.preview}
+            />
+            <ImageUpload
+              name="Accident Image"
+              pickImageCamera={accidentImage3.pickImage}
+              uploading={accidentImage3.uploading}
+              preview={accidentImage3.preview}
+            />
+          </View>
+        </View>
+
+        <View className="gap-2">
+          <Text className="text-textSecondary text-base mt-2">
+            Description *
+          </Text>
+          <Controller
+            name={"description"}
+            control={control}
+            render={({ field, fieldState }) => (
+              <Input
+                {...field}
+                value={field.value?.toString() ?? ""}
+                type="default"
+                error={fieldState.error?.message}
+                multiline
+                numberOfLines={5}
+              />
+            )}
+          />
+        </View>
+        <View className="items-center" style={{ marginTop: 10 }}>
+          <Button
+            text={isLoading ? "Reporting accident..." : "Report Accident"}
+            classname="w-full m-2"
+            onPress={handleSubmit(
+              (data) => onSubmit(data),
+              (error) => {
+                console.log(error);
+                toast.error("Please fill in all required fields");
+              },
+            )}
+            disabled={isLoading}
+            style={{ width: "100%" }}
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

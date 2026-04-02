@@ -1,5 +1,7 @@
+import { APP_COLORS } from "@/lib/consts";
 import * as Location from "expo-location";
 import { useCallback, useState } from "react";
+import { Linking } from "react-native";
 import { toast } from "sonner-native";
 
 // hooks/useRequestLocation.ts
@@ -16,12 +18,27 @@ export function useRequestLocation() {
     try {
       const enabled = await Location.hasServicesEnabledAsync();
       if (!enabled) {
-        toast.error("Please enable location services");
+        toast.error("Please enable location services on your device.", {
+          action: {
+            label: "Open Settings",
+            onClick: () => Linking.openSettings(),
+          },
+          actionButtonStyle: { backgroundColor: APP_COLORS.primary },
+          actionButtonTextStyle: { color: APP_COLORS.textPrimary },
+        });
         return;
       }
+
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        toast.error("Location permission required");
+        toast.error("Location permission denied. Open settings to enable it.", {
+          action: {
+            label: "Open Settings",
+            onClick: () => Linking.openSettings(),
+          },
+          actionButtonStyle: { backgroundColor: APP_COLORS.primary },
+          actionButtonTextStyle: { color: APP_COLORS.textPrimary },
+        });
         return;
       }
       const accurate = await Location.getCurrentPositionAsync({
