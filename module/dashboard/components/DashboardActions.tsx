@@ -25,7 +25,7 @@ const DashboardActions = () => {
   }>({
     title: "",
     visible: false,
-    onConfirm: () => { },
+    onConfirm: () => {},
   });
   const { data: user } = useUserQuery();
   const { data: trip } = useLatestTripQuery();
@@ -73,7 +73,7 @@ const DashboardActions = () => {
   };
 
   const closeModal = () =>
-    setModal({ title: "", visible: false, onConfirm: () => { } });
+    setModal({ title: "", visible: false, onConfirm: () => {} });
 
   const handleWorkEdit = async (id: string) => {
     setModal({
@@ -92,7 +92,7 @@ const DashboardActions = () => {
   useFocusEffect(
     useCallback(() => {
       requestLocation(); // fires when screen is focused/refocused
-    }, [])
+    }, []),
   );
 
   return (

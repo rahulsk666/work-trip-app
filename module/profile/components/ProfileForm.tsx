@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Keyboard, View } from "react-native";
 import { useUserForm, useUserQuery } from "../hooks";
 import { UserEdit } from "../schemas/user.schema";
 
@@ -37,6 +37,7 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
               {...field}
               label={t("edit_profile.name")}
               error={fieldState.error?.message}
+              onSubmitEditing={Keyboard.dismiss}
             />
           )}
         />
@@ -45,6 +46,7 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
           value={user?.email}
           disabled={true}
           label={t("edit_profile.email")}
+          onSubmitEditing={Keyboard.dismiss}
         />
 
         <Controller
@@ -53,8 +55,10 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
           render={({ field, fieldState }) => (
             <Input
               {...field}
+              value={field.value?.toString() ?? ""}
               label={t("edit_profile.phone")}
               error={fieldState.error?.message}
+              onSubmitEditing={Keyboard.dismiss}
             />
           )}
         />

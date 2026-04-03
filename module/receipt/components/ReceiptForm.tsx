@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import React, { useState } from "react";
 import { Controller } from "react-hook-form";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -115,6 +116,7 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
                   type="number-pad"
                   error={fieldState.error?.message}
                   prefix="$"
+                  onSubmitEditing={Keyboard.dismiss}
                 />
               )}
             />
@@ -135,6 +137,7 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
                   error={fieldState.error?.message}
                   multiline
                   numberOfLines={2}
+                  onSubmitEditing={Keyboard.dismiss}
                 />
               )}
             />

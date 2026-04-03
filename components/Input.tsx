@@ -3,7 +3,7 @@ import { Text, TextInput, View } from "react-native";
 
 interface InputProps {
   label?: string;
-  value: string;
+  value?: string;
   disabled?: boolean;
   onChange?: (text: any) => void;
   onBlur?: () => void;
@@ -13,11 +13,13 @@ interface InputProps {
   prefix?: string;
   multiline?: boolean;
   numberOfLines?: number;
+  returnKeyType?: "done" | "next" | "go" | "search" | "send";
+  onSubmitEditing?: () => void;
 }
 
 const Input = ({
   label,
-  value,
+  value = "",
   onChange,
   disabled = false,
   onBlur,
@@ -27,6 +29,8 @@ const Input = ({
   prefix,
   multiline = false,
   numberOfLines = 1,
+  returnKeyType = "done",
+  onSubmitEditing
 }: InputProps) => {
   return (
     <View className="flex pt-1 border border-borderSubtle bg-slate-800 rounded-lg gap-0 ${}">
@@ -50,6 +54,9 @@ const Input = ({
             textAlignVertical: multiline ? "top" : "center",
             minHeight: multiline ? 100 : undefined,
           }}
+          returnKeyType={returnKeyType}
+          onSubmitEditing={onSubmitEditing}
+          submitBehavior="blurAndSubmit"
         />
         {suffix && (
           <Text className="text-textMuted text-base pr-3">{suffix}</Text>
