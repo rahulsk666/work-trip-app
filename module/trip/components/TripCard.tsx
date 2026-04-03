@@ -39,7 +39,7 @@ const TripCard = ({ trip }: TripCardProps) => {
             />
           </View>
           <Text className="text-lg font-bold text-textPrimary">
-            {formatDate(trip.trip_date, { showYear: true })}
+            {formatDate(trip.trip_date, { showYear: true, weekdayType: "short" })}
           </Text>
         </View>
         <View
