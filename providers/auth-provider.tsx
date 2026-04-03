@@ -8,6 +8,7 @@ import { Linking } from "react-native";
 import { toast } from "sonner-native";
 
 import { verifyAndRegisterDevice } from "@/lib/deviceVerification";
+import { APP_COLORS } from "@/lib/consts";
 
 export default function AuthProvider({ children }: PropsWithChildren) {
   const queryClient = useQueryClient();
@@ -108,6 +109,8 @@ export default function AuthProvider({ children }: PropsWithChildren) {
                     "mailto:",
                   ),
               },
+              actionButtonStyle: { backgroundColor: APP_COLORS.primary },
+              actionButtonTextStyle: { color: APP_COLORS.textPrimary },
             },
           );
 
