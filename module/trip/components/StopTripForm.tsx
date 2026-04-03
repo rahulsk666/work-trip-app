@@ -36,7 +36,11 @@ const StopTripForm = () => {
     if (isLoading) return;
     if (!todayTrip) return toast.error("No active trip found");
 
-    if (!location) return toast.error("Location is required to end the trip");
+    if (!location) {
+      toast.info("Getting your location, please try again in a moment...");
+      requestLocation(); //retry
+      return;
+    }
     if (data.end_km && todayTrip.start_km) {
       if (Number(data.end_km) <= todayTrip.start_km) {
         return toast.error(
@@ -54,14 +58,10 @@ const StopTripForm = () => {
     try {
       const [endUrl, frontUrl, backUrl, leftUrl, rightUrl] = await Promise.all([
         dashboardImage.upload(`${todayTrip.id}/end-image`),
-        frontImage.asset
-          ? frontImage.upload(`${todayTrip.id}/end-front`)
-          : null,
-        backImage.asset ? backImage.upload(`${todayTrip.id}/end-back`) : null,
-        leftImage.asset ? leftImage.upload(`${todayTrip.id}/end-left`) : null,
-        rightImage.asset
-          ? rightImage.upload(`${todayTrip.id}/end-right`)
-          : null,
+        frontImage.upload(`${todayTrip.id}/end-front`),
+        backImage.upload(`${todayTrip.id}/end-back`),
+        leftImage.upload(`${todayTrip.id}/end-left`),
+        rightImage.upload(`${todayTrip.id}/end-right`),
       ]);
 
       const vehiclePhotos = [
