@@ -1,7 +1,8 @@
 export default {
   expo: {
-    name: "work-trip-app",
-    slug: "work-trip-app",
+    name: "TripOps",
+    slug: "tripops",
+    owner: "tripops",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
@@ -10,12 +11,12 @@ export default {
       resizeMode: "contain",
       backgroundColor: "#90B8F8",
     },
-    scheme: "work-trip-app",
+    scheme: "tripops",
     userInterfaceStyle: "automatic",
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.anandureghu.worktripapp",
+      bundleIdentifier: "com.tripops.app",
     },
     android: {
       adaptiveIcon: {
@@ -24,7 +25,7 @@ export default {
       },
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
-      package: "com.anandureghu.worktripapp",
+      package: "com.tripops.app",
       permissions: [
         "ACCESS_FINE_LOCATION",
         "ACCESS_COARSE_LOCATION",
@@ -69,11 +70,11 @@ export default {
     extra: {
       router: {},
       eas: {
-        projectId: "085e552a-06fa-4d40-9ba4-f95378f5f5ba",
+        projectId: "59183f6f-8af5-4362-b44c-abd1a020cd16",
       },
     },
     updates: {
-      url: "https://u.expo.dev/7b549ece-a96e-4fdb-9cc8-0218808af265",
+      url: "https://u.expo.dev/59183f6f-8af5-4362-b44c-abd1a020cd16",
     },
     runtimeVersion: {
       policy: "appVersion",
