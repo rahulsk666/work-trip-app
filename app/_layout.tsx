@@ -51,6 +51,7 @@ import { useAuthContext } from "@/hooks/use-auth-context";
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { supabase } from "@/integrations/supabase/supabase";
 import { APP_COLORS } from "@/lib/consts";
+import AppGate from "@/module/appConfig/components/AppGate";
 import AuthProvider from "@/providers/auth-provider";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -86,44 +87,46 @@ function RootNavigator() {
     return <Loading />;
   }
   return (
-    <GestureHandlerRootView>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Protected guard={isLoggedIn}>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="(profile)" options={{ headerShown: false }} />
-          <Stack.Screen name="(trip)" options={{ headerShown: false }} />
-          <Stack.Screen name="(track)" options={{ headerShown: false }} />
-          <Stack.Screen name="(receipt)" options={{ headerShown: false }} />
-        </Stack.Protected>
-        <Stack.Protected guard={!isLoggedIn}>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        </Stack.Protected>
-        <Stack.Screen
-          name="modal"
-          options={{ presentation: "modal", title: "Modal" }}
+    <AppGate>
+      <GestureHandlerRootView>
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Protected guard={isLoggedIn}>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(profile)" options={{ headerShown: false }} />
+            <Stack.Screen name="(trip)" options={{ headerShown: false }} />
+            <Stack.Screen name="(track)" options={{ headerShown: false }} />
+            <Stack.Screen name="(receipt)" options={{ headerShown: false }} />
+          </Stack.Protected>
+          <Stack.Protected guard={!isLoggedIn}>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          </Stack.Protected>
+          <Stack.Screen
+            name="modal"
+            options={{ presentation: "modal", title: "Modal" }}
+          />
+        </Stack>
+        <Toaster
+          toastOptions={{
+            style: {
+              backgroundColor: APP_COLORS.cardElevated, // cardElevated - slightly elevated from background
+              borderWidth: 1,
+              borderColor: APP_COLORS.borderSubtle, // borderSubtle
+            },
+            titleStyle: {
+              color: APP_COLORS.textPrimary, // textPrimary
+              fontWeight: "600",
+            },
+            descriptionStyle: {
+              color: APP_COLORS.textSecondary, // textSecondary
+            },
+          }}
         />
-      </Stack>
-      <Toaster
-        toastOptions={{
-          style: {
-            backgroundColor: APP_COLORS.cardElevated, // cardElevated - slightly elevated from background
-            borderWidth: 1,
-            borderColor: APP_COLORS.borderSubtle, // borderSubtle
-          },
-          titleStyle: {
-            color: APP_COLORS.textPrimary, // textPrimary
-            fontWeight: "600",
-          },
-          descriptionStyle: {
-            color: APP_COLORS.textSecondary, // textSecondary
-          },
-        }}
-      />
-    </GestureHandlerRootView>
+      </GestureHandlerRootView>
+    </AppGate>
   );
 }
 
