@@ -9,6 +9,7 @@ import { Text, View } from "react-native";
 const TodaysActivity = () => {
   const { data: trip } = useLatestTripQuery();
   const { data: works } = useWorkByTripQuery({ tripId: trip?.id });
+
   const totalWorks = calculateTotalWorkTime(works ?? []);
   return (
     <View

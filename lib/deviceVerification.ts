@@ -29,20 +29,11 @@ export const verifyAndRegisterDevice = async (
         .eq("auth_user_id", userId);
 
       if (updateError) throw updateError;
-
-      console.log("Device registered:", currentDeviceId);
       return true;
     }
 
     // ✅ Verify current device matches registered device
     const isMatch = user.device_id === currentDeviceId;
-    console.log(
-      isMatch ? "Device verified ✅" : "Device mismatch ❌",
-      "\nRegistered:",
-      user.device_id,
-      "\nCurrent:",
-      currentDeviceId,
-    );
     return isMatch;
   } catch (err) {
     console.error("Device verification failed:", err);

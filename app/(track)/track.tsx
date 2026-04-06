@@ -13,7 +13,7 @@ const TripTrack = () => {
   }
   return (
     <SafeAreaView className="flex-1 bg-background p-2">
-      <ProfileHeader pageName="Trip Tracker" ShowSettings showDate />
+      <ProfileHeader pageName="Trip Tracker" showDate />
       <TripSessionCard />
       {trip && <TodayActivityCard tripId={trip?.id} />}
     </SafeAreaView>

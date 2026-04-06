@@ -1,6 +1,7 @@
 import { useDuration } from "@/hooks/useDuration";
 import { calculateTotalReceiptAmount } from "@/lib/calculateReceipt";
 import { calculateTotalWorkTime } from "@/lib/calculateWork";
+import { getLocalDate } from "@/lib/date";
 import { formatDate } from "@/lib/fomatDate";
 import { formatTime } from "@/lib/formatTime";
 import { useReceiptByTripQuery } from "@/module/receipt/hooks";
@@ -41,7 +42,11 @@ const TripDetailHeaderCard = ({
           className="text-textPrimary font-bold text-5xl"
           style={{ fontSize: 48, lineHeight: 52 }}
         >
-          {trip ? duration?.short : "00h 00m"}
+          {trip
+            ? trip.trip_date === getLocalDate()
+              ? duration?.formatted
+              : duration?.short
+            : "00h 00m"}
         </Text>
       </View>
       <View className="flex-row justify-between" style={{ gap: 40 }}>

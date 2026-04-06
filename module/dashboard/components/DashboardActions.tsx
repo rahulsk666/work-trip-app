@@ -11,8 +11,8 @@ import {
   useLatestWorkQuery,
 } from "@/module/work/hooks";
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { toast } from "sonner-native";
 import TodaysActivity from "./TodaysActivity";
@@ -48,7 +48,8 @@ const DashboardActions = () => {
         closeModal();
 
         if (!location) {
-          toast.error("Please enable location services");
+          toast.info("Getting your location, please try again in a moment...");
+          requestLocation(); //retry
           return;
         }
         if (!trip?.id) {
@@ -88,9 +89,11 @@ const DashboardActions = () => {
     });
   };
 
-  useEffect(() => {
-    requestLocation();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      requestLocation(); // fires when screen is focused/refocused
+    }, []),
+  );
 
   return (
     <View

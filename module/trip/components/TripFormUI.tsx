@@ -14,6 +14,7 @@ import * as Location from "expo-location";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -84,10 +85,10 @@ const TripFormUI = ({
     onConfirm: () => void;
   }>({
     visible: false,
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
 
-  const closeModal = () => setModal({ visible: false, onConfirm: () => {} });
+  const closeModal = () => setModal({ visible: false, onConfirm: () => { } });
 
   return (
     <KeyboardAvoidingView
@@ -103,6 +104,7 @@ const TripFormUI = ({
         keyboardShouldPersistTaps="handled"
         className="gap-2 p-2 m-2"
         showsVerticalScrollIndicator={false}
+        onScrollBeginDrag={Keyboard.dismiss}
       >
         {/* Vehicle selector — start only */}
         {!isStop && (
@@ -142,6 +144,7 @@ const TripFormUI = ({
                 type="numeric"
                 error={fieldState.error?.message}
                 suffix="KM"
+                onSubmitEditing={Keyboard.dismiss}
               />
             )}
           />
@@ -227,12 +230,12 @@ const TripFormUI = ({
               (data) =>
                 isStop
                   ? setModal({
-                      visible: true,
-                      onConfirm: () => {
-                        closeModal();
-                        onSubmit(data);
-                      },
-                    })
+                    visible: true,
+                    onConfirm: () => {
+                      closeModal();
+                      onSubmit(data);
+                    },
+                  })
                   : onSubmit(data),
               () => toast.error("Please fill in all required fields"),
             )}

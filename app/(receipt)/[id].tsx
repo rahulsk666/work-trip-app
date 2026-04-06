@@ -18,7 +18,7 @@ const ReceiptDetailScreen = () => {
 
   return (
     <View className="flex-1 bg-background px-3 pt-5">
-      <ProfileHeader pageName="Receipt Detail" ShowSettings />
+      <ProfileHeader pageName="Receipt Detail" />
       <ReceiptDetailCard receipt={receipt} />
     </View>
   );

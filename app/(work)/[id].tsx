@@ -18,7 +18,7 @@ const WorkDetailScreen = () => {
   }
   return (
     <SafeAreaView className="flex-1 bg-background">
-      <ProfileHeader pageName="Work Detail" ShowSettings />
+      <ProfileHeader pageName="Work Detail" />
       <WorkDetailCard work={work} index={index} />
     </SafeAreaView>
   );

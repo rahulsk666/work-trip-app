@@ -9,7 +9,7 @@ const Receipt = () => {
 
   return (
     <View className="flex-1 bg-background px-3 pt-5">
-      <ProfileHeader pageName="Add Receipt" ShowSettings />
+      <ProfileHeader pageName="Add Receipt" />
       <ReceiptForm tripId={trip?.id} />
     </View>
   );

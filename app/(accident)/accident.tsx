@@ -9,7 +9,7 @@ const Accident = () => {
 
   return (
     <View className="flex-1 bg-background px-3 pt-5">
-      <ProfileHeader pageName="Report Accident" ShowSettings />
+      <ProfileHeader pageName="Report Accident" />
       <AccidentForm tripId={trip?.id} />
     </View>
   );

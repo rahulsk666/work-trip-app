@@ -10,6 +10,7 @@ import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
@@ -165,6 +166,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
                 error={fieldState.error?.message}
                 multiline
                 numberOfLines={5}
+                onSubmitEditing={Keyboard.dismiss}
               />
             )}
           />

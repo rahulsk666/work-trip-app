@@ -12,7 +12,6 @@ const Trip = () => {
         pageName={"Start Trip"}
         showOnline={trip ? false : true}
         OnlineStatus
-        ShowSettings
         showDate={trip ? true : false}
       />
       <StartTripForm />
