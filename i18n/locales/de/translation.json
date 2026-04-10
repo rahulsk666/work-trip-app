@@ -1,26 +1,237 @@
 {
-    "profile": {
-        "notifications": "Benachrichtigungen",
-        "notifications_subtitle": "Alle Benachrichtigungen anzeigen",
-        "language": "Sprache",
-        "language_current": "Deutsch",
-        "edit_profile": "Profil bearbeiten",
-        "sign_out": "Abmelden"
-    },
-    "edit_profile": {
-        "name": "Name",
-        "email": "E-Mail",
-        "phone": "Telefonnummer",
+    "common": {
+        "cancel": "Abbrechen",
+        "confirm": "Bestätigen",
         "save": "Speichern",
-        "avatar_updated": "Profilbild aktualisiert",
-        "profile_updated": "Profil erfolgreich aktualisiert"
-    },
-    "language_picker": {
-        "english": "Englisch",
-        "german": "Deutsch",
-        "japanese": "Japanisch"
+        "location_fetch_message": "Standort wird abgerufen, bitte versuchen Sie es gleich erneut...",
+        "no_active_trip": "Keine aktive Fahrt",
+        "no_active_trip_message": "Bitte starten Sie eine Fahrt, bevor Sie mit der Arbeit beginnen.",
+        "error_message": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+        "completed": "Abgeschlossen",
+        "in_progress": "In Bearbeitung",
+        "time": "ZEIT",
+        "duration": "DAUER",
+        "pending": "Ausstehend",
+        "verified": "Verifiziert",
+        "rejected": "Abgelehnt",
+        "description": "Beschreibung",
+        "amount": "Betrag",
+        "offline": "Offline",
+        "online": "Online",
+        "synced": "Synchronisiert",
+        "hours": "STUNDEN",
+        "minutes": "MINUTEN",
+        "seconds": "SEKUNDEN",
+        "ready_to_start": "Bereit zu starten",
+        "location_not_available": "Standort nicht verfügbar",
+        "get_location": "Standort abrufen",
+        "fetching_address": "Adresse wird abgerufen...",
+        "home_tab": "Startseite",
+        "history_tab": "Verlauf",
+        "profile_tab": "Profil",
+        "loading": "Wird geladen..."
     },
     "errors": {
-        "no_active_session": "Keine aktive Sitzung"
+        "no_active_trip": "Keine aktive Fahrt",
+        "no_trips_found": "Keine Fahrten gefunden",
+        "no_work_sessions": "Keine Arbeitssitzungen",
+        "no_receipts": "Keine Belege",
+        "fill_required_fields": "Bitte füllen Sie alle erforderlichen Felder aus",
+        "something_went_wrong": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
+        "a_trip_has_already_been_started_for_today": "Für heute wurde bereits eine Fahrt gestartet",
+        "vehicle_required": "Fahrzeug erforderlich",
+        "location_is_required_to_start_a_trip": "Standort ist erforderlich, um eine Fahrt zu starten",
+        "dashboard_image_required": "Dashboard-Bild erforderlich",
+        "front_image_required": "Frontbild erforderlich",
+        "back_image_required": "Rückbild erforderlich",
+        "left_image_required": "Linkes Bild erforderlich",
+        "right_image_required": "Rechtes Bild erforderlich",
+        "no_active_trip_found": "Keine aktive Fahrt gefunden",
+        "getting_your_location_please_try_again_in_a_moment": "Standort wird abgerufen, bitte versuchen Sie es gleich erneut...",
+        "end_km_must_be_greater_than_start_km": "End-KM muss größer als Start-KM sein ({start_km} km)",
+        "odometer_reading_required": "Kilometerstand ist erforderlich",
+        "vehicle_not_assigned": "Kein Fahrzeug zugewiesen",
+        "a_work_has_already_been_started_for_today": "Für heute wurde bereits eine Arbeit gestartet",
+        "start_time_required": "Startzeit ist erforderlich",
+        "notes_too_long": "Notizen zu lang",
+        "trip_required": "Fahrt erforderlich",
+        "max_description_length": "Beschreibung ist zu lang",
+        "amount_required": "Betrag ist erforderlich",
+        "name_min_length": "Name muss mindestens 2 Zeichen lang sein",
+        "gallery_permission_denied": "Galerie-Berechtigung verweigert. Öffnen Sie die Einstellungen, um sie zu aktivieren.",
+        "failed_to_read_image": "Bild konnte nicht gelesen werden",
+        "camera_permission_denied": "Kamera-Berechtigung verweigert. Öffnen Sie die Einstellungen, um sie zu aktivieren.",
+        "no_image_selected": "Kein Bild ausgewählt",
+        "location_permission_denied": "Standort-Berechtigung verweigert. Öffnen Sie die Einstellungen, um sie zu aktivieren.",
+        "failed_to_fetch_location": "Standort konnte nicht abgerufen werden",
+        "location_services_disabled": "Standortdienste deaktiviert. Bitte aktivieren Sie die Standortdienste auf Ihrem Gerät.",
+        "current_location_unavailable": "GPS nicht verfügbar. Bitte tippen Sie auf Aktualisieren, um es erneut zu versuchen.",
+        "unable_to_get_location": "Standort konnte nicht ermittelt werden. Bitte überprüfen Sie Ihre Geräteeinstellungen.",
+        "receipt_image_required": "Belegbild erforderlich",
+        "no_email_found": "Keine E-Mail für dieses Konto gefunden.",
+        "access_denied": "Zugriff verweigert. Sie sind nicht berechtigt, diese Anwendung zu verwenden.",
+        "inactive_employee": "Ihr Mitarbeiterkonto ist inaktiv.",
+        "device_mismatch": "Dieses Konto ist auf einem anderen Gerät registriert."
+    },
+    "login": {
+        "title": "TripOps",
+        "subtitle": "Arbeits- & Fahrten-Tracker",
+        "google_sign_in": "Mit Google anmelden",
+        "sign_in_error": "Fehler bei der Anmeldung",
+        "sign_in_cancelled": "Anmeldung wurde abgebrochen",
+        "play_services_not_available": "Play-Dienste nicht verfügbar",
+        "sign_in_loading": "Anmeldung läuft..."
+    },
+    "profile": {
+        "language": "Deutsch",
+        "notifications": "Benachrichtigungen",
+        "notifications_subtitle": "Alle Benachrichtigungen anzeigen",
+        "language_current": "Englisch",
+        "sign_out": "Abmelden",
+        "sign_out_error": "Fehler beim Abmelden",
+        "edit_profile": {
+            "title": "Profil bearbeiten",
+            "name": "Name",
+            "email": "E-Mail",
+            "phone": "Telefonnummer",
+            "avatar_updated": "Profilbild aktualisiert",
+            "profile_updated": "Profil erfolgreich aktualisiert",
+            "avatar_update_error": "Fehler beim Aktualisieren des Profilbilds"
+        },
+        "language_picker": {
+            "title": "Sprache",
+            "english": "Englisch",
+            "german": "Deutsch",
+            "turkish": "Türkisch",
+            "arabic": "Arabisch",
+            "russian": "Russisch"
+        },
+        "role": {
+            "admin": "ADMIN",
+            "employee": "MITARBEITER"
+        }
+    },
+    "app_gate": {
+        "update_available": "Update verfügbar",
+        "update_available_message": "Eine neue Version der App ist verfügbar. Bitte aktualisieren Sie, um die App weiter zu verwenden.",
+        "update_now": "Jetzt aktualisieren",
+        "later": "Später"
+    },
+    "dashboard": {
+        "title": "Willkommen zurück, {{name}}",
+        "duty_info": {
+            "on_duty": "IM DIENST",
+            "trip_duration": "Fahrtdauer",
+            "fetching_location": "Standort wird abgerufen...",
+            "disabled_title": "Ihr Tag hat noch nicht begonnen.",
+            "disabled_subtitle": "Tippen Sie unten, um Ihre Fahrt zu beginnen und Ihre Arbeitsstunden zu protokollieren.",
+            "stop_trip": "Fahrt beenden"
+        },
+        "quick_tools": {
+            "title": "Schnellwerkzeuge",
+            "receipts": "Belege",
+            "accident": "Unfall"
+        },
+        "dashboard_actions": {
+            "start_trip": "Fahrt starten",
+            "start_work": "Arbeit starten",
+            "stop_work": "Arbeit\nbeenden",
+            "start_trip_confirm_title": "Fahrt starten?",
+            "start_work_confirm_title": "Arbeit starten?",
+            "stop_work_confirm_title": "Arbeit beenden?"
+        },
+        "todays_activity": {
+            "hours_worked": "Gearbeitete Stunden"
+        }
+    },
+    "history": {
+        "profile_title": "Frühere Fahrten",
+        "title": "Fahrtenverlauf",
+        "no_history": "Kein Verlauf",
+        "no_history_message": "Sie haben noch keinen Fahrtenverlauf."
+    },
+    "trip_detail": {
+        "profile_title": "Fahrtdetails",
+        "work": "Arbeit",
+        "receipts": "Belege",
+        "loading_trip_details": "Fahrtdetails werden geladen..",
+        "total_work": "Gesamtarbeit",
+        "total_receipt": "Gesamtbelege",
+        "trip_start_time": "Startzeit",
+        "trip_end_time": "Endzeit"
+    },
+    "receipt_detail": {
+        "profile_title": "Belegdetails",
+        "receipt_info": "BELEGINFORMATIONEN",
+        "loading_receipt": "Beleg wird geladen..."
+    },
+    "work_detail": {
+        "profile_title": "Arbeitsdetails",
+        "work_info": "ARBEITSMETRIKEN",
+        "work_start_time": "Arbeitsbeginn",
+        "work_end_time": "Arbeitsende",
+        "loading_work_details": "Arbeitsdetails werden geladen..."
+    },
+    "trip_track": {
+        "profile_title": "Fahrt verfolgen",
+        "trip_stopped": "Fahrt beendet",
+        "trip_active": "Aktive Fahrt",
+        "date": "Datum",
+        "started_at": "Gestartet um",
+        "current_location": "Aktueller Standort",
+        "gps_locked": "GPS VERBUNDEN",
+        "gps_disconnected": "GPS GETRENNT",
+        "data_synced": "DATEN SYNCHRONISIERT",
+        "todays_activity": "Heutige Aktivität",
+        "view_all": "Alle anzeigen"
+    },
+    "trip_form": {
+        "profile_start_title": "Fahrt starten",
+        "profile_end_title": "Fahrt beenden",
+        "starting_trip": "Fahrt wird gestartet...",
+        "stopping_trip": "Fahrt wird beendet...",
+        "select_vehicle": "Fahrzeug auswählen",
+        "vehicle_title": "Zugewiesenes Fahrzeug",
+        "no_vehicle_assigned": "Kein Fahrzeug zugewiesen",
+        "location_shared": "Standort geteilt",
+        "odometer_reading": "Kilometerstand *",
+        "end_ododmeter_reading": "End-Kilometerstand *",
+        "dashboard_photo": "Dashboard-Foto *",
+        "end_dashboard_photo": "Dashboard-Foto (Ende) *",
+        "dashboard_image": "Dashboard-Bild",
+        "end_dashboard_image": "Dashboard-Bild (Ende)",
+        "vehicle_photos": "Fahrzeugfotos *",
+        "end_vehicle_photos": "Fahrzeugfotos (Ende) *",
+        "front_image": "Frontbild",
+        "back_image": "Rückbild",
+        "left_image": "Linkes Bild",
+        "right_image": "Rechtes Bild",
+        "dashboard_photo_note": "Foto muss den Kilometerstand deutlich anzeigen",
+        "starting_location": "Startort",
+        "ending_location": "Zielort",
+        "start_trip": "Fahrt starten",
+        "end_trip": "Fahrt beenden",
+        "end_trip_note": "Das Beenden dieser Fahrt verhindert das Hinzufügen weiterer Arbeitssitzungen heute.\nBitte stellen Sie sicher, dass Sie alle Arbeiten abgeschlossen haben, zu Hause/zur Basis zurückgekehrt sind und das Firmenfahrzeug nicht privat nutzen werden.",
+        "confirm_trip_end": "Fahrtende bestätigen?",
+        "trip_started_successfully": "Fahrt erfolgreich gestartet",
+        "trip_ended_successfully": "Fahrt erfolgreich beendet"
+    },
+    "accident_form": {
+        "profile_title": "Unfallbericht",
+        "reporting_accident": "Unfall wird gemeldet...",
+        "accident_location": "Unfallort",
+        "current_location": "Aktueller Standort",
+        "accident_image": "Unfallbild",
+        "description": "Beschreibung *",
+        "report_accident": "Unfall melden",
+        "accident_reported_successfully": "Unfall erfolgreich gemeldet"
+    },
+    "receipt_form": {
+        "profile_title": "Beleg hinzufügen",
+        "receipt_image": "Belegbild *",
+        "receipt_image_note": "Foto muss den Beleg deutlich anzeigen",
+        "add_receipt": "Beleg hinzufügen",
+        "adding_receipt": "Beleg wird hinzugefügt...",
+        "receipt_added_successfully": "Beleg erfolgreich hinzugefügt"
     }
 }

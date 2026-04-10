@@ -67,8 +67,8 @@ const ProfileScreen = () => {
           onPress={() => console.log("'Notification")}
         />
         <ProfileButton
-          text={t("profile.language")}
-          mutedText={t("profile.language_current")}
+          text={t("profile.language_picker.title")}
+          mutedText={t("profile.language")}
           onPress={() => setLanguageModalOpen(true)}
         />
       </View>

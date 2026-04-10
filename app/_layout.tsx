@@ -1,4 +1,3 @@
-import "@/i18n";
 import {
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -49,12 +48,14 @@ import Loading from "@/components/Loading";
 import { SplashScreenController } from "@/components/splash-screen-controller";
 import { useAuthContext } from "@/hooks/use-auth-context";
 import { useColorScheme } from "@/hooks/use-color-scheme";
+import { i18n, initI18n } from "@/i18n";
 import { supabase } from "@/integrations/supabase/supabase";
 import { APP_COLORS } from "@/lib/consts";
 import AuthProvider from "@/providers/auth-provider";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { I18nextProvider } from "react-i18next";
 import { AppState } from "react-native";
 
 export const unstable_settings = {
@@ -129,6 +130,8 @@ function RootNavigator() {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  const [i18nReady, setI18nReady] = useState(false);
+
 
   // ✅ Load all fonts here
   const [fontsLoaded] = useFonts({
@@ -161,15 +164,25 @@ export default function RootLayout() {
     Poppins_900Black_Italic,
   });
 
+  useEffect(() => {
+    initI18n().then(() => setI18nReady(true));
+  }, []);
+
+  if (!fontsLoaded || !i18nReady) {
+    return null;
+  }
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <AuthProvider>
-          <SplashScreenController />
-          <RootNavigator />
-          <StatusBar style="auto" />
-        </AuthProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <I18nextProvider i18n={i18n}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <AuthProvider>
+            <SplashScreenController />
+            <RootNavigator />
+            <StatusBar style="auto" />
+          </AuthProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </I18nextProvider>
   );
 }

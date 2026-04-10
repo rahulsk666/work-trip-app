@@ -35,7 +35,7 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
           render={({ field, fieldState }) => (
             <Input
               {...field}
-              label={t("edit_profile.name")}
+              label={t("profile.edit_profile.name")}
               error={fieldState.error?.message}
               onSubmitEditing={Keyboard.dismiss}
             />
@@ -45,7 +45,7 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
         <Input
           value={user?.email}
           disabled={true}
-          label={t("edit_profile.email")}
+          label={t("profile.edit_profile.email")}
           onSubmitEditing={Keyboard.dismiss}
         />
 
@@ -56,7 +56,7 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
             <Input
               {...field}
               value={field.value?.toString() ?? ""}
-              label={t("edit_profile.phone")}
+              label={t("profile.edit_profile.phone")}
               error={fieldState.error?.message}
               onSubmitEditing={Keyboard.dismiss}
             />
@@ -64,12 +64,12 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
         />
       </View>
       <Button
-        text={t("edit_profile.save")}
+        text={t("profile.edit_profile.save")}
         onPress={handleSubmit((data) => onSubmit(data))}
         disabled={isSubmitting}
       />
       <Button
-        text={t("edit_profile.cancel")}
+        text={t("profile.edit_profile.cancel")}
         onPress={() => router.navigate("/profile")}
         disabled={isSubmitting}
         variant="danger"

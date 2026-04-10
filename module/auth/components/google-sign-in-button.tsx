@@ -8,6 +8,7 @@ import {
 } from "@react-native-google-signin/google-signin";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
   ActivityIndicator,
@@ -19,6 +20,7 @@ import {
 import { toast } from "sonner-native";
 
 export default function GoogleSignInButton() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
   const signIn = async () => {
@@ -43,13 +45,13 @@ export default function GoogleSignInButton() {
           if (error) {
             console.error(error.message);
             toast.error(
-              "Error occurred. Try again",
+              t("login.sign_in_error"),
             );
             return;
           }
         }
       } else {
-        toast.error("Sign in was cancelled");
+        toast.error(t("login.sign_in_cancelled"));
       }
     } catch (error) {
       if (isErrorWithCode(error)) {
@@ -59,18 +61,18 @@ export default function GoogleSignInButton() {
 
           case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
             toast.error(
-              "Play services not available",
+              t("login.play_services_not_available"),
             );
             break;
 
           default:
             toast.error(
-              "Error occurred. Try again",
+              t("login.sign_in_error"),
             );
         }
       } else {
         toast.error(
-          "Error occurred. Try again",
+          t("login.sign_in_error"),
         );
       }
     } finally {
@@ -127,8 +129,8 @@ export default function GoogleSignInButton() {
         }}
       >
         {loading
-          ? "Signing in..."
-          : "Sign in with Google"}
+          ? t("login.sign_in_loading")
+          : t("login.google_sign_in")}
       </Text>
     </TouchableOpacity>
   );
