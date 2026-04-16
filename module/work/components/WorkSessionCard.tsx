@@ -5,6 +5,7 @@ import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Work } from "../schemas/work.schema";
 
@@ -14,6 +15,7 @@ interface WorkSessionCardProps {
 }
 
 const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
+  const { t } = useTranslation();
   const duration = useDuration(work.start_time, work.end_time, work.created_at);
   const formattedIndex = String(Number(index) + 1).padStart(3, "0");
   return (
@@ -77,13 +79,13 @@ const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
                   : APP_COLORS.primaryDark,
             }}
           >
-            {work.status === "ENDED" ? "Completed" : "In Progress"}
+            {work.status === "ENDED" ? t("common.completed") : t("common.in_progress")}
           </Text>
         </View>
       </View>
       <View className="flex-row justify-between p-2">
         <View className="flex-col gap-2 justify-start">
-          <Text className="text-textSecondary font-bold">TIME</Text>
+          <Text className="text-textSecondary font-bold">{t("common.time")}</Text>
           <Text className="text-textSecondary font-bold">
             {work.start_time && formatTime(work?.start_time)}
             {work.start_time && work.end_time
@@ -92,7 +94,7 @@ const WorkSessionCard = ({ work, index }: WorkSessionCardProps) => {
           </Text>
         </View>
         <View className="flex-col gap-2 justify-center">
-          <Text className="text-textSecondary font-bold">DURATION</Text>
+          <Text className="text-textSecondary font-bold">{t("common.duration")}</Text>
           <Text
             className="text-textSecondary font-bold rounded-lg text-center p-1"
             style={{

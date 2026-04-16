@@ -1,27 +1,241 @@
 {
-  "profile": {
-    "notifications": "Notifications",
-    "notifications_subtitle": "View all notifications",
-    "language": "Language",
-    "language_current": "English",
-    "edit_profile": "Edit Profile",
-    "sign_out": "Sign Out"
-  },
-  "edit_profile": {
-    "name": "Name",
-    "email": "Email",
-    "phone": "Phone Number",
-    "save": "Save",
+  "common": {
     "cancel": "Cancel",
-    "avatar_updated": "Profile Picture Updated",
-    "profile_updated": "Profile Updated Successfully"
-  },
-  "language_picker": {
-    "english": "English",
-    "german": "German",
-    "japanese": "Japanese"
+    "confirm": "Confirm",
+    "save": "Save",
+    "location_fetch_message": "Getting your location, please try again in a moment...",
+    "no_active_trip": "No Active Trip",
+    "no_active_trip_message": "Please start a trip before starting work.",
+    "error_message": "Something went wrong. Please try again.",
+    "completed": "Completed",
+    "in_progress": "In Progress",
+    "time": "TIME",
+    "duration": "DURATION",
+    "pending": "Pending",
+    "verified": "Verified",
+    "rejected": "Rejected",
+    "description": "Description",
+    "amount": "Amount",
+    "offline": "Offline",
+    "online": "Online",
+    "synced": "Synced",
+    "hours": "HOURS",
+    "minutes": "MINUTES",
+    "seconds": "SECONDS",
+    "ready_to_start": "Ready to start",
+    "location_not_available": "Location not available",
+    "get_location": "Get Location",
+    "fetching_address": "Fetching address...",
+    "home_tab": "Home",
+    "history_tab": "History",
+    "profile_tab": "Profile",
+    "loading": "Loading...",
+    "location": "Location"
   },
   "errors": {
-    "no_active_session": "No Active Session"
+    "no_active_session": "No Active Session",
+    "no_active_trip": "No Active Trips",
+    "no_trips_found": "No Trips Found",
+    "no_work_sessions": "No Work Sessions",
+    "no_receipts": "No Receipts",
+    "fill_required_fields": "Please fill in all required fields",
+    "something_went_wrong": "Something went wrong. Please try again.",
+    "a_trip_has_already_been_started_for_today": "A trip has already been started for today",
+    "vehicle_required": "Vehicle required",
+    "location_is_required_to_start_a_trip": "Location is required to start a trip",
+    "dashboard_image_required": "Dashboard image required",
+    "front_image_required": "Front image required",
+    "back_image_required": "Back image required",
+    "left_image_required": "Left image required",
+    "right_image_required": "Right image required",
+    "no_active_trip_found": "No active trip found",
+    "getting_your_location_please_try_again_in_a_moment": "Getting your location, please try again in a moment...",
+    "end_km_must_be_greater_than_start_km": "End KM must be greater than Start KM ({start_km} km)",
+    "odometer_reading_required": "Odometer reading is required",
+    "vehicle_not_assigned": "Vehicle not assigned",
+    "a_work_has_already_been_started_for_today": "A work has already been started for today",
+    "start_time_required": "Start time is required",
+    "trip_required": "Trip is Required",
+    "max_description_length": "Description is too long",
+    "amount_required": "Amount is required",
+    "name_min_length": "Name must be at least 2 characters",
+    "gallery_permission_denied": "Gallery permission denied. Open settings to enable it.",
+    "failed_to_read_image": "Failed to read image",
+    "camera_permission_denied": "Camera permission denied. Open settings to enable it.",
+    "no_image_selected": "No image selected",
+    "location_permission_denied": "Location permission denied. Open settings to enable it.",
+    "failed_to_fetch_location": "Failed to fetch location",
+    "location_services_disabled": "Location services disabled. Please enable location services on your device.",
+    "current_location_unavailable": "GPS unavailable. Please tap Refresh to try again.",
+    "unable_to_get_location": "Unable to get location. Please check your device settings.",
+    "receipt_image_required": "Receipt image required",
+    "no_email_found": "No email found for this account.",
+    "access_denied": "Access denied. You are not authorized to use this application.",
+    "inactive_employee": "Your employee account is inactive.",
+    "device_mismatch": "This account is registered on a different device."
+  },
+  "login": {
+    "title": "TripOps",
+    "subtitle": "Work & Trip Tracker",
+    "google_sign_in": "Sign in with Google",
+    "sign_in_error": "Error signing in",
+    "sign_in_cancelled": "Sign in was cancelled",
+    "play_services_not_available": "Play services not available",
+    "sign_in_loading": "Signing in..."
+  },
+  "profile": {
+    "language": "English",
+    "notifications": "Notifications",
+    "notifications_subtitle": "View all notifications",
+    "language_current": "English",
+    "sign_out": "Sign Out",
+    "sign_out_error": "Error signing out",
+    "edit_profile": {
+      "title": "Edit Profile",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "avatar_updated": "Profile Picture Updated",
+      "profile_updated": "Profile Updated Successfully",
+      "avatar_update_error": "Error updating profile picture"
+    },
+    "language_picker": {
+      "title": "Language",
+      "english": "English",
+      "german": "German",
+      "turkish": "Turkish",
+      "arabic": "Arabic",
+      "russian": "Russian"
+    },
+    "role": {
+      "admin": "ADMIN",
+      "employee": "EMPLOYEE"
+    }
+  },
+  "app_gate": {
+    "update_available": "Update Available",
+    "update_available_message": "A new version of the app is available. Please update to continue using the app.",
+    "update_now": "Update Now",
+    "later": "Later"
+  },
+  "dashboard": {
+    "profile_title": "Welcome back, {{name}}",
+    "duty_info": {
+      "on_duty": "ON DUTY",
+      "trip_duration": "Trip Duration",
+      "fetching_location": "Fetching location...",
+      "disabled_title": "Your day hasn't started yet.",
+      "disabled_subtitle": "Tap below to begin your trip and log your duty hours.",
+      "stop_trip": "Stop Trip"
+    },
+    "quick_tools": {
+      "title": "Quick Tools",
+      "receipts": "Receipts",
+      "accident": "Accident"
+    },
+    "dashboard_actions": {
+      "start_trip": "Start Trip",
+      "start_work": "Start Work",
+      "stop_work": "Stop \nWork",
+      "start_trip_confirm_title": "Start Trip ?",
+      "start_work_confirm_title": "Start Work ?",
+      "stop_work_confirm_title": "Stop Work ?"
+    },
+    "todays_activity": {
+      "hours_worked": "Hours Worked"
+    }
+  },
+  "history": {
+    "profile_title": "Previous Trips",
+    "title": "Trip History",
+    "no_history": "No History",
+    "no_history_message": "You have no trip history yet."
+  },
+  "trip_detail": {
+    "profile_title": "Trip Detail",
+    "work": "Work",
+    "receipts": "Receipts",
+    "loading_trip_details": "Loading Trip details..",
+    "total_work": "Total Work",
+    "total_receipt": "Total Receipt",
+    "trip_start_time": "Start Time",
+    "trip_end_time": "End Time"
+  },
+  "receipt_detail": {
+    "profile_title": "Receipt Detail",
+    "receipt_info": "RECEIPT INFO",
+    "loading_receipt": "Loading Receipt..."
+  },
+  "work_detail": {
+    "profile_title": "Work Detail",
+    "work_info": "WORK METRICS",
+    "work_start_time": "Work Start Time",
+    "work_end_time": "Work End Time",
+    "loading_work_details": "Loading work details..."
+  },
+  "trip_track": {
+    "profile_title": "Track Trip",
+    "trip_stopped": "Stop Trip",
+    "trip_active": "Active Trip",
+    "session_stopped": "Stopped Session",
+    "session_active": "Active Session",
+    "date": "Date",
+    "started_at": "Started at",
+    "current_location": "Current Location",
+    "gps_locked": "GPS LOCKED",
+    "gps_disconnected": "GPS DISCONNECTED",
+    "data_synced": "DATA SYNCED",
+    "todays_activity": "Today&apos;s Activity",
+    "view_all": "View All"
+  },
+  "trip_form": {
+    "profile_start_title": "Start Trip",
+    "profile_end_title": "End Trip",
+    "starting_trip": "Starting trip...",
+    "stopping_trip": "Stopping trip...",
+    "select_vehicle": "Select Vehicle",
+    "vehicle_title": "Assigned Vehicle",
+    "no_vehicle_assigned": "No vehicle assigned",
+    "location_shared": "Location shared",
+    "odometer_reading": "Odometer Reading *",
+    "end_ododmeter_reading": "End Odometer Reading *",
+    "dashboard_photo": "Dashboard Photo *",
+    "end_dashboard_photo": "End Dashboard Photo *",
+    "dashboard_image": "Dashboard Image",
+    "end_dashboard_image": "End Dashboard Image",
+    "vehicle_photos": "Vehicle Photos *",
+    "end_vehicle_photos": "End Vehicle Photos *",
+    "front_image": "Front Image",
+    "back_image": "Back Image",
+    "left_image": "Left Image",
+    "right_image": "Right Image",
+    "dashboard_photo_note": "Photo must clearly show the odometer reading",
+    "starting_location": "Starting Location",
+    "ending_location": "Ending Location",
+    "start_trip": "Start Trip",
+    "end_trip": "End Trip",
+    "end_trip_note": "Ending this trip will prevent adding any more work sessions today.\nPlease ensure you have completed all work, reached home/base, and will not use the company vehicle for personal activities.",
+    "confirm_trip_end": "Confirm Trip End?",
+    "trip_started_successfully": "Trip started successfully",
+    "trip_ended_successfully": "Trip ended successfully",
+    "current_location": "Current Location"
+  },
+  "accident_form": {
+    "profile_title": "Accident Report",
+    "reporting_accident": "Reporting accident...",
+    "accident_location": "Accident Location",
+    "current_location": "Current Location",
+    "accident_image": "Accident Image",
+    "description": "Description *",
+    "report_accident": "Report Accident",
+    "accident_reported_successfully": "Accident reported successfully"
+  },
+  "receipt_form": {
+    "profile_title": "Add Receipt",
+    "receipt_image": "Receipt Image *",
+    "receipt_image_note": "Photo must clearly show the receipt",
+    "add_receipt": "Add Receipt",
+    "adding_receipt": "Adding receipt...",
+    "receipt_added_successfully": "Receipt added successfully"
   }
 }

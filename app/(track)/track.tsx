@@ -4,16 +4,18 @@ import TodayActivityCard from "@/module/trip/components/TodayActivityCard";
 import TripSessionCard from "@/module/trip/components/TripSessionCard";
 import { useLatestTripQuery } from "@/module/trip/hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TripTrack = () => {
+  const { t } = useTranslation();
   const { data: trip, isLoading } = useLatestTripQuery();
   if (isLoading) {
     return <Loading />;
   }
   return (
     <SafeAreaView className="flex-1 bg-background p-2">
-      <ProfileHeader pageName="Trip Tracker" showDate />
+      <ProfileHeader pageName={t("trip_track.profile_title")} showDate />
       <TripSessionCard />
       {trip && <TodayActivityCard tripId={trip?.id} />}
     </SafeAreaView>

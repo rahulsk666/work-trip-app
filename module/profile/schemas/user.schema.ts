@@ -2,7 +2,7 @@ import * as z from "zod";
 
 export const userSchema = z.object({
   id: z.uuid(),
-  name: z.string().min(2, "Name must be at least 2 characters"),
+  name: z.string().min(2, "errors.name_min_length"),
   email: z.email(),
   phone: z
     .string()
@@ -22,7 +22,7 @@ export const userSchema = z.object({
 export type User = z.infer<typeof userSchema>;
 
 export const userEditSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").optional(),
+  name: z.string().min(2, "errors.name_min_length").optional(),
   phone: z.string().nullable().optional(),
   avatar_url: z.string().optional(),
   is_active: z.boolean().optional(),

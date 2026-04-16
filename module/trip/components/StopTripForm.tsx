@@ -12,9 +12,11 @@ import {
 import { VehiclePhoto } from "@/module/trip/schemas/trip.schema";
 import { router } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 
 const StopTripForm = () => {
+  const { t } = useTranslation();
   const { location, displayCurrentAddress, requestLocation } =
     useRequestLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -37,7 +39,7 @@ const StopTripForm = () => {
     if (!todayTrip) return toast.error("No active trip found");
 
     if (!location) {
-      toast.info("Getting your location, please try again in a moment...");
+      toast.info(t("errors.getting_your_location_please_try_again_in_a_moment"));
       requestLocation(); //retry
       return;
     }
@@ -48,11 +50,11 @@ const StopTripForm = () => {
         );
       }
     }
-    if (!dashboardImage.asset) return toast.error("Dashboard image required");
-    if (!frontImage.asset) return toast.error("Front image required");
-    if (!backImage.asset) return toast.error("Back image required");
-    if (!leftImage.asset) return toast.error("Left image required");
-    if (!rightImage.asset) return toast.error("Right image required");
+    if (!dashboardImage.asset) return toast.error(t("errors.dashboard_image_required"));
+    if (!frontImage.asset) return toast.error(t("errors.front_image_required"));
+    if (!backImage.asset) return toast.error(t("errors.back_image_required"));
+    if (!leftImage.asset) return toast.error(t("errors.left_image_required"));
+    if (!rightImage.asset) return toast.error(t("errors.right_image_required"));
 
     setIsSubmitting(true);
     try {
@@ -86,11 +88,11 @@ const StopTripForm = () => {
         },
       });
 
-      toast.success("Trip ended successfully");
+      toast.success(t("trip_form.trip_ended_successfully"));
       router.replace("/");
     } catch (err) {
       console.error(err);
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("errors.something_went_wrong"));
     } finally {
       setIsSubmitting(false);
     }
@@ -98,7 +100,7 @@ const StopTripForm = () => {
 
   return (
     <>
-      {isLoading && <Loading showBackground={false} label="Stoping trip..." />}
+      {isLoading && <Loading showBackground={false} label={t("trip_form.stopping_trip")} />}
       <TripFormUI
         mode="stop"
         trip={todayTrip}

@@ -4,6 +4,7 @@ import GoogleSignInButton from "@/module/auth/components/google-sign-in-button";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   StyleSheet,
   Text,
@@ -14,6 +15,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LoginScreen() {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +39,7 @@ export default function LoginScreen() {
           </View>
 
           <Text style={styles.title}>TripTrack Pro</Text>
-          <Text style={styles.subtitle}>Work & Trip Tracker</Text>
+          <Text style={styles.subtitle}>{t("login.subtitle")}</Text>
         </View>
 
         {/* Username */}
@@ -69,7 +71,7 @@ export default function LoginScreen() {
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>Need help? Contact IT Support</Text>
-          <Text style={styles.footerSub}>🔒 Secured by Enterprise IT</Text>
+          <Text style={styles.footerSub}>🔒 Secured by Picominds</Text>
         </View>
       </SafeAreaView>
     </LinearGradient>

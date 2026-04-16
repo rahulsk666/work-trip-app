@@ -1,16 +1,18 @@
 import { useUpdateLocationMutation } from "@/module/trip/hooks";
 import * as Location from "expo-location";
 import { useCallback, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 
 export function useLocationTracking(tripId: string | null) {
+  const { t } = useTranslation();
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { mutateAsync: updateLocation } = useUpdateLocationMutation();
 
   const requestPermission = useCallback(async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
-      toast.error("Location permission denied");
+      toast.error(t("errors.location_permission_denied"));
       return false;
     }
     return true;
@@ -30,7 +32,7 @@ export function useLocationTracking(tripId: string | null) {
         longitude: location.coords.longitude,
       });
     } catch (err) {
-      console.error("Failed to fetch/update location", err);
+      console.error(t("errors.failed_to_fetch_location"), err);
     }
   }, [tripId, updateLocation]);
 

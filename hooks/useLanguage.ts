@@ -1,6 +1,6 @@
 // module/profile/hooks/useLanguage.ts
 import { LANGUAGES, LanguageCode } from "@/constants/languages";
-import i18n from "@/i18n";
+import { i18n } from "@/i18n";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useState } from "react";
 

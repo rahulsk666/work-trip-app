@@ -8,6 +8,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 import { receiptApi } from "../api/receipt.api";
 import { receiptKeys } from "../constants/receipt.key";
@@ -69,6 +70,7 @@ export const useReceiptByTripQuery = ({ tripId }: { tripId?: string }) => {
 // receipt mutations
 
 export const useCreateReceiptMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (data: ReceiptCreate) => receiptApi.create(data),
@@ -78,12 +80,13 @@ export const useCreateReceiptMutation = () => {
 
     onError: (err: PostgrestError | Error) => {
       console.log(err);
-      toast.error("Failed to add receipt. Please try again");
+      toast.error(t("errors.something_went_wrong"));
     },
   });
 };
 
 export const useEditReceiptMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: ReceiptEdit }) =>
@@ -95,7 +98,7 @@ export const useEditReceiptMutation = () => {
       await qc.refetchQueries({ queryKey: receiptKeys.all });
     },
 
-    onError: () => toast.error("Failed to start receipt. Please try again"),
+    onError: () => toast.error(t("errors.something_went_wrong")),
   });
 };
 

@@ -9,6 +9,7 @@ import ImageUpload from "@/module/trip/components/ImageUpload";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -30,6 +31,8 @@ interface AccidentFormProps {
 }
 
 const AccidentForm = ({ tripId }: AccidentFormProps) => {
+  const { t } = useTranslation();
+  const err = (msg?: string) => msg ? t(msg) : undefined;
   const insets = useSafeAreaInsets();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { location, displayCurrentAddress, requestLocation } =
@@ -50,9 +53,9 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
   const onSubmit = async (data: any) => {
     if (isLoading) return;
     if (!accidentImage1.asset)
-      return toast.error("Atleast one Accident Image is Required");
+      return toast.error(t("errors.accident_image_required"));
     if (!location) {
-      toast.error("Please enable location services");
+      toast.error(t("errors.location_services_disabled"));
     }
 
     setIsSubmitting(true);
@@ -79,11 +82,11 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
         data: { photo_url: accidentImage1Url },
       });
 
-      toast.success("Accident Reported successfully");
+      toast.success(t("accident_form.accident_reported_successfully"));
       router.replace("/");
     } catch (err) {
       console.error(err);
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("errors.something_went_wrong"));
     } finally {
       setIsSubmitting(false);
     }
@@ -94,7 +97,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
   }, []);
 
   if (isLoading) {
-    return <Loading label="Reporting Accident..." showBackground={false} />;
+    return <Loading label={t("accident_form.reporting_accident")} showBackground={false} />;
   }
 
   return (
@@ -119,31 +122,31 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
               requestLocation,
               displayCurrentAddress,
             }}
-            label={"Accident Location"}
-            markerTitle="Current Location"
+            label={t("accident_form.accident_location")}
+            markerTitle={t("accident_form.current_location")}
             height={180}
           />
         </View>
 
         <View>
           <Text className="text-textSecondary text-base mt-2">
-            Accident Image *
+            {`${t("accident_form.accident_image")} *`}
           </Text>
           <View className="justify-center flex-row items-center gap-2 mt-2">
             <ImageUpload
-              name="Accident Image"
+              name={t("accident_form.accident_image")}
               pickImageCamera={accidentImage1.pickImage}
               uploading={accidentImage1.uploading}
               preview={accidentImage1.preview}
             />
             <ImageUpload
-              name="Accident Image"
+              name={t("accident_form.accident_image")}
               pickImageCamera={accidentImage2.pickImage}
               uploading={accidentImage2.uploading}
               preview={accidentImage2.preview}
             />
             <ImageUpload
-              name="Accident Image"
+              name={t("accident_form.accident_image")}
               pickImageCamera={accidentImage3.pickImage}
               uploading={accidentImage3.uploading}
               preview={accidentImage3.preview}
@@ -153,7 +156,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
 
         <View className="gap-2">
           <Text className="text-textSecondary text-base mt-2">
-            Description *
+            {t("accident_form.description")}
           </Text>
           <Controller
             name={"description"}
@@ -163,7 +166,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
                 {...field}
                 value={field.value?.toString() ?? ""}
                 type="default"
-                error={fieldState.error?.message}
+                error={err(fieldState.error?.message)}
                 multiline
                 numberOfLines={5}
                 onSubmitEditing={Keyboard.dismiss}
@@ -173,13 +176,13 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
         </View>
         <View className="items-center" style={{ marginTop: 10 }}>
           <Button
-            text={isLoading ? "Reporting accident..." : "Report Accident"}
+            text={isLoading ? t("accident_form.reporting_accident") : t("accident_form.report_accident")}
             classname="w-full m-2"
             onPress={handleSubmit(
               (data) => onSubmit(data),
               (error) => {
                 console.log(error);
-                toast.error("Please fill in all required fields");
+                toast.error(t("errors.fill_required_fields"));
               },
             )}
             disabled={isLoading}

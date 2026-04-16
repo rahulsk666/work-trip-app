@@ -3,15 +3,16 @@ import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { Receipt } from "../schemas/receipt.schema";
 
 interface ReceiptCardProps {
   receipt: Receipt;
-  index?: number;
 }
 
-const ReceiptCard = ({ receipt, index }: ReceiptCardProps) => {
+const ReceiptCard = ({ receipt }: ReceiptCardProps) => {
+  const { t } = useTranslation();
   return (
     <TouchableOpacity
       className="bg-card m-1 gap-2 flex-row rounded-lg justify-between items-center"
@@ -46,7 +47,7 @@ const ReceiptCard = ({ receipt, index }: ReceiptCardProps) => {
           >
             {receipt.description}
           </Text>
-          <Text className="text-textSecondary font-bold">TIME</Text>
+          <Text className="text-textSecondary font-bold">{t("common.time")}</Text>
           <Text className="text-textSecondary font-bold">
             {receipt.created_at && formatTime(receipt?.created_at)}
           </Text>
@@ -90,14 +91,14 @@ const ReceiptCard = ({ receipt, index }: ReceiptCardProps) => {
             }}
           >
             {receipt.status === "PENDING"
-              ? "Pending"
+              ? t("common.pending")
               : receipt.status === "VERIFIED"
-                ? "Verified"
-                : "Rejected"}
+                ? t("common.verified")
+                : t("common.rejected")}
           </Text>
         </View>
         <View className="flex-col gap-2 p-2 px-4">
-          <Text className="text-textSecondary font-bold">AMOUNT</Text>
+          <Text className="text-textSecondary font-bold">{t("common.amount")}</Text>
           <Text
             className="text-textSecondary font-bold rounded-lg text-center p-1"
             style={{

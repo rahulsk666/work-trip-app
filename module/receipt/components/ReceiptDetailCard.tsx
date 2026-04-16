@@ -2,6 +2,7 @@ import { APP_COLORS } from "@/lib/consts";
 import { formatDate } from "@/lib/fomatDate";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Text, View } from "react-native";
 import { Receipt } from "../schemas/receipt.schema";
 
@@ -10,6 +11,7 @@ interface ReceiptDetailCardProps {
 }
 
 const ReceiptDetailCard = ({ receipt }: ReceiptDetailCardProps) => {
+  const { t } = useTranslation();
   return (
     <View>
       <View className="flex-col justify-start p-4">
@@ -33,7 +35,7 @@ const ReceiptDetailCard = ({ receipt }: ReceiptDetailCardProps) => {
         style={{ marginTop: 20 }}
       >
         <View className="flex-row justify-between">
-          <Text className="text-textSecondary font-bold">RECEIPT INFO</Text>
+          <Text className="text-textSecondary font-bold">{t("receipt_detail.receipt_info")}</Text>
           <View
             className="flex-row items-center justify-center p-1 rounded-lg"
             style={{
@@ -70,15 +72,15 @@ const ReceiptDetailCard = ({ receipt }: ReceiptDetailCardProps) => {
               }}
             >
               {receipt.status === "PENDING"
-                ? "Pending"
+                ? t("common.pending")
                 : receipt.status === "VERIFIED"
-                  ? "Verified"
-                  : "Rejected"}
+                  ? t("common.verified")
+                  : t("common.rejected")}
             </Text>
           </View>
         </View>
         <View className="flex-col gap-2">
-          <Text className="text-textMuted font-bold">AMOUNT</Text>
+          <Text className="text-textMuted font-bold">{t("common.amount")}</Text>
           <Text
             className="font-bold"
             style={{
@@ -91,7 +93,7 @@ const ReceiptDetailCard = ({ receipt }: ReceiptDetailCardProps) => {
           </Text>
         </View>
         <View className="flex-col gap-2">
-          <Text className="text-textMuted font-bold">Description</Text>
+          <Text className="text-textMuted font-bold">{t("common.description")}</Text>
           <Text className="font-bold text-textPrimary">
             {receipt.description}
           </Text>

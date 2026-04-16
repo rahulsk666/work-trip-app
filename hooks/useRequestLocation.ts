@@ -1,11 +1,13 @@
 import { APP_COLORS } from "@/lib/consts";
 import * as Location from "expo-location";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Linking } from "react-native";
 import { toast } from "sonner-native";
 
 // hooks/useRequestLocation.ts
 export function useRequestLocation() {
+  const { t } = useTranslation();
   const [location, setLocation] = useState<Location.LocationObject | null>(
     null,
   );
@@ -18,7 +20,7 @@ export function useRequestLocation() {
     try {
       const enabled = await Location.hasServicesEnabledAsync();
       if (!enabled) {
-        toast.error("Please enable location services on your device.", {
+        toast.error(t("errors.location_services_disabled"), {
           action: {
             label: "Open Settings",
             onClick: () => Linking.openSettings(),
@@ -31,7 +33,7 @@ export function useRequestLocation() {
 
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        toast.error("Location permission denied. Open settings to enable it.", {
+        toast.error(t("errors.location_permission_denied"), {
           action: {
             label: "Open Settings",
             onClick: () => Linking.openSettings(),
@@ -58,9 +60,9 @@ export function useRequestLocation() {
     } catch (err: any) {
       if (location) return;
       toast.error(
-        err?.message?.includes("Current location is unavailable")
-          ? "GPS unavailable. Please tap Refresh to try again."
-          : "Unable to get location. Please check your device settings.",
+        err?.message?.includes(t("errors.current_location_unavailable"))
+          ? t("errors.current_location_unavailable")
+          : t("errors.unable_to_get_location"),
       );
     }
   }, []);

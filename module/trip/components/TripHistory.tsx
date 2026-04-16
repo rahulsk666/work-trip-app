@@ -1,9 +1,13 @@
+import { APP_COLORS } from "@/lib/consts";
+import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { useTripPaginatedQuery } from "../hooks";
 import TripCard from "./TripCard";
 
 const TripHistory = () => {
+  const { t } = useTranslation();
   const {
     data,
     fetchNextPage,
@@ -21,7 +25,7 @@ const TripHistory = () => {
           className="text-textMuted text-2xl font-bold"
           style={{ fontSize: 24, lineHeight: 32 }}
         >
-          Trip History
+          {t("history.title")}
         </Text>
       </View>
       <FlatList
@@ -34,6 +38,18 @@ const TripHistory = () => {
         }}
         onEndReachedThreshold={0.5}
         ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+        ListEmptyComponent={
+          <View className="items-center justify-center py-10 gap-2">
+            <Ionicons
+              name="map-outline"
+              size={40}
+              color={APP_COLORS.textMuted}
+            />
+            <Text className="font-poppins text-textSecondary text-sm">
+              {t("history.no_history_message")}
+            </Text>
+          </View>
+        }
         refreshing={isLoading}
         onRefresh={refetch}
         showsVerticalScrollIndicator={false}

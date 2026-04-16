@@ -13,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import React, { useState } from "react";
 import { Control, Controller } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -73,6 +74,7 @@ const TripFormUI = ({
   handleSubmit,
   onSubmit,
 }: TripFormUIProps) => {
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const isStop = mode === "stop";
   const duration = useDuration(
@@ -89,6 +91,8 @@ const TripFormUI = ({
   });
 
   const closeModal = () => setModal({ visible: false, onConfirm: () => { } });
+
+  const err = (msg?: string) => msg ? t(msg) : undefined;
 
   return (
     <KeyboardAvoidingView
@@ -119,7 +123,7 @@ const TripFormUI = ({
                   onVehicleChange?.(vId, v);
                 }}
                 locationShared={location !== null}
-                error={fieldState.error?.message}
+                error={err(fieldState.error?.message)}
               />
             )}
           />
@@ -130,7 +134,7 @@ const TripFormUI = ({
         {/* Odometer */}
         <View className="gap-2">
           <Text className="text-textSecondary text-base mt-2">
-            {isStop ? "End Odometer Reading *" : "Odometer Reading *"}
+            {isStop ? t("trip_form.end_odometer_reading") : t("trip_form.odometer_reading")}
           </Text>
           <Controller
             name={isStop ? "end_km" : "start_km"}
@@ -142,7 +146,7 @@ const TripFormUI = ({
                   field.onChange(val ? Number(val) : undefined)
                 }
                 type="numeric"
-                error={fieldState.error?.message}
+                error={err(fieldState.error?.message)}
                 suffix="KM"
                 onSubmitEditing={Keyboard.dismiss}
               />
@@ -153,36 +157,36 @@ const TripFormUI = ({
         {/* Dashboard photo */}
         <View>
           <Text className="text-textSecondary text-base mt-2">
-            {isStop ? "End Dashboard Photo *" : "Dashboard Photo *"}
+            {isStop ? t("trip_form.end_dashboard_photo") : t("trip_form.dashboard_photo")}
           </Text>
           <View className="justify-center flex-row items-center gap-2 mt-2">
             <ImageUpload
-              name={isStop ? "End Dashboard" : "Dashboard Image"}
+              name={isStop ? t("trip_form.end_dashboard_image") : t("trip_form.dashboard_image")}
               pickImageCamera={dashboardImage.pickImageCamera}
               uploading={dashboardImage.uploading}
               preview={dashboardImage.preview}
             />
           </View>
           <Text className="text-textMuted mt-2">
-            Photo must clearly show the odometer reading
+            {t("trip_form.dashboard_photo_note")}
           </Text>
         </View>
 
         {/* Vehicle photos */}
         <View>
           <Text className="text-textSecondary text-base mt-2">
-            {isStop ? "End Vehicle Photos *" : "Vehicle Photos *"}
+            {isStop ? t("trip_form.end_vehicle_photos") : t("trip_form.vehicle_photos")}
           </Text>
           <View className="justify-center flex-col items-center gap-2 mt-2">
             <View className="justify-center flex-row items-center gap-2 mt-2">
               <ImageUpload
-                name="Front Image"
+                name={t("trip_form.front_image")}
                 pickImageCamera={frontImage.pickImageCamera}
                 uploading={frontImage.uploading}
                 preview={frontImage.preview}
               />
               <ImageUpload
-                name="Back Image"
+                name={t("trip_form.back_image")}
                 pickImageCamera={backImage.pickImageCamera}
                 uploading={backImage.uploading}
                 preview={backImage.preview}
@@ -190,13 +194,13 @@ const TripFormUI = ({
             </View>
             <View className="justify-center flex-row items-center gap-2 mt-2">
               <ImageUpload
-                name="Left Image"
+                name={t("trip_form.left_image")}
                 pickImageCamera={leftImage.pickImageCamera}
                 uploading={leftImage.uploading}
                 preview={leftImage.preview}
               />
               <ImageUpload
-                name="Right Image"
+                name={t("trip_form.right_image")}
                 pickImageCamera={rightImage.pickImageCamera}
                 uploading={rightImage.uploading}
                 preview={rightImage.preview}
@@ -207,7 +211,7 @@ const TripFormUI = ({
 
         {/* Location */}
         <TripCurrentLocation
-          label={mode === "start" ? "Starting Location" : "Ending Location"}
+          label={mode === "start" ? t("trip_form.starting_location") : t("trip_form.ending_location")}
           location={location}
           displayCurrentAddress={displayCurrentAddress}
           requestLocation={requestLocation}
@@ -219,11 +223,11 @@ const TripFormUI = ({
             text={
               isLoading
                 ? isStop
-                  ? "Ending Trip..."
-                  : "Starting Trip..."
+                  ? t("trip_form.stopping_trip")
+                  : t("trip_form.starting_trip")
                 : isStop
-                  ? "End Trip"
-                  : "Start Trip"
+                  ? t("trip_form.end_trip")
+                  : t("trip_form.start_trip")
             }
             classname="w-full m-2"
             onPress={handleSubmit(
@@ -237,7 +241,7 @@ const TripFormUI = ({
                     },
                   })
                   : onSubmit(data),
-              () => toast.error("Please fill in all required fields"),
+              () => toast.error(t("errors.fill_required_fields")),
             )}
             disabled={isLoading}
             style={{ width: "100%" }}
@@ -247,11 +251,10 @@ const TripFormUI = ({
       {/* </View> */}
       <ConfirmModal
         visible={modal.visible}
-        description="Ending this trip will prevent adding any more work sessions today.
-        Please ensure you have completed all work, reached home/base, and will not use the company vehicle for personal activities."
+        description={t("trip_form.end_trip_note")}
         onConfirm={modal.onConfirm}
         onCancel={closeModal}
-        title="Confirm Trip End?"
+        title={t("trip_form.confirm_trip_end")}
         icon={
           <Ionicons name="warning" size={40} color={APP_COLORS.warningDark} />
         }

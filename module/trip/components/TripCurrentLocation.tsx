@@ -1,6 +1,7 @@
 import AppMapView from "@/components/AppMapView";
 import * as Location from "expo-location";
 import React, { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface TripCurrentLocationProps {
   label?: string;
@@ -15,6 +16,7 @@ const TripCurrentLocation = ({
   requestLocation,
   displayCurrentAddress,
 }: TripCurrentLocationProps) => {
+  const { t } = useTranslation();
   useEffect(() => {
     requestLocation();
   }, []);
@@ -27,8 +29,8 @@ const TripCurrentLocation = ({
         requestLocation,
         displayCurrentAddress,
       }}
-      label={label ?? "Location"}
-      markerTitle="Current Location"
+      label={label ?? t("common.location")}
+      markerTitle={t("trip_form.current_location")}
       height={180}
     />
   );

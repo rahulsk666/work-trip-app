@@ -58,7 +58,7 @@ const ProfileScreen = () => {
             </>
           )}
         </View>
-        <Text className="text-sm text-primary">{user?.role}</Text>
+        <Text className="text-sm text-primary">{user?.role === "ADMIN" ? t("profile.role.admin") : t("profile.role.employee")}</Text>
       </View>
       <View className="flex-1 mx-6 mt-10 mb-6 gap-6">
         <ProfileButton
@@ -67,8 +67,8 @@ const ProfileScreen = () => {
           onPress={() => console.log("'Notification")}
         />
         <ProfileButton
-          text={t("profile.language")}
-          mutedText={t("profile.language_current")}
+          text={t("profile.language_picker.title")}
+          mutedText={t("profile.language")}
           onPress={() => setLanguageModalOpen(true)}
         />
       </View>

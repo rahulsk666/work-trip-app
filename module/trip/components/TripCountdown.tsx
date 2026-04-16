@@ -2,6 +2,7 @@ import StatusBadge from "@/components/StatusBadge";
 import { APP_COLORS } from "@/lib/consts";
 import { Duration } from "@/lib/duration";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import CountdownBox from "./CountdownBox";
 
@@ -14,6 +15,7 @@ const TripCountDown = ({
   showStatusBadge = false,
   duration,
 }: TripCountDownProps) => {
+  const { t } = useTranslation();
   const [hours, setHours] = useState<string | null>(null);
   const [mins, setMins] = useState<string | null>();
   const [seconds, setSeconds] = useState<string | null>(null);
@@ -34,13 +36,13 @@ const TripCountDown = ({
           textColor={APP_COLORS.yellow}
           borderColor={APP_COLORS.yellow}
           shadowColor={APP_COLORS.yellow}
-          label="Ready to Start"
+          label={t("common.ready_to_start")}
         />
       )}
       <View className="flex-row gap-3" style={{ marginTop: 20 }}>
-        <CountdownBox label="HOURS" value={hours ?? "00"} />
-        <CountdownBox label="MINUTES" value={mins ?? "00"} />
-        <CountdownBox label="SECONDS" value={seconds ?? "00"} />
+        <CountdownBox label={t("common.hours")} value={hours ?? "00"} />
+        <CountdownBox label={t("common.minutes")} value={mins ?? "00"} />
+        <CountdownBox label={t("common.seconds")} value={seconds ?? "00"} />
       </View>
     </View>
   );

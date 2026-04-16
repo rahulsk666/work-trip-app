@@ -4,20 +4,21 @@ import { withOpacity } from "@/lib/utils";
 import { Ionicons } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import { WebView } from "react-native-webview";
 
 type MapMode =
   | {
-      type: "static";
-      location: string | null | undefined;
-    }
+    type: "static";
+    location: string | null | undefined;
+  }
   | {
-      type: "live";
-      location: Location.LocationObject | null;
-      requestLocation: () => void;
-      displayCurrentAddress?: string | null;
-    };
+    type: "live";
+    location: Location.LocationObject | null;
+    requestLocation: () => void;
+    displayCurrentAddress?: string | null;
+  };
 
 interface AppMapViewProps {
   mode: MapMode;
@@ -73,39 +74,42 @@ const EmptyMap = ({
   height: number;
   onPress?: () => void;
   showButton?: boolean;
-}) => (
-  <View
-    className="rounded-2xl items-center justify-center gap-3"
-    style={{
-      height,
-      backgroundColor: withOpacity(APP_COLORS.primary, 0.05),
-      borderWidth: 1.5,
-      borderStyle: "dashed",
-      borderColor: withOpacity(APP_COLORS.textPrimary, 0.2),
-    }}
-  >
-    <Ionicons
-      name="location-outline"
-      size={32}
-      color={withOpacity(APP_COLORS.textPrimary, 0.3)}
-    />
-    <Text className="font-poppins text-textSecondary text-sm">
-      Location not available
-    </Text>
-    {showButton && onPress && (
-      <TouchableOpacity
-        onPress={onPress}
-        className="flex-row items-center gap-2 px-4 py-2 rounded-xl"
-        style={{ backgroundColor: APP_COLORS.primary }}
-      >
-        <Ionicons name="refresh" size={16} color={APP_COLORS.textPrimary} />
-        <Text className="font-poppins-semibold text-textPrimary text-sm">
-          Get Location
-        </Text>
-      </TouchableOpacity>
-    )}
-  </View>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <View
+      className="rounded-2xl items-center justify-center gap-3"
+      style={{
+        height,
+        backgroundColor: withOpacity(APP_COLORS.primary, 0.05),
+        borderWidth: 1.5,
+        borderStyle: "dashed",
+        borderColor: withOpacity(APP_COLORS.textPrimary, 0.2),
+      }}
+    >
+      <Ionicons
+        name="location-outline"
+        size={32}
+        color={withOpacity(APP_COLORS.textPrimary, 0.3)}
+      />
+      <Text className="font-poppins text-textSecondary text-sm">
+        {t("common.location_not_available")}
+      </Text>
+      {showButton && onPress && (
+        <TouchableOpacity
+          onPress={onPress}
+          className="flex-row items-center gap-2 px-4 py-2 rounded-xl"
+          style={{ backgroundColor: APP_COLORS.primary }}
+        >
+          <Ionicons name="refresh" size={16} color={APP_COLORS.textPrimary} />
+          <Text className="font-poppins-semibold text-textPrimary text-sm">
+            {t("common.get_location")}
+          </Text>
+        </TouchableOpacity>
+      )}
+    </View>
+  )
+}
 
 const StaticMap = ({
   location,
@@ -140,6 +144,7 @@ const LiveMap = ({
   displayCurrentAddress?: string | null;
   height: number;
 }) => {
+  const { t } = useTranslation();
   if (!location) {
     return <EmptyMap height={height} onPress={requestLocation} showButton />;
   }
@@ -166,7 +171,7 @@ const LiveMap = ({
             className="font-poppins text-textSecondary text-sm flex-1"
             numberOfLines={1}
           >
-            {displayCurrentAddress ?? "Fetching address..."}
+            {displayCurrentAddress ?? t("common.fetching_address")}
           </Text>
         </View>
         <TouchableOpacity onPress={requestLocation} className="p-1">

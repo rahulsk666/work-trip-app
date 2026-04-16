@@ -8,6 +8,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 import { tripApi } from "../api/trip.api";
 import { tripKeys } from "../constants/trip.key";
@@ -64,6 +65,7 @@ export const useLatestTripQuery = () => {
 // trip mutations
 
 export const useCreateTripMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (data: TripCreate) => tripApi.create(data),
@@ -74,14 +76,15 @@ export const useCreateTripMutation = () => {
 
     onError: (err: PostgrestError | Error) => {
       if ("code" in err && err.code === "23505") {
-        toast.error("A trip has already been started for today");
+        toast.error(t("errors.a_trip_has_already_been_started_for_today"));
         return;
       }
-      toast.error("Failed to start trip. Please try again");
+      toast.error(t("errors.something_went_wrong"));
     },
   });
 };
 export const useEditTripMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: TripEdit }) =>
@@ -95,23 +98,26 @@ export const useEditTripMutation = () => {
       await qc.refetchQueries({ queryKey: tripKeys.latest() });
     },
 
-    onError: () => toast.error("Failed to start trip. Please try again"),
+    onError: () => toast.error(t("errors.something_went_wrong")),
   });
 };
 
 // Update vehicle image
 export const useInsertVehiclePhotosMutation = () => {
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (photos: VehiclePhoto[]) => tripApi.insertVehiclePhotos(photos),
-    onError: () => toast.error("Failed to save vehicle photos"),
+    onError: () => toast.error(t("errors.something_went_wrong")),
   });
 };
 
 export const useUpdateLocationMutation = () => {
+  const { t } = useTranslation();
   return useMutation({
     mutationFn: (params: UpdateLocation) => tripApi.updateLocation(params),
     onError: (err) => {
       console.error("Failed to update location", err);
+      toast.error(t("errors.something_went_wrong"));
     },
   });
 };
