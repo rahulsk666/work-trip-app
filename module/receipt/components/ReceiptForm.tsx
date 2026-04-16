@@ -37,6 +37,8 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
   const receiptImage = useImageUpload({ bucket: "receipts" });
   const isLoading = isCreating || isEditing || isSubmitting;
 
+  const err = (msg?: string) => msg ? t(msg) : undefined;
+
   const onSubmit = async (data: any) => {
     if (isLoading) return;
     if (!receiptImage.asset) return toast.error(t("errors.receipt_image_required"));
@@ -116,7 +118,7 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
                     field.onChange(val ? Number(val) : undefined)
                   }
                   type="number-pad"
-                  error={fieldState.error?.message}
+                  error={err(fieldState.error?.message)}
                   prefix="$"
                   onSubmitEditing={Keyboard.dismiss}
                 />
@@ -136,7 +138,7 @@ const ReceiptForm = ({ tripId }: { tripId?: string }) => {
                   {...field}
                   value={field.value?.toString() ?? ""}
                   type="default"
-                  error={fieldState.error?.message}
+                  error={err(fieldState.error?.message)}
                   multiline
                   numberOfLines={2}
                   onSubmitEditing={Keyboard.dismiss}

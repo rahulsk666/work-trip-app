@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/fomatDate";
 import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Work } from "../schemas/work.schema";
 
@@ -14,6 +15,7 @@ interface WorkDetailCardProps {
 }
 
 const WorkDetailCard = ({ work, index }: WorkDetailCardProps) => {
+  const { t } = useTranslation();
   const duration = useDuration(
     work.start_time ?? "",
     work.end_time,
@@ -40,7 +42,7 @@ const WorkDetailCard = ({ work, index }: WorkDetailCardProps) => {
         <View className="flex-col justify-start gap-6 p-2">
           <View className="flex-row justify-between">
             <Text className="text-textSecondary text-xl font-bold">
-              WORK METRICS
+              {t("work_detail.work_info")}
             </Text>
             <View
               className="flex-row items-center justify-center p-1 rounded-lg"
@@ -71,12 +73,12 @@ const WorkDetailCard = ({ work, index }: WorkDetailCardProps) => {
                       : APP_COLORS.successDark,
                 }}
               >
-                {work.status === "ENDED" ? "Completed" : "In Progress"}
+                {work.status === "ENDED" ? t("common.completed") : t("common.in_progress")}
               </Text>
             </View>
           </View>
           <View className="flex-col gap-2">
-            <Text className="text-textMuted">DURATION</Text>
+            <Text className="text-textMuted">{t("common.duration")}</Text>
             <Text
               className="font-bold text-center"
               style={{
@@ -91,7 +93,7 @@ const WorkDetailCard = ({ work, index }: WorkDetailCardProps) => {
           <View className="flex-row justify-between">
             <View className="flex-col gap-2 items-center">
               <Text className="text-textSecondary text-center">
-                WORK START TIME
+                {t("work_detail.work_start_time")}
               </Text>
               <Text className="text-center text-textPrimary text-lg font-bold">
                 {work.start_time ? formatTime(work.start_time) : ""}
@@ -99,7 +101,7 @@ const WorkDetailCard = ({ work, index }: WorkDetailCardProps) => {
             </View>
             <View className="flex-col gap-2 items-center">
               <Text className="text-textSecondary text-center">
-                WORK END TIME
+                {t("work_detail.work_end_time")}
               </Text>
               <Text className="text-center text-textPrimary text-lg font-bold">
                 {work.end_time ? formatTime(work.end_time) : ""}

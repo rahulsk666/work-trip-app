@@ -1,6 +1,7 @@
 import { APP_COLORS } from "@/lib/consts";
 import { withOpacity } from "@/lib/utils";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Modal,
@@ -34,14 +35,15 @@ const ConfirmModal = ({
   visible,
   title,
   description,
-  confirmText = "Confirm",
-  cancelText = "Cancel",
+  confirmText,
+  cancelText,
   isLoading = false,
   variant = "danger",
   icon,
   onConfirm,
   onCancel,
 }: ConfirmModalProps) => {
+  const { t } = useTranslation();
   const color = VARIANT_COLORS[variant];
 
   return (
@@ -83,7 +85,7 @@ const ConfirmModal = ({
               onPress={onCancel}
               disabled={isLoading}
             >
-              <Text style={styles.cancelText}>{cancelText}</Text>
+              <Text style={styles.cancelText}>{cancelText ?? t("common.cancel")}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -98,7 +100,7 @@ const ConfirmModal = ({
               {isLoading ? (
                 <ActivityIndicator size="small" color={APP_COLORS.white} />
               ) : (
-                <Text style={styles.confirmText}>{confirmText}</Text>
+                <Text style={styles.confirmText}>{confirmText ?? t("common.confirm")}</Text>
               )}
             </TouchableOpacity>
           </View>

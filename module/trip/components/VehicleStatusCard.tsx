@@ -7,6 +7,7 @@ import { useAvailableVehicles } from "@/module/vehicle/hooks";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 
 interface VehicleStatusCardProps {
@@ -22,6 +23,7 @@ const VehicleStatusCard = ({
   error,
   locationShared,
 }: VehicleStatusCardProps) => {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const { data: vehicles } = useAvailableVehicles();
   return (
@@ -30,7 +32,7 @@ const VehicleStatusCard = ({
         <View className="flex-col gap-2">
           <View className="flex-row justify-center gap-1 items-center">
             <Text className="text-textSecondary p-2 justify-start text-xl font-semibold">
-              Assigned Vehicle
+              {t("trip_form.vehicle_title")}
             </Text>
             <TouchableOpacity
               onPress={() => setVisible(true)}
@@ -53,10 +55,10 @@ const VehicleStatusCard = ({
           </View>
           <View className="p-2">
             <Text className="text-white justify-start text-lg font-medium">
-              {vehicle ? vehicle?.vehicle_type : "No vehicle assigned"}
+              {vehicle ? vehicle?.vehicle_type : t("trip_form.no_vehicle_assigned")}
             </Text>
             <Text className="text-textMuted justify-start text-md">
-              Lic: {vehicle ? vehicle?.vehicle_number : "No vehicle assigned"}
+              Lic: {vehicle ? vehicle?.vehicle_number : t("trip_form.no_vehicle_assigned")}
             </Text>
           </View>
         </View>
@@ -97,7 +99,7 @@ const VehicleStatusCard = ({
           <Text
             className={`${locationShared ? "text-successDark" : "text-danger"} text-sm font-bold`}
           >
-            Location shared
+            {t("trip_form.location_shared")}
           </Text>
         </View>
         <View className="flex-row justify-start items-center bg-red-100 p-2 gap-2 rounded-lg">

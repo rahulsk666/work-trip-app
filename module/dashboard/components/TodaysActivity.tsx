@@ -4,9 +4,11 @@ import { APP_COLORS } from "@/lib/consts";
 import { useLatestTripQuery } from "@/module/trip/hooks";
 import { useWorkByTripQuery } from "@/module/work/hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 
 const TodaysActivity = () => {
+  const { t } = useTranslation();
   const { data: trip } = useLatestTripQuery();
   const { data: works } = useWorkByTripQuery({ tripId: trip?.id });
 
@@ -39,7 +41,7 @@ const TodaysActivity = () => {
         className="font-bold text-xl"
         style={{ color: trip ? APP_COLORS.textPrimary : APP_COLORS.textMuted }}
       >
-        Hours Worked
+        {t("dashboard.todays_activity.hours_worked")}
       </Text>
       <Text
         className="text-2xl font-bold"

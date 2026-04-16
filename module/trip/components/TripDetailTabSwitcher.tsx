@@ -1,6 +1,7 @@
 import { APP_COLORS } from "@/lib/consts";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 
 export type TripDetailTab = "Work" | "Receipts";
@@ -14,6 +15,7 @@ const TripDetailTabSwitcher = ({
   activeTab,
   setActiveTab,
 }: TripDetailTabSwitcherProps) => {
+  const { t } = useTranslation();
   return (
     <View
       className="flex-row rounded-xl"
@@ -62,7 +64,7 @@ const TripDetailTabSwitcher = ({
                   : APP_COLORS.textSecondary,
             }}
           >
-            {tab}
+            {t(`trip_detail.${tab.toLowerCase()}`)}
           </Text>
         </TouchableOpacity>
       ))}

@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/fomatDate";
 import { useUserQuery } from "@/module/profile/hooks";
 import { router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import Avatar from "./Avatar";
 import StatusBadge from "./StatusBadge";
@@ -33,6 +34,7 @@ const ProfileHeader = ({
   ParentDivClassName,
   showAvatar = true,
 }: ProfileHeaderProps) => {
+  const { t } = useTranslation();
   const { data: user } = useUserQuery();
   return (
     <View
@@ -58,7 +60,7 @@ const ProfileHeader = ({
                 <Text
                   className={`${OnlineStatus ? "text-successDark" : "text-danger"} text-sm font-bold`}
                 >
-                  {OnlineStatus ? "Online" : "Offline"}
+                  {OnlineStatus ? t("common.online") : t("common.offline")}
                 </Text>
               </>
             )}
@@ -85,7 +87,7 @@ const ProfileHeader = ({
       {/* Status */}
       {ShowSynced && (
         <StatusBadge
-          label={synced ? "synced" : "offline"}
+          label={synced ? t("common.synced") : t("common.offline")}
           logoType="icon"
           iconName={synced ? "cloud-done" : "cloud-offline"}
           color={synced ? APP_COLORS.success : APP_COLORS.textMuted}

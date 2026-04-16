@@ -12,11 +12,13 @@ import { useWorkPaginatedQuery } from "@/module/work/hooks";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, Text, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const TripDetailScreen = () => {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
 
   const [activeTab, setActiveTab] = useState<TripDetailTab>("Work");
@@ -46,7 +48,7 @@ const TripDetailScreen = () => {
   const receipts = receiptData?.pages.flatMap((page) => page.data) ?? [];
 
   if (isLoading || !trip) {
-    return <Loading label="Loading Trip details.." />;
+    return <Loading label={t("trip_detail.loading_trip_details")} />;
   }
 
   return (
@@ -76,7 +78,7 @@ const TripDetailScreen = () => {
                   color={APP_COLORS.textMuted}
                 />
                 <Text className="font-poppins text-textSecondary text-sm">
-                  No work sessions found
+                  {t("errors.no_work_sessions")}
                 </Text>
               </View>
             ) : null
@@ -98,8 +100,8 @@ const TripDetailScreen = () => {
         <FlatList
           data={receipts}
           keyExtractor={(item) => item.id}
-          renderItem={({ item, index }) => (
-            <ReceiptCard receipt={item} index={index} />
+          renderItem={({ item }) => (
+            <ReceiptCard receipt={item} />
           )}
           contentContainerStyle={{ gap: 10 }}
           ListEmptyComponent={
@@ -110,7 +112,7 @@ const TripDetailScreen = () => {
                 color={APP_COLORS.textMuted}
               />
               <Text className="font-poppins text-textSecondary text-sm">
-                No receipts found
+                {t("errors.no_receipts")}
               </Text>
             </View>
           }

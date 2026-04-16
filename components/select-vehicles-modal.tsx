@@ -2,6 +2,7 @@ import { APP_COLORS } from "@/lib/consts";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   FlatList,
   Image,
@@ -28,6 +29,7 @@ const SelectVehiclesModal = ({
   onChange,
   selectedVehicle,
 }: SelectVehiclesModalProps) => {
+  const { t } = useTranslation();
   return (
     <>
       <Modal visible={visible} transparent animationType="fade">
@@ -37,7 +39,7 @@ const SelectVehiclesModal = ({
         >
           <View className="bg-cardElevated rounded-2xl max-h-[70%] p-4">
             <Text className="text-lg text-textPrimary mb-4">
-              Select Vehicle
+              {t("trip_form.select_vehicle")}
             </Text>
 
             <FlatList

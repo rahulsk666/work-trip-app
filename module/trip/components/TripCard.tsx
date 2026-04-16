@@ -7,6 +7,7 @@ import { formatTime } from "@/lib/formatTime";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import { Trip } from "../schemas/trip.schema";
 
@@ -15,6 +16,7 @@ interface TripCardProps {
 }
 
 const TripCard = ({ trip }: TripCardProps) => {
+  const { t } = useTranslation();
   const duration = useDuration(trip.start_time, trip.end_time, trip?.trip_date);
   return (
     <TouchableOpacity
@@ -72,13 +74,13 @@ const TripCard = ({ trip }: TripCardProps) => {
                   : APP_COLORS.primaryDark,
             }}
           >
-            {trip.status === "ENDED" ? "Completed" : "In Progress"}
+            {trip.status === "ENDED" ? t("common.completed") : t("common.in_progress")}
           </Text>
         </View>
       </View>
       <View className="flex-row justify-between p-2">
         <View className="flex-col gap-2 justify-start">
-          <Text className="text-textSecondary font-bold">TIME</Text>
+          <Text className="text-textSecondary font-bold">{t("common.time")}</Text>
           <Text className="text-textSecondary font-bold">
             {trip?.start_time ? formatTime(trip.start_time) : "00:00 AM"}
             {trip && trip.status === "ENDED" && trip.end_time
@@ -89,7 +91,7 @@ const TripCard = ({ trip }: TripCardProps) => {
           </Text>
         </View>
         <View className="flex-col gap-2 justify-start">
-          <Text className="text-textSecondary font-bold">DURATION</Text>
+          <Text className="text-textSecondary font-bold">{t("common.duration")}</Text>
           <Text className="text-textSecondary font-bold">
             {trip.trip_date === getLocalDate()
               ? duration?.formatted

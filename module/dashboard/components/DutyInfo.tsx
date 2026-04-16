@@ -9,10 +9,12 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ImageBackground, Text, TouchableOpacity, View } from "react-native";
 import SwipeButton from "rn-swipe-button";
 
 const DutyInfo = () => {
+  const { t } = useTranslation();
   const { data: trip } = useLatestTripQuery();
   const { data: work } = useLatestWorkQuery(trip?.id);
   const { address } = useAddress(trip?.current_location);
@@ -49,13 +51,13 @@ const DutyInfo = () => {
           className="text-textPrimary text-xl font-bold mt-3"
           style={{ textAlign: "center", maxWidth: 250 }}
         >
-          Your day hasn&apos;t started yet.
+          {t("dashboard.duty_info.disabled_title")}
         </Text>
         <Text
           className="text-textPrimary text-sm text-center font-medium mt-1"
           style={{ maxWidth: 250, textAlign: "center" }}
         >
-          Tap below to begin your trip and log your duty hours.
+          {t("dashboard.duty_info.disabled_subtitle")}
         </Text>
       </View>
     );
@@ -81,7 +83,7 @@ const DutyInfo = () => {
           >
             <View className="bg-primary p-2 rounded-lg">
               <Text className="text-textPrimary text-sm uppercase font-bold">
-                On Duty
+                {t("dashboard.duty_info.on_duty")}
               </Text>
             </View>
             <View className="bg-textPrimary/20 w-[40px] h-[40px] rounded-full flex items-center justify-center">
@@ -95,7 +97,7 @@ const DutyInfo = () => {
 
           {/* Details */}
           <View className="flex gap-2" style={{ padding: 10 }}>
-            <Text className="text-textSecondary">Session Duration</Text>
+            <Text className="text-textSecondary">{t("dashboard.duty_info.trip_duration")}</Text>
             <TouchableOpacity onPress={() => router.navigate("/(track)/track")}>
               <Text
                 className="text-textPrimary font-bold text-5xl"
@@ -111,7 +113,7 @@ const DutyInfo = () => {
                 color={APP_COLORS.textSecondary}
               />
               <Text className="text-textSecondary font-medium text-sm">
-                {address || "Fetching location..."}
+                {address || t("dashboard.duty_info.fetching_location")}
               </Text>
             </View>
           </View>
@@ -164,7 +166,7 @@ const DutyInfo = () => {
                     ? APP_COLORS.textMuted
                     : APP_COLORS.dangerDark
                 }
-                title="Stop Session"
+                title={t("dashboard.duty_info.stop_trip")}
                 titleStyles={{ fontWeight: 900 }}
               />
             </View>

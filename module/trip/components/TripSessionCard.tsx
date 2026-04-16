@@ -9,11 +9,13 @@ import { decimalToDMS } from "@/lib/location";
 import { useLatestWorkQuery } from "@/module/work/hooks";
 import { router } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useLatestTripQuery } from "../hooks";
 import TripCountDown from "./TripCountdown";
 
 const TripSessionCard = () => {
+  const { t } = useTranslation();
   const { data: trip } = useLatestTripQuery();
   const { data: work } = useLatestWorkQuery(trip?.id);
   const duration = useDuration(
@@ -36,12 +38,12 @@ const TripSessionCard = () => {
               color={trip?.end_time ? APP_COLORS.danger : APP_COLORS.success}
             />
             <Text className="text-lg font-bold text-textPrimary">
-              {trip?.end_time ? "Session Stopped" : "Session Active"}
+              {trip?.end_time ? t("trip_track.session_stopped") : t("trip_track.session_active")}
             </Text>
           </View>
           <View>
             <Text className="text-textPrimary text-sm">
-              Date: {trip?.trip_date}
+              {t("trip_track.date")}: {trip?.trip_date}
             </Text>
           </View>
         </View>
@@ -55,7 +57,7 @@ const TripSessionCard = () => {
         <TripCountDown duration={duration} />
         <View className="p-2 justify-center items-center">
           <Text className="text-textSecondary font-bold">
-            Started at {formatTime(trip?.start_time as string)}
+            {t("trip_track.started_at")} {formatTime(trip?.start_time as string)}
           </Text>
         </View>
         <View style={{ height: 120 }}>
@@ -108,12 +110,12 @@ const TripSessionCard = () => {
             </View>
             <View className="flex-col items-start">
               <Text className="text-primary text-xl font-bold">
-                Current Location
+                {t("trip_track.current_location")}
               </Text>
               <Text className="text-textPrimary">
                 {coords && coords.latitude && coords.longitude
                   ? `${decimalToDMS(coords.latitude.toFixed(5), "lat")}, ${decimalToDMS(coords.longitude.toFixed(5), "lng")}`
-                  : "Fetching coordinates..."}
+                  : t("common.fetching_address")}
               </Text>
             </View>
           </View>
@@ -139,13 +141,13 @@ const TripSessionCard = () => {
           <Text
             className={`text-xl font-bold ${trip?.end_time || work?.status === "STARTED" ? "text-textMuted" : "text-danger"}`}
           >
-            Stop Session
+            {t("trip_track.trip_stopped")}
           </Text>
         </TouchableOpacity>
       </View>
       <View className="flex-row justify-start items-center gap-3 m-2 p-2">
         <StatusBadge
-          label={coords ? "GPS LOCKED" : "GPS DISCONNECTED"}
+          label={coords ? t("trip_track.gps_locked") : t("trip_track.gps_disconnected")}
           logoType="icon"
           iconName={coords ? "lock-closed" : "lock-open"}
           color={coords ? APP_COLORS.successDark : APP_COLORS.danger}
@@ -153,7 +155,7 @@ const TripSessionCard = () => {
           borderColor={APP_COLORS.textSecondary}
         />
         <StatusBadge
-          label={trip ? "DATA SYNCED" : "OFFLINE"}
+          label={trip ? t("trip_track.data_synced") : t("common.offline")}
           logoType="icon"
           iconName={trip ? "cloud-done" : "cloud-offline"}
           color={trip ? APP_COLORS.primaryDark : APP_COLORS.textMuted}

@@ -6,6 +6,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 import { workApi } from "../api/work.api";
 import { workKeys } from "../constants/work.key";
@@ -78,6 +79,7 @@ export const useLatestWorkQuery = (tripId: string | undefined) => {
 // trip mutations
 
 export const useCreateWorkMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (data: WorkCreate) => workApi.create(data),
@@ -87,14 +89,15 @@ export const useCreateWorkMutation = () => {
 
     onError: (err: PostgrestError | Error) => {
       if ("code" in err && err?.code === "23505") {
-        toast.error("A Work has already been started for today");
+        toast.error(t("errors.a_work_has_already_been_started_for_today"));
         return;
       }
-      toast.error("Failed to start work. Please try again");
+      toast.error(t("errors.something_went_wrong"));
     },
   });
 };
 export const useEndWorkMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: WorkEnd }) =>
@@ -107,6 +110,6 @@ export const useEndWorkMutation = () => {
       await qc.refetchQueries({ queryKey: workKeys.all });
     },
 
-    onError: () => toast.error("Failed to start work. Please try again"),
+    onError: () => toast.error(t("errors.something_went_wrong")),
   });
 };

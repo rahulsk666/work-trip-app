@@ -4,9 +4,11 @@ import WorkDetailCard from "@/module/work/components/WorkDetailCard";
 import { useWorkByIdQuery } from "@/module/work/hooks";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const WorkDetailScreen = () => {
+  const { t } = useTranslation();
   const { id, index } = useLocalSearchParams<{
     id: string;
     index: string;
@@ -14,11 +16,11 @@ const WorkDetailScreen = () => {
   const { data: work, isLoading } = useWorkByIdQuery(id);
 
   if (!work || isLoading) {
-    return <Loading label="Loading work details..." />;
+    return <Loading label={t("work_detail.loading_work_details")} />;
   }
   return (
     <SafeAreaView className="flex-1 bg-background">
-      <ProfileHeader pageName="Work Detail" />
+      <ProfileHeader pageName={t("work_detail.profile_title")} />
       <WorkDetailCard work={work} index={index} />
     </SafeAreaView>
   );

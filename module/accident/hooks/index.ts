@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { PostgrestError } from "@supabase/supabase-js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 import { accidentApi } from "../api/accident.api";
 import { accidentKeys } from "../constants/accident.key";
@@ -14,6 +15,7 @@ import {
 // trip mutations
 
 export const useCreateAccidentMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (data: AccidentCreate) => accidentApi.create(data),
@@ -23,12 +25,13 @@ export const useCreateAccidentMutation = () => {
 
     onError: (err: PostgrestError | Error) => {
       console.log(err);
-      toast.error("Failed to create accident history. Please try again");
+      toast.error(t("errors.something_went_wrong"));
     },
   });
 };
 
 export const useEditAccidentMutation = () => {
+  const { t } = useTranslation();
   const qc = useQueryClient();
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: AccidentEdit }) =>
@@ -40,7 +43,7 @@ export const useEditAccidentMutation = () => {
       await qc.refetchQueries({ queryKey: accidentKeys.all });
     },
 
-    onError: () => console.error("Failed to update accident. Please try again"),
+    onError: () => console.error(t("errors.something_went_wrong")),
   });
 };
 

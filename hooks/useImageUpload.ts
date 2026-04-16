@@ -3,6 +3,7 @@ import { APP_COLORS } from "@/lib/consts";
 import { decode } from "base64-arraybuffer";
 import * as ImagePicker from "expo-image-picker";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Linking, Platform } from "react-native";
 import { toast } from "sonner-native";
 
@@ -31,6 +32,7 @@ export const useImageUpload = ({
   onUpload,
   onError,
 }: useImageUploadProps): useImageUploadResponse => {
+  const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | null>(null);
   const [asset, setAsset] = useState<ImagePicker.ImagePickerAsset | null>(null);
@@ -41,7 +43,7 @@ export const useImageUpload = ({
         await ImagePicker.requestMediaLibraryPermissionsAsync();
 
       if (status !== "granted") {
-        toast.error("Gallery permission denied. Open settings to enable it.", {
+        toast.error(t("errors.gallery_permission_denied"), {
           action: {
             label: "Open Settings",
             onClick: () => Linking.openSettings(),
@@ -95,7 +97,7 @@ export const useImageUpload = ({
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== "granted") {
-      toast.error("Gallery permission denied. Open settings to enable it.", {
+      toast.error(t("errors.gallery_permission_denied"), {
         action: {
           label: "Open Settings",
           onClick: () => Linking.openSettings(),
@@ -126,7 +128,7 @@ export const useImageUpload = ({
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
 
     if (status !== "granted") {
-      toast.error("Camera permission denied. Open settings to enable it.", {
+      toast.error(t("errors.camera_permission_denied"), {
         action: {
           label: "Open Settings",
           onClick: () => Linking.openSettings(),

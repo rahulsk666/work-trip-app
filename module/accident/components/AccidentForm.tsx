@@ -32,6 +32,7 @@ interface AccidentFormProps {
 
 const AccidentForm = ({ tripId }: AccidentFormProps) => {
   const { t } = useTranslation();
+  const err = (msg?: string) => msg ? t(msg) : undefined;
   const insets = useSafeAreaInsets();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { location, displayCurrentAddress, requestLocation } =
@@ -81,7 +82,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
         data: { photo_url: accidentImage1Url },
       });
 
-      toast.success(t("errors.accident_reported_successfully"));
+      toast.success(t("accident_form.accident_reported_successfully"));
       router.replace("/");
     } catch (err) {
       console.error(err);
@@ -96,7 +97,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
   }, []);
 
   if (isLoading) {
-    return <Loading label={t("errors.reporting_accident")} showBackground={false} />;
+    return <Loading label={t("accident_form.reporting_accident")} showBackground={false} />;
   }
 
   return (
@@ -122,7 +123,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
               displayCurrentAddress,
             }}
             label={t("accident_form.accident_location")}
-            markerTitle={t("errors.current_location")}
+            markerTitle={t("accident_form.current_location")}
             height={180}
           />
         </View>
@@ -165,7 +166,7 @@ const AccidentForm = ({ tripId }: AccidentFormProps) => {
                 {...field}
                 value={field.value?.toString() ?? ""}
                 type="default"
-                error={fieldState.error?.message}
+                error={err(fieldState.error?.message)}
                 multiline
                 numberOfLines={5}
                 onSubmitEditing={Keyboard.dismiss}

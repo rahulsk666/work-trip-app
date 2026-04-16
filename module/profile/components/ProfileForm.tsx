@@ -26,6 +26,9 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
       });
     }
   }, [user, reset]);
+
+  const err = (msg?: string) => msg ? t(msg) : undefined;
+
   return (
     <View className="flex-1">
       <View className="flex-1 mx-6 mt-10 mb-6 gap-6">
@@ -36,7 +39,7 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
             <Input
               {...field}
               label={t("profile.edit_profile.name")}
-              error={fieldState.error?.message}
+              error={err(fieldState.error?.message)}
               onSubmitEditing={Keyboard.dismiss}
             />
           )}
@@ -57,19 +60,19 @@ const ProfileForm = ({ onSubmit, isSubmitting }: ProfileFormProps) => {
               {...field}
               value={field.value?.toString() ?? ""}
               label={t("profile.edit_profile.phone")}
-              error={fieldState.error?.message}
+              error={err(fieldState.error?.message)}
               onSubmitEditing={Keyboard.dismiss}
             />
           )}
         />
       </View>
       <Button
-        text={t("profile.edit_profile.save")}
+        text={t("common.save")}
         onPress={handleSubmit((data) => onSubmit(data))}
         disabled={isSubmitting}
       />
       <Button
-        text={t("profile.edit_profile.cancel")}
+        text={t("common.cancel")}
         onPress={() => router.navigate("/profile")}
         disabled={isSubmitting}
         variant="danger"

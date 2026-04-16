@@ -3,11 +3,11 @@ import * as z from "zod";
 export const workSchema = z.object({
   id: z.uuid(),
   trip_id: z.uuid({
-    message: "Trip ID is required",
+    message: "errors.trip_required",
   }),
   user_id: z.uuid().nullable().optional(),
   start_time: z.string({
-    message: "Start time is required",
+    message: "errors.start_time_required",
   }),
   end_time: z.string().nullable().optional(),
   location: z.string().nullable().optional(), // POINT(lng lat)
@@ -25,7 +25,7 @@ export const workCreateSchema = z.object({
   start_time: z.string(),
   location: z.string(),
   status: z.enum(["STARTED", "ENDED"]),
-  notes: z.string().max(500, "Notes too long").optional(),
+  notes: z.string().max(500, "errors.max_description_length").optional(),
 });
 
 export type WorkCreate = z.infer<typeof workCreateSchema>;

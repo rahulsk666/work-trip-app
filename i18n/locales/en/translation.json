@@ -29,9 +29,11 @@
     "home_tab": "Home",
     "history_tab": "History",
     "profile_tab": "Profile",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "location": "Location"
   },
   "errors": {
+    "no_active_session": "No Active Session",
     "no_active_trip": "No Active Trips",
     "no_trips_found": "No Trips Found",
     "no_work_sessions": "No Work Sessions",
@@ -53,7 +55,6 @@
     "vehicle_not_assigned": "Vehicle not assigned",
     "a_work_has_already_been_started_for_today": "A work has already been started for today",
     "start_time_required": "Start time is required",
-    "notes_too_long": "Notes too long",
     "trip_required": "Trip is Required",
     "max_description_length": "Description is too long",
     "amount_required": "Amount is required",
@@ -118,7 +119,7 @@
     "later": "Later"
   },
   "dashboard": {
-    "title": "Welcome back, {{name}}",
+    "profile_title": "Welcome back, {{name}}",
     "duty_info": {
       "on_duty": "ON DUTY",
       "trip_duration": "Trip Duration",
@@ -135,7 +136,7 @@
     "dashboard_actions": {
       "start_trip": "Start Trip",
       "start_work": "Start Work",
-      "stop_work": "Stop {\n}Work",
+      "stop_work": "Stop \nWork",
       "start_trip_confirm_title": "Start Trip ?",
       "start_work_confirm_title": "Start Work ?",
       "stop_work_confirm_title": "Stop Work ?"
@@ -176,6 +177,8 @@
     "profile_title": "Track Trip",
     "trip_stopped": "Stop Trip",
     "trip_active": "Active Trip",
+    "session_stopped": "Stopped Session",
+    "session_active": "Active Session",
     "date": "Date",
     "started_at": "Started at",
     "current_location": "Current Location",
@@ -214,7 +217,8 @@
     "end_trip_note": "Ending this trip will prevent adding any more work sessions today.\nPlease ensure you have completed all work, reached home/base, and will not use the company vehicle for personal activities.",
     "confirm_trip_end": "Confirm Trip End?",
     "trip_started_successfully": "Trip started successfully",
-    "trip_ended_successfully": "Trip ended successfully"
+    "trip_ended_successfully": "Trip ended successfully",
+    "current_location": "Current Location"
   },
   "accident_form": {
     "profile_title": "Accident Report",

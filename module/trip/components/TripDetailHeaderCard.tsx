@@ -7,6 +7,7 @@ import { formatTime } from "@/lib/formatTime";
 import { useReceiptByTripQuery } from "@/module/receipt/hooks";
 import { useWorkByTripQuery } from "@/module/work/hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Text, View } from "react-native";
 import { Trip } from "../schemas/trip.schema";
 import { TripDetailTab } from "./TripDetailTabSwitcher";
@@ -20,6 +21,7 @@ const TripDetailHeaderCard = ({
   trip,
   activeTab,
 }: TripDetailHeaderCardProps) => {
+  const { t } = useTranslation();
   const duration = useDuration(
     trip?.start_time ?? "",
     trip?.end_time,
@@ -52,27 +54,27 @@ const TripDetailHeaderCard = ({
       <View className="flex-row justify-between" style={{ gap: 40 }}>
         {activeTab === "Work" ? (
           <View className="flex-col items-center justify-center">
-            <Text className="text-textPrimary">Work Time</Text>
+            <Text className="text-textPrimary">{t("trip_detail.total_work")}</Text>
             <Text className="text-textPrimary">
               {totalWorkHours?.formatted}
             </Text>
           </View>
         ) : (
           <View className="flex-col items-center justify-center">
-            <Text className="text-textPrimary">Total Receipt</Text>
+            <Text className="text-textPrimary">{t("trip_detail.total_receipt")}</Text>
             <Text className="text-textPrimary">
               $ {totalReceiptAmount.formatted}
             </Text>
           </View>
         )}
         <View className="flex-col items-center justify-center">
-          <Text className="text-textPrimary">Trip Start Time</Text>
+          <Text className="text-textPrimary">{t("trip_detail.trip_start_time")}</Text>
           <Text className="text-textPrimary">
             {trip ? formatTime(trip?.start_time) : "00:00 AM"}
           </Text>
         </View>
         <View className="flex-col items-center justify-center">
-          <Text className="text-textPrimary">Trip End Time</Text>
+          <Text className="text-textPrimary">{t("trip_detail.trip_end_time")}</Text>
           <Text className="text-textPrimary">
             {trip && trip?.end_time ? formatTime(trip?.end_time) : "00:00 AM"}
           </Text>

@@ -15,9 +15,11 @@ import { VehiclePhoto } from "@/module/trip/schemas/trip.schema";
 import { Vehicle } from "@/module/vehicle/schemas/vehicle.schema";
 import { router } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner-native";
 
 const StartTripForm = () => {
+  const { t } = useTranslation();
   const { location, displayCurrentAddress, requestLocation } =
     useRequestLocation();
   const [vehicle, setVehicle] = useState<Vehicle | undefined>(undefined);
@@ -42,14 +44,14 @@ const StartTripForm = () => {
   const onSubmit = async (data: any) => {
     if (isLoading) return;
     if (todayTrip)
-      return toast.error("A trip has already been started for today");
-    if (!vehicle) return toast.error("Vehicle required");
-    if (!location) return toast.error("Location is required to start a trip");
-    if (!dashboardImage.asset) return toast.error("Dashboard image required");
-    if (!frontImage.asset) return toast.error("Front image required");
-    if (!backImage.asset) return toast.error("Back image required");
-    if (!leftImage.asset) return toast.error("Left image required");
-    if (!rightImage.asset) return toast.error("Right image required");
+      return toast.error(t("errors.a_trip_has_already_been_started_for_today"));
+    if (!vehicle) return toast.error(t("errors.vehicle_required"));
+    if (!location) return toast.error(t("errors.location_required_to_start_a_trip"));
+    if (!dashboardImage.asset) return toast.error(t("errors.dashboard_image_required"));
+    if (!frontImage.asset) return toast.error(t("errors.front_image_required"));
+    if (!backImage.asset) return toast.error(t("errors.back_image_required"));
+    if (!leftImage.asset) return toast.error(t("errors.left_image_required"));
+    if (!rightImage.asset) return toast.error(t("errors.right_image_required"));
 
     setIsSubmitting(true);
     try {
@@ -85,11 +87,11 @@ const StartTripForm = () => {
 
       await editTrip({ id: trip.id, data: { start_image: startUrl } });
 
-      toast.success("Trip started successfully");
+      toast.success(t("trip_form.trip_started_successfully"));
       router.replace("/");
     } catch (err) {
       console.error(err);
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("errors.something_went_wrong"));
     } finally {
       setIsSubmitting(false);
     }
@@ -97,7 +99,7 @@ const StartTripForm = () => {
 
   return (
     <>
-      {isLoading && <Loading showBackground={false} label="Starting trip..." />}
+      {isLoading && <Loading showBackground={false} label={t("trip_form.starting_trip")} />}
       <TripFormUI
         mode="start"
         control={control}

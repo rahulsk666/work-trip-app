@@ -13,11 +13,13 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Text, TouchableOpacity, View } from "react-native";
 import { toast } from "sonner-native";
 import TodaysActivity from "./TodaysActivity";
 
 const DashboardActions = () => {
+  const { t } = useTranslation();
   const [modal, setModal] = useState<{
     title: string;
     visible: boolean;
@@ -25,7 +27,7 @@ const DashboardActions = () => {
   }>({
     title: "",
     visible: false,
-    onConfirm: () => {},
+    onConfirm: () => { },
   });
   const { data: user } = useUserQuery();
   const { data: trip } = useLatestTripQuery();
@@ -42,22 +44,22 @@ const DashboardActions = () => {
   const handleWorkCreate = () => {
     requestLocation();
     setModal({
-      title: "Start Work ?",
+      title: t("dashboard.dashboard_actions.start_work_confirm_title"),
       visible: true,
       onConfirm: async () => {
         closeModal();
 
         if (!location) {
-          toast.info("Getting your location, please try again in a moment...");
+          toast.info(t("common.location_fetch_message"));
           requestLocation(); //retry
           return;
         }
         if (!trip?.id) {
-          toast.error("No active trip found");
+          toast.error(t("errors.no_active_trip_found"));
           return;
         }
         if (!user?.id) {
-          toast.error("Please try again.");
+          toast.error(t("errors.something_went_wrong"));
           return;
         }
 
@@ -73,11 +75,11 @@ const DashboardActions = () => {
   };
 
   const closeModal = () =>
-    setModal({ title: "", visible: false, onConfirm: () => {} });
+    setModal({ title: "", visible: false, onConfirm: () => { } });
 
   const handleWorkEdit = async (id: string) => {
     setModal({
-      title: "Stop Work ?",
+      title: t("dashboard.dashboard_actions.stop_work_confirm_title"),
       visible: true,
       onConfirm: async () => {
         closeModal();
@@ -121,10 +123,10 @@ const DashboardActions = () => {
                 color={APP_COLORS.dangerDark}
               />
               <Text
-                className="text-xl"
+                className="text-xl text-center"
                 style={{ color: APP_COLORS.dangerDark, fontWeight: 900 }}
               >
-                Stop {"\n"}Work
+                {t("dashboard.dashboard_actions.stop_work")}
               </Text>
               {duration && (
                 <Text
@@ -158,7 +160,7 @@ const DashboardActions = () => {
                   lineHeight: 34,
                 }}
               >
-                Start Work
+                {t("dashboard.dashboard_actions.start_work")}
               </Text>
             </TouchableOpacity>
           )}
@@ -172,7 +174,7 @@ const DashboardActions = () => {
           >
             <Ionicons name="play" size={30} color={APP_COLORS.textPrimary} />
             <Text className="text-textPrimary text-3xl font-bold">
-              Start Trip
+              {t("dashboard.dashboard_actions.start_trip")}
             </Text>
           </TouchableOpacity>
           <TodaysActivity />
